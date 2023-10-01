@@ -6,12 +6,17 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, } @ inputs: {
+  outputs = { self, nixpkgs, nix-darwin, emacs-overlay } @ inputs: {
     darwinConfigurations."m3" = nix-darwin.lib.darwinSystem {
       specialArgs = { inherit self; };
       modules = [
+        { nixpkgs.overlays = [ emacs-overlay.overlay ]; }
         ./configuration.nix
       ];
     };
