@@ -1,9 +1,12 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
-    # nixpkgs.url = "nixpkgs/nixpkgs-23.05-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-darwin = {
       url = "github:LnL7/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-overlay = {
@@ -12,11 +15,20 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, emacs-overlay } @ inputs: {
+  outputs = { self, nixpkgs, nix-darwin, home-manager, emacs-overlay } @ inputs: {
     darwinConfigurations."m3" = nix-darwin.lib.darwinSystem {
       specialArgs = { inherit self; };
       modules = [
-        { nixpkgs.overlays = [ emacs-overlay.overlay ]; }
+        {
+          nixpkgs.overlays = [ emacs-overlay.overlay ];
+        }
+        home-manager.darwinModules.home-manager {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = { inherit self; };
+          };
+        }
         ./configuration.nix
       ];
     };

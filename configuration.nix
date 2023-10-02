@@ -1,7 +1,6 @@
 { pkgs, self, ... }:
 {
   environment.systemPackages = with pkgs; [
-    emacs-unstable
     git
   ];
 
@@ -18,4 +17,10 @@
     configurationRevision = self.rev or self.dirtyRev or null;
     stateVersion = 4;
   };
+
+  users.users.markus = {
+    home = "/Users/markus";
+  };
+
+  home-manager.users."markus" = import ./home.nix;
 }
