@@ -5,6 +5,10 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-homebrew = {
+      url = "github:zhaofengli-wip/nix-homebrew";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,7 +19,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, home-manager, emacs-overlay } @ inputs: {
+  outputs = { self, nixpkgs, nix-darwin, nix-homebrew, home-manager, emacs-overlay } @ inputs: {
     darwinConfigurations."m3" = nix-darwin.lib.darwinSystem {
       specialArgs = { inherit self; };
       modules = [
@@ -27,6 +31,13 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             extraSpecialArgs = { inherit self; };
+          };
+        }
+        nix-homebrew.darwinModules.nix-homebrew {
+          nix-homebrew = {
+            enable = true;
+            enableRosetta = true;
+            user = "markus";
           };
         }
         ./configuration.nix

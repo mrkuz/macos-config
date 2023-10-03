@@ -1,8 +1,8 @@
 { pkgs, self, ... }:
 {
   environment.systemPackages = with pkgs; [
-    gcc
-    git
+    # git
+    # gcc
   ];
 
   programs.zsh.enable = true;
