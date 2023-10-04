@@ -19,28 +19,28 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix-darwin, nix-homebrew, home-manager, emacs-overlay } @ inputs: {
-    darwinConfigurations."m3" = nix-darwin.lib.darwinSystem {
+  outputs = { self, nixpkgs, ... } @ inputs: {
+    darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
       specialArgs = { inherit self; };
       modules = [
         {
-          nixpkgs.overlays = [ emacs-overlay.overlay ];
+          nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
         }
-        home-manager.darwinModules.home-manager {
+        inputs.home-manager.darwinModules.home-manager {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
             extraSpecialArgs = { inherit self; };
           };
         }
-        nix-homebrew.darwinModules.nix-homebrew {
+        inputs.nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             enable = true;
             enableRosetta = true;
             user = "markus";
           };
         }
-        ./configuration.nix
+        ./hosts/m3/configuration.nix
       ];
     };
   };

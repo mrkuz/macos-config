@@ -19,9 +19,19 @@
     stateVersion = 4;
   };
 
+  homebrew = {
+    enable = true;
+    # brews = [
+    #   { name = "sdkman-cli"; }
+    # ];
+    # taps = [
+    #   { name = "sdkman/tap"; }
+    # ];
+  };
+
   users.users.markus = {
     home = "/Users/markus";
   };
 
-  home-manager.users."markus" = import ./home.nix;
+  home-manager.users."markus" = ./. + "/../../users/markus@m3/home.nix";
 }
