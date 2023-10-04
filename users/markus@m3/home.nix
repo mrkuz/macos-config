@@ -20,7 +20,5 @@
       emacs-unstable
       rectangle
     ];
-
-    stateVersion = "23.05";
   };
 }

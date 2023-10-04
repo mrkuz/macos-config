@@ -21,16 +21,29 @@
 
   outputs = { self, nixpkgs, ... } @ inputs: {
     darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
-      specialArgs = { inherit self; };
+      # specialArgs = { inherit self; };
       modules = [
         {
-          nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+          nixpkgs = {
+            overlays = [ inputs.emacs-overlay.overlay ];
+            hostPlatform = "aarch64-darwin";
+          };
+
+          system = {
+            configurationRevision = self.rev or self.dirtyRev or null;
+            stateVersion = 4;
+          };
         }
         inputs.home-manager.darwinModules.home-manager {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { inherit self; };
+            #  extraSpecialArgs = { inherit self; };
+            sharedModules = [
+              {
+                home.stateVersion = "23.05";
+              }
+            ];
           };
         }
         inputs.nix-homebrew.darwinModules.nix-homebrew {
