@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, nixpkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
     # git
@@ -12,6 +12,18 @@
   nix = {
     package = pkgs.nixFlakes;
     settings.experimental-features = "nix-command flakes";
+  };
+
+  # Use local nixpkgs
+  nix.registry.nixpkgs = {
+    from = {
+      id = "nixpkgs";
+      type = "indirect";
+    };
+    to = lib.mkForce {
+      path = "${nixpkgs}";
+      type = "path";
+    };
   };
 
   homebrew = {
