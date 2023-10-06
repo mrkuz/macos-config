@@ -7,10 +7,10 @@
         name = "sdkman";
         src = pkgs.fishPlugins.sdkman-for-fish.src;
       }
-      # {
-      #    name = "pure";
-      #    src = pkgs.fishPlugins.pure.src;
-      # }
+      {
+        name = "pure";
+        src = pkgs.fishPlugins.pure.src;
+      }
     ];
     shellAbbrs = {
       gau = "git add -u";
@@ -28,7 +28,7 @@
       enableFishIntegration = true;
       mode = "no-cursor";
     };
-    theme = "Solarized Dark";
+    theme = "Solarized Dark - Patched";
     font = {
       name = "SF Mono";
       size = 14;
