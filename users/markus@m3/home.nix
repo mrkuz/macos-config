@@ -5,11 +5,11 @@
     plugins = [
       {
         name = "sdkman";
-        src = pkgs.fishPlugins.sdkman-for-fish;
+        src = pkgs.fishPlugins.sdkman-for-fish.src;
       }
       # {
-      #   name = "pure";
-      #   src = pkgs.fishPlugins.pure;
+      #    name = "pure";
+      #    src = pkgs.fishPlugins.pure.src;
       # }
     ];
     shellAbbrs = {
