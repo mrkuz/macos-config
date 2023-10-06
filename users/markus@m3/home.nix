@@ -43,6 +43,13 @@
     };
   };
 
+  programs.git = {
+    enable = true;
+    userName = "mrkuz";
+    userEmail = "markus@bitsandbobs.net";
+    diff-so-fancy.enable = true;
+  };
+
   home = {
     packages = with pkgs; [
       emacs-unstable
