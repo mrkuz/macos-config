@@ -39,6 +39,15 @@
     # ];
   };
 
+  fonts = {
+    fontDir.enable = true;
+    fonts = with pkgs; [
+      dejavu_fonts
+      source-code-pro
+      ubuntu_font_family
+    ];
+  };
+
   users.users.markus = {
     home = "/Users/markus";
   };
