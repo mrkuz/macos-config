@@ -7,7 +7,19 @@
         name = "sdkman";
         src = pkgs.fishPlugins.sdkman-for-fish;
       }
+      # {
+      #   name = "pure";
+      #   src = pkgs.fishPlugins.pure;
+      # }
     ];
+    shellAbbrs = {
+      gau = "git add -u";
+      gdc = "git diff --cached";
+      gs = "git status";
+    };
+    interactiveShellInit = ''
+      set -U fish_greeting
+    '';
   };
 
   programs.kitty = {
