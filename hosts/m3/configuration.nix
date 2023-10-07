@@ -31,12 +31,9 @@
 
   homebrew = {
     enable = true;
-    # brews = [
-    #   { name = "sdkman-cli"; }
-    # ];
-    # taps = [
-    #   { name = "sdkman/tap"; }
-    # ];
+    casks = [ "whisky" ];
+    brews = [ ];
+    taps = [ ];
   };
 
   fonts = {
