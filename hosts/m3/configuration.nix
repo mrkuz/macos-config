@@ -30,8 +30,8 @@
   };
 
   homebrew = {
-    enable = true;
-    casks = [ "whisky" ];
+    enable = false;
+    # casks = [ "whisky" ];
     brews = [ ];
     taps = [ ];
   };

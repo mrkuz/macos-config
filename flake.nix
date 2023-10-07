@@ -49,7 +49,7 @@
         inputs.nix-homebrew.darwinModules.nix-homebrew {
           nix-homebrew = {
             enable = true;
-            enableRosetta = true;
+            enableRosetta = false;
             user = "markus";
           };
         }
