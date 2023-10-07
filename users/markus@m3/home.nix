@@ -13,6 +13,7 @@
       }
     ];
     shellAbbrs = {
+      a86 = "arch -x86_64";
       gau = "git add -u";
       gdc = "git diff --cached";
       gs = "git status";
