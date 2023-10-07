@@ -51,6 +51,22 @@
     diff-so-fancy.enable = true;
   };
 
+  launchd = {
+    enable = true;
+    agents = {
+      emacs = {
+        enable = true;
+        config = {
+          ProgramArguments = [ "${pkgs.emacs-unstable}/bin/emacs" "--daemon=default" ];
+          RunAtLoad = true;
+          # KeepAlive = true;
+          # StandardOutPath = "/tmp/emacs.stdout";
+          # StandardErrorPath = "/tmp/emacs.stderr";
+        };
+      };
+    };
+  };
+
   home = {
     packages = with pkgs; [
       emacs-unstable
