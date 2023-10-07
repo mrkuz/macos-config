@@ -12,6 +12,9 @@
         src = pkgs.fishPlugins.pure.src;
       }
     ];
+    shellAliases = {
+      ec = "emacsclient --socket-name /var/folders/tm/s0rmv44130v_l7p3jynpdkm00000gn/T/emacs501/default -n -c";
+    };
     shellAbbrs = {
       a86 = "arch -x86_64";
       gau = "git add -u";
