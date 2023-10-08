@@ -1,5 +1,9 @@
 { config, pkgs, ... }:
 {
+  home.sessionVariables = {
+    HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/misc/Brewfile";
+  };
+
   programs.fish = {
     enable = true;
     plugins = [
