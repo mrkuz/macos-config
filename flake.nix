@@ -21,7 +21,7 @@
 
   outputs = { self, nixpkgs, ... } @ inputs: {
     darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
-      specialArgs = { inherit nixpkgs; };
+      specialArgs = { inherit self nixpkgs; };
       modules = [
         {
           nixpkgs = {

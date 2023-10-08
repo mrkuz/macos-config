@@ -1,8 +1,8 @@
-{ pkgs, lib, nixpkgs, ... }:
+{ pkgs, lib, nixpkgs, self, ... }:
 {
   environment.systemPackages = with pkgs; [
-    # git
-    # gcc
+    niv
+    nix-index
   ];
 
   programs = {
@@ -39,13 +39,18 @@
     export NIX_PATH="nixpkgs=${nixpkgs}"
   '';
 
+  environment.etc."nix/current".source = self;
+  environment.etc."nix/nixpkgs".source = nixpkgs;
+
+  documentation.info.enable = false;
+
   homebrew = {
     enable = false;
     casks = [
-    #   "betterdisplay"
-    #   "libreoffice"
-    #   "hyperkey"
-    #   "whisky"
+      "betterdisplay"
+      "libreoffice"
+      "hyperkey"
+      "whisky"
     ];
     brews = [ ];
     taps = [ ];
