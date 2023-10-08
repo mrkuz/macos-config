@@ -1,18 +1,14 @@
 # Manual steps
 
-# Installed software
+# Software
 
-- [Hyperkey](https://hyperkey.app)
-- [BetterDisplay](https://github.com/waydabber/BetterDisplay)
-
-##  Xcode CLI tools
+## Xcode CLI tools
 
 `xcode-select --install`
 
 ## Rosetta
 
 `softwareupdate --install-rosetta --agree-to-licenes
-
 
 # Emacs configuration
 

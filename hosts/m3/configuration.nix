@@ -41,7 +41,12 @@
 
   homebrew = {
     enable = false;
-    # casks = [ "libreoffice" "whisky" ];
+    casks = [
+    #   "betterdisplay"
+    #   "libreoffice"
+    #   "hyperkey"
+    #   "whisky"
+    ];
     brews = [ ];
     taps = [ ];
   };

@@ -76,6 +76,7 @@
     packages = with pkgs; [
       emacs-unstable
       # MacOS
+      mas
       rectangle
     ];
   };
