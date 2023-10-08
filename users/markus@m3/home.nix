@@ -75,6 +75,7 @@
   home = {
     packages = with pkgs; [
       emacs-unstable
+      # MacOS
       rectangle
     ];
   };

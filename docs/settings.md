@@ -1,26 +1,28 @@
-# Wi-Fi
+# Settings
+
+## Wi-Fi
 
 - Wi-Fi: off
 
-# Notifications
+## Notifications
 
 - Allow notifications when the screen is locked: off
 
-# Sound
+## Sound
 
 - Alert volume: low
 - Play sound on startup off
 
-# Focus
+## Focus
 
 - Share across devices: off
 
-# Accessibility
+## Accessibility
 
 - Display -> Text / Text size: 14pt
 - Display -> Pointer / Pointer size: half on first bar
 
-# Control centre
+## Control centre
 
 - Bluetooth: Show in Menu Bar
 - Focus: Always Show in Menu Bar
@@ -32,38 +34,37 @@
 - Siri: Don’t Show in Menu Bar
 - Clock -> Show date: Always
 
-# Siri & Spotlight
+## Siri & Spotlight
 
 - Language: German (Austria)
 - Siri voice German (Voice 3)
 
-# Desktop & Dock
+## Desktop & Dock
 
 - Desktop & Stage Manager / Click wallpaper to reveal desktop: Only in Stage Manager
 - Windows / Close windows when quitting an application: off
 
-# Wallpaper
+## Wallpaper
 
 - Oregon Sunset
 - Show as screen saver: off
 - Show on all Spaces: on
 
-# Lock Screen
+## Lock Screen
 
 - Start Screen Saver when inactive: Never
 - Require password after screen saver begins or is turned off: Immediately
 
-# Internet Accounts
+## Internet Accounts
 
 - iCloud -> Access iCloud Data on the Web: off
 
-# Keyboard
+## Keyboard
 
 - Keyboard Shortcuts -> Input Sources / Select the previous input source: Off
 - Keyboard Shortcuts -> Launchpad & Dock / Show Launchpad: F4
 - Keyboard Shortcuts -> Mission Control / Mission Control / Switch to Desktop 1: ^1
-- Keyboard Shortcuts -> Mission Control / Mission Control / Switch to Desktop 2: ^2
 
-# Mouse
+## Mouse
 
 - Natural scrolling: off
