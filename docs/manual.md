@@ -8,7 +8,7 @@
 
 ## Rosetta
 
-`softwareupdate --install-rosetta --agree-to-licenes
+`softwareupdate --install-rosetta --agree-to-licenes`
 
 # Emacs configuration
 
