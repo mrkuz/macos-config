@@ -13,8 +13,14 @@
   services.nix-daemon.enable = true;
 
   nix = {
-    package = pkgs.nixFlakes;
-    settings.experimental-features = "nix-command flakes";
+    settings = {
+      experimental-features = "nix-command flakes";
+      narinfo-cache-positive-ttl = 86400;
+      keep-outputs = true;
+      keep-derivations = true;
+      auto-optimise-store = true;
+      sandbox = true;
+    };
   };
 
   # Use local nixpkgs
@@ -28,6 +34,10 @@
       type = "path";
     };
   };
+
+  environment.extraInit = ''
+    export NIX_PATH="nixpkgs=${nixpkgs}"
+  '';
 
   homebrew = {
     enable = false;
