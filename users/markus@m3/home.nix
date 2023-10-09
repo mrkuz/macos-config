@@ -2,6 +2,7 @@
 {
   home.sessionVariables = {
     HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/misc/Brewfile";
+    # SHELL = "${pkgs.fish}/bin/fish";
   };
 
   programs.fish = {
@@ -33,7 +34,42 @@
   programs.fzf = {
     enable = true;
     enableFishIntegration = true;
-    # tmux.enableShellIntegration = true;
+  };
+
+  programs.tmux = {
+    enable = true;
+    baseIndex = 1;
+    clock24 = true;
+    shell = "${pkgs.fish}/bin/fish";
+    terminal = "screen-256color";
+    extraConfig = ''
+      set -g status-left " #S:#I.#P | "
+      set -g status-right "%Y/%m/%d %H:%M "
+
+      # Show activity notification for other windows
+      # setw -g monitor-activity on
+      # set -g visual-activity on
+
+      # Show bell notification for all windows
+      # setw -g monitor-bell on
+      # set -g visual-bell on
+
+      # Keep notifications until key is pressed
+      set -g display-time 0
+
+      # Emacs-like pane management
+      bind ")" kill-pane
+      bind "!" break-pane
+      bind "@" split-window -v
+      bind "#" split-window -h
+
+      # Other key bindings
+      bind C-b last-window
+      bind b choose-window
+      bind R command-prompt -p "Rename window:" "rename-window '%%'"
+      bind C-k confirm -p "Kill pane? [y/n]" kill-pane
+      bind C-s setw -g synchronize-panes
+    '';
   };
 
   programs.kitty = {
@@ -52,7 +88,7 @@
       cursor_blink_interval = 0;
       copy_on_select = "clipboard";
       mouse_hide_wait = 0;
-      shell = "${pkgs.fish}/bin/fish -il";
+      shell = "${pkgs.tmux}/bin/tmux";
       strip_trailing_spaces = "smart";
     };
   };
