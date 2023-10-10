@@ -27,13 +27,18 @@ function update() {
     git diff flake.lock
 
     brew update
-    brew upgrade --dry-run
+    brew outdated --greedy
+
+    mas outdated
 }
 
 function upgrade() {
     darwin-rebuild switch -v --flake ".#$1"
-    brew upgrade
+
+    brew upgrade --greedy
     brew bundle dump -f
+
+    mas upgrade
 }
 
 function clean() {
