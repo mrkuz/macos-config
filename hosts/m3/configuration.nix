@@ -3,7 +3,12 @@
   environment.systemPackages = with pkgs; [
     niv
     nix-index
+    hunspell
+    hunspellDicts.de_AT
+    hunspellDicts.en_US
   ];
+
+  environment.pathsToLink = [ "/share/hunspell" ];
 
   programs = {
     fish.enable = true;
