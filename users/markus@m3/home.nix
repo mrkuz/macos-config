@@ -47,12 +47,12 @@
       set -g status-right "%Y/%m/%d %H:%M "
 
       # Show activity notification for other windows
-      # setw -g monitor-activity on
-      # set -g visual-activity on
+      setw -g monitor-activity on
+      set -g visual-activity on
 
       # Show bell notification for all windows
-      # setw -g monitor-bell on
-      # set -g visual-bell on
+      setw -g monitor-bell on
+      set -g visual-bell on
 
       # Keep notifications until key is pressed
       set -g display-time 0
