@@ -2,7 +2,7 @@
 {
   home.sessionVariables = {
     HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/misc/Brewfile";
-    # SHELL = "${pkgs.fish}/bin/fish";
+    SHELL = "${pkgs.fish}/bin/fish";
   };
 
   programs.fish = {
