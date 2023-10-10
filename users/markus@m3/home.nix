@@ -120,10 +120,26 @@
 
   home = {
     packages = with pkgs; [
+      # Emacs
       emacs-unstable
       # MacOS
       mas
       rectangle
+      # CLI utils
+      age
+      bat
+      fd
+      htop
+      iftop
+      jq
+      ncdu
+      pdftk
+      pwgen
+      rclone
+      ripgrep
+      socat
+      tree
+      wget
     ];
   };
 }
