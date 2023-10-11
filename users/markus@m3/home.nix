@@ -40,6 +40,7 @@
     enable = true;
     baseIndex = 1;
     clock24 = true;
+    mouse = true;
     shell = "${pkgs.fish}/bin/fish";
     terminal = "screen-256color";
     extraConfig = ''
