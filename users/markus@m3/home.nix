@@ -2,7 +2,7 @@
 {
   home.sessionVariables = {
     HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/Brewfile";
-    SHELL = "${pkgs.fish}/bin/fish";
+    # SHELL = "${pkgs.fish}/bin/fish";
   };
 
   programs.fish = {
@@ -43,6 +43,8 @@
     shell = "${pkgs.fish}/bin/fish";
     terminal = "screen-256color";
     extraConfig = ''
+      set -g default-command "${pkgs.fish}/bin/fish"
+
       set -g status-left " #S:#I.#P | "
       set -g status-right "%Y/%m/%d %H:%M "
 
