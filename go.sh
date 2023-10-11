@@ -16,6 +16,7 @@ Usage: $0 COMMAND
 Commands:
 
 - update
+- rebuild HOST
 - upgrade HOST
 - clean
 "
@@ -32,9 +33,13 @@ function update() {
     mas outdated
 }
 
-function upgrade() {
+function rebuild() {
     darwin-rebuild switch -v --flake ".#$1"
+}
 
+function upgrade() {
+    rebuild "$1"
+    
     brew upgrade --greedy
     brew bundle dump -f
 
@@ -61,6 +66,15 @@ case "$1" in
     "update")
         update
         ;;
+    "rebuild")
+        if [[ $# -eq 1 ]]; then
+            rebuild $(hostname)
+        elif [[ $# -eq 2 ]]; then
+            rebuild "$2"
+        else
+            usage
+        fi
+        ;;
     "upgrade")
         if [[ $# -eq 1 ]]; then
             upgrade $(hostname)
@@ -77,3 +91,4 @@ case "$1" in
         usage
         ;;
 esac
+
