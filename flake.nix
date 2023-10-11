@@ -22,7 +22,6 @@
   outputs = { self, nixpkgs, ... } @ inputs:
     let
       utils = {
-        # mkDarwinModules =
         attrsToValues = attrs:
           nixpkgs.lib.attrsets.mapAttrsToList (name: value: value) attrs;
       };
@@ -52,7 +51,7 @@
                 {
                   home.stateVersion = "23.05";
                 }
-              ];
+              ] ++ utils.attrsToValues self.homeManagerModules;
             };
           }
           inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -71,6 +70,12 @@
         fonts = import ./modules/darwin/fonts.nix;
         hunspell = import ./modules/darwin/hunspell.nix;
         nix = import ./modules/darwin/nix.nix;
+      };
+
+      homeManagerModules = {
+        emacs = import ./modules/home-manager/emacs.nix;
+        kitty = import ./modules/home-manager/kitty.nix;
+        tmux = import ./modules/home-manager/tmux.nix;
       };
     };
 }
