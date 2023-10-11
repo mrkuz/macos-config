@@ -62,8 +62,13 @@ case "$1" in
         update
         ;;
     "upgrade")
-        [[ $# -ne 2 ]] && usage
-        upgrade "$2"
+        if [[ $# -eq 1 ]]; then
+            upgrade $(hostname)
+        elif [[ $# -eq 2 ]]; then
+            upgrade "$2"
+        else
+            usage
+        fi
         ;;
     "clean")
         clean

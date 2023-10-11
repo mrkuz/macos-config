@@ -19,42 +19,58 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... } @ inputs: {
-    darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
-      specialArgs = { inherit self nixpkgs; };
-      modules = [
-        {
-          nixpkgs = {
-            overlays = [ inputs.emacs-overlay.overlay ];
-            hostPlatform = "aarch64-darwin";
-          };
+  outputs = { self, nixpkgs, ... } @ inputs:
+    let
+      utils = {
+        # mkDarwinModules =
+        attrsToValues = attrs:
+          nixpkgs.lib.attrsets.mapAttrsToList (name: value: value) attrs;
+      };
+    in
+    {
+      darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit self nixpkgs; };
+        modules = [
+          {
+            nixpkgs = {
+              overlays = [ inputs.emacs-overlay.overlay ];
+              hostPlatform = "aarch64-darwin";
+            };
 
-          system = {
-            configurationRevision = self.rev or self.dirtyRev or null;
-            stateVersion = 4;
-          };
-        }
-        inputs.home-manager.darwinModules.home-manager {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            #  extraSpecialArgs = { inherit self; };
-            sharedModules = [
-              {
-                home.stateVersion = "23.05";
-              }
-            ];
-          };
-        }
-        inputs.nix-homebrew.darwinModules.nix-homebrew {
-          nix-homebrew = {
-            enable = true;
-            enableRosetta = false;
-            user = "markus";
-          };
-        }
-        ./hosts/m3/configuration.nix
-      ];
+            system = {
+              configurationRevision = self.rev or self.dirtyRev or null;
+              stateVersion = 4;
+            };
+          }
+          inputs.home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              #  extraSpecialArgs = { inherit self; };
+              sharedModules = [
+                {
+                  home.stateVersion = "23.05";
+                }
+              ];
+            };
+          }
+          inputs.nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              enable = true;
+              enableRosetta = false;
+              user = "markus";
+            };
+          }
+          ./hosts/m3/configuration.nix
+        ] ++ utils.attrsToValues self.darwinModules;
+      };
+
+      darwinModules = {
+        fonts = import ./modules/darwin/fonts.nix;
+        hunspell = import ./modules/darwin/hunspell.nix;
+        nix = import ./modules/darwin/nix.nix;
+      };
     };
-  };
 }
