@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   home.sessionVariables = {
-    HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/misc/Brewfile";
+    HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/Brewfile";
     SHELL = "${pkgs.fish}/bin/fish";
   };
 
