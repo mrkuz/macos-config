@@ -38,6 +38,7 @@ in
         mouse_hide_wait = 0;
         shell = cfg.shell;
         strip_trailing_spaces = "smart";
+        macos_quit_when_last_window_closed = true;
       };
     };
   };

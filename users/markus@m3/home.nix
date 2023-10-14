@@ -16,17 +16,22 @@
   home = {
     packages = with pkgs; [
       docker
+      jetbrains.idea-community
       # MacOS
+      colima
       lima-bin
       mas
       rectangle
       utm
+      # GUI utils
+      baobab
       # CLI utils
       age
       bat
       fd
       htop
       iftop
+      inetutils
       jq
       ncdu
       pdftk
@@ -35,6 +40,7 @@
       ripgrep
       socat
       tree
+      watch
       wget
     ];
     sessionVariables = {
