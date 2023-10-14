@@ -15,9 +15,12 @@
 
   home = {
     packages = with pkgs; [
+      docker
       # MacOS
+      lima-bin
       mas
       rectangle
+      utm
       # CLI utils
       age
       bat
