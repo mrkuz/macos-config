@@ -21,8 +21,6 @@
       colima
       lima-bin
       mas
-      rectangle
-      utm
       # GUI utils
       baobab
       # CLI utils
