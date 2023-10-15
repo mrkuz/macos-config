@@ -32,7 +32,7 @@
         modules = [
           {
             nixpkgs = {
-              # config.allowUnfree = true;
+              config.allowUnfree = true;
               overlays = [ inputs.emacs-overlay.overlay ];
               hostPlatform = "aarch64-darwin";
             };

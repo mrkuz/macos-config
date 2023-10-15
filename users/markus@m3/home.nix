@@ -22,6 +22,7 @@
       mas
       # GUI utils
       baobab
+      vscode
       # CLI utils
       age
       android-tools
