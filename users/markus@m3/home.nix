@@ -27,6 +27,7 @@
       android-tools
       bat
       fd
+      fnm
       htop
       iftop
       inetutils
@@ -69,6 +70,7 @@
     };
     interactiveShellInit = ''
       set -U fish_greeting
+      ${pkgs.fnm}/bin/fnm env | source
     '';
   };
 
