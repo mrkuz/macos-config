@@ -16,7 +16,6 @@
   home = {
     packages = with pkgs; [
       docker
-      jetbrains.idea-community
       # MacOS
       colima
       lima-bin
@@ -25,6 +24,7 @@
       baobab
       # CLI utils
       age
+      android-tools
       bat
       fd
       htop
