@@ -24,7 +24,7 @@ ln -s ~/etc/emacs.d.git ~/.emacs.d
 ## Open Kitty
 
 - Run with: Hyper + T
-- Run Shell Script: `kitty`
+- Run Shell Script: `open -n /Users/markus/Applications/Home\ Manager\ Apps/kitty.app`
 
 ## Open Emacs
 
