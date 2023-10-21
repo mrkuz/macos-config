@@ -7,6 +7,7 @@ if [[ ! -f "flake.nix" ]]; then
   exit 1
 fi
 
+SRC_DIR="/Users/markus/src/nix/"
 KEEP_GENERATIONS="1"
 
 # Colors
@@ -35,6 +36,7 @@ Usage: $0 COMMAND
 
 Commands:
 
+- pull
 - update
 - rebuild HOST
 - upgrade HOST
@@ -50,6 +52,20 @@ function info() {
 function pause() {
     echo -e "\n${YELLOW}>>>${RESET} Press any key to continue..."
     read -n1    
+}
+
+function pull() {
+    info "Pulling $1"
+
+    pushd . > /dev/null
+    cd "$SRC_DIR/$1"
+
+    git branch
+    git tag -f previous
+    git pull
+    pause
+
+    popd
 }
 
 function update() {
@@ -109,6 +125,11 @@ function clean() {
 }
 
 case "$1" in
+    "pull")
+        pull "home-manager"
+        pull "nix-darwin"
+        pull "nixpkgs"
+        ;;
     "update")
         update
         ;;
