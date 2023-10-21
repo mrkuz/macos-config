@@ -71,6 +71,7 @@
         fonts = import ./modules/darwin/fonts.nix;
         hunspell = import ./modules/darwin/hunspell.nix;
         nix = import ./modules/darwin/nix.nix;
+        tuptime = import ./modules/darwin/tuptime.nix;
       };
 
       homeManagerModules = {

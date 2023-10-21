@@ -4,6 +4,7 @@
     fonts.enable = true;
     hunspell.enable = true;
     nix.enable = true;
+    tuptime.enable = true;
   };
 
   documentation.info.enable = false;
