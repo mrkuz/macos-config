@@ -35,6 +35,7 @@
       jq
       ncdu
       pdftk
+      pstree
       pwgen
       rclone
       ripgrep
