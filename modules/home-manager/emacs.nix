@@ -14,7 +14,7 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        emacs-unstable
+        ((emacsPackagesFor emacs-unstable).emacsWithPackages (epkgs: [ epkgs.vterm ]))
       ];
     };
 
