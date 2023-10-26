@@ -6,10 +6,10 @@
         "url": "/Volumes/Extern/borg",
         "added_at": "2023-10-18 19:42:57.744587",
         "encryption": "none",
-        "unique_size": 3173234329,
+        "unique_size": null,
         "unique_csize": null,
-        "total_size": 3769779463,
-        "total_unique_chunks": 74282,
+        "total_size": null,
+        "total_unique_chunks": null,
         "create_backup_cmd": "",
         "extra_borg_arguments": ""
     },
@@ -119,6 +119,14 @@
             "path_isdir": true,
             "profile": 1,
             "added_at": "2023-10-18 17:31:06.014456"
+        },
+        {
+            "dir": "/Users/markus/Scripts",
+            "dir_size": 0,
+            "dir_files_count": 0,
+            "path_isdir": true,
+            "profile": 1,
+            "added_at": "2023-10-26 18:51:51.285866"
         }
     ],
     "SchemaVersion": {
