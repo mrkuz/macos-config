@@ -64,6 +64,7 @@
 - Keyboard Shortcuts -> Input Sources / Select the previous input source: Off
 - Keyboard Shortcuts -> Launchpad & Dock / Show Launchpad: F4
 - Keyboard Shortcuts -> Mission Control / Mission Control / Switch to Desktop 1: ^1
+- Keyboard Shortcuts -> Mission Control / Show Notification Centre: F5
 
 ## Mouse
 

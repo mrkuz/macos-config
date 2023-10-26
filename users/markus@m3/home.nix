@@ -67,6 +67,9 @@
     shellAbbrs = {
       a86 = "arch -x86_64";
       gau = "git add -u";
+      gc = "git commit";
+      gcm = "git commit -m";
+      gd = "git diff";
       gdc = "git diff --cached";
       gs = "git status";
     };

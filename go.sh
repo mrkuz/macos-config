@@ -142,7 +142,7 @@ case "$1" in
         ;;
     "rebuild")
         if [[ $# -eq 1 ]]; then
-            rebuild $(hostname)
+            rebuild $(hostname -s)
         elif [[ $# -eq 2 ]]; then
             rebuild "$2"
         else
@@ -151,7 +151,7 @@ case "$1" in
         ;;
     "upgrade")
         if [[ $# -eq 1 ]]; then
-            upgrade $(hostname)
+            upgrade $(hostname -s)
         elif [[ $# -eq 2 ]]; then
             upgrade "$2"
         else
