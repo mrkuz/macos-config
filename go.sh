@@ -122,6 +122,13 @@ function clean() {
     info "Nix store roots"
     nix-store --gc --print-roots | grep -v {censored} | column -t | sort -k3 -k1
     pause
+
+    info "Remove unused brew dependencies"
+    brew autoremove
+    pause
+
+    info "Clean up brew cache"
+    brew cleanup --prune=all
 }
 
 case "$1" in
