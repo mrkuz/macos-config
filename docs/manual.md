@@ -35,3 +35,9 @@ ln -s ~/etc/emacs.d.git ~/.emacs.d
 
 - Run with: Hyper + J
 - Run Shell Script: `emacsclient --socket-name /var/folders/tm/s0rmv44130v_l7p3jynpdkm00000gn/T/emacs501/default -n -c -F '((name . "org-protocol-capture"))' "org-protocol://capture?template=j"`
+
+# Links
+
+## iCloud documents
+
+`ln -s ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/ ~/iCloud`

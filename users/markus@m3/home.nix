@@ -38,6 +38,7 @@
       pstree
       pwgen
       rclone
+      rsync
       ripgrep
       socat
       tree
