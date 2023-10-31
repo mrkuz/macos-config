@@ -90,6 +90,11 @@
     userName = "mrkuz";
     userEmail = "markus@bitsandbobs.net";
     diff-so-fancy.enable = true;
+    extraConfig = {
+      init = {
+        defaultBranch = "main";
+      };
+    };
   };
 
   services.syncthing.enable = true;
