@@ -67,6 +67,29 @@
         ] ++ utils.attrsToValues self.darwinModules;
       };
 
+      packages = {
+        aarch64-darwin = {
+          hd = inputs.home-manager.packages.aarch64-darwin.docs-json;
+          aa = (nixpkgs.lib.nixosSystem {
+            modules = [
+              {nixpkgs = {
+                 hostPlatform = "aarch64-darwin";
+               };
+              }
+            ];
+          }).config.system.build.manual.optionsJSON;
+          
+          xx = (inputs.nix-darwin.lib.darwinSystem {
+            modules = [
+              {nixpkgs = {
+                 hostPlatform = "aarch64-darwin";
+               };
+              }
+            ];
+          }).config.system.build.manual.optionsJSON;
+        };
+      };
+
       darwinModules = {
         fonts = import ./modules/darwin/fonts.nix;
         hunspell = import ./modules/darwin/hunspell.nix;
