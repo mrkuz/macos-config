@@ -94,6 +94,9 @@
       init = {
         defaultBranch = "main";
       };
+      merge = {
+        ff = false;
+      };
     };
   };
 
