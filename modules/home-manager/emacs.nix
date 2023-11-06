@@ -2,6 +2,7 @@
 with lib;
 let
   cfg = config.modules.emacs;
+  emacsPkg = ((pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages (epkgs: [ epkgs.vterm ]));
 in
 {
   options.modules.emacs = {
@@ -13,9 +14,7 @@ in
 
   config = mkIf cfg.enable {
     home = {
-      packages = with pkgs; [
-        ((emacsPackagesFor emacs-unstable).emacsWithPackages (epkgs: [ epkgs.vterm ]))
-      ];
+      packages = [ emacsPkg ];
     };
 
     launchd = {
@@ -24,7 +23,7 @@ in
         emacs = {
           enable = true;
           config = {
-            ProgramArguments = [ "${pkgs.emacs-unstable}/bin/emacs" "--daemon=default" ];
+            ProgramArguments = [ "${emacsPkg}/bin/emacs" "--daemon=default" ];
             RunAtLoad = true;
           };
         };
