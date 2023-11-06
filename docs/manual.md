@@ -19,6 +19,15 @@ git clone https://github.com/mrkuz/emacs.d.git emacs.d.git
 ln -s ~/etc/emacs.d.git ~/.emacs.d
 ```
 
+# Hammerspoon configuration
+
+```shell
+mkdir ~/etc/
+cd ~/etc/
+git clone https://github.com/mrkuz/hammerspoon.git hammerspoon.git
+ln -s ~/etc/hammerspoon.git ~/.hammerspoon
+```
+
 # Shortcuts
 
 ## Open Kitty
