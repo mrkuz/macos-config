@@ -10,4 +10,6 @@ cask "utm"
 cask "vorta"
 cask "whisky"
 mas "Outlanders", id: 1468558187
+mas "Xcode", id: 497799835
 vscode "lfs.vscode-emacs-friendly"
+vscode "ms-vscode.live-server"
