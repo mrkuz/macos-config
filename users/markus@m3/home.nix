@@ -97,6 +97,9 @@
       merge = {
         ff = false;
       };
+      pull = {
+        rebase = true;
+      };
     };
   };
 
