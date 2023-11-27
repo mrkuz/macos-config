@@ -66,6 +66,7 @@
 - Keyboard Shortcuts -> Launchpad & Dock / Show Launchpad: F4
 - Keyboard Shortcuts -> Mission Control / Show Notification Centre: F5
 - Keyboard Shortcuts -> Mission Control / Mission Control / Switch to Desktop 1: ^1
+- Keyboard Shortcuts -> Turn Do Not Disturb on/off: F16
 
 ## Mouse
 
