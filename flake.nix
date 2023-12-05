@@ -50,7 +50,7 @@
               #  extraSpecialArgs = { inherit self; };
               sharedModules = [
                 {
-                  home.stateVersion = "23.05";
+                  home.stateVersion = "23.11";
                 }
               ] ++ utils.attrsToValues self.homeManagerModules;
             };
