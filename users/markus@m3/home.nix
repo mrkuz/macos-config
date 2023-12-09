@@ -26,6 +26,7 @@
       # CLI utils
       age
       android-tools
+      awscli2
       bat
       fd
       fnm
