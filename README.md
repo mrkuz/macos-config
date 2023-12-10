@@ -1,3 +1,5 @@
+# Installation
+
 1. Install Nix
 
 ```shell
@@ -20,3 +22,23 @@ git clone <TODO>
 nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake  .
 darwin-rebuild switch --flake .
 ```
+
+# Let's go
+
+## ./go.sh update
+
+Updates flake inputs, brew and shows outdated brew and App Store packages.
+
+## ./go.sh upgrade
+
+Runs `darwin-rebuild` and upgrades all brew and App Store packages.
+
+## ./go.sh clean
+
+Deletes old generations, removes unused brew dependencies and clean brew cache.
+
+# Appendix A: Package installation
+
+1. If it is offical Apple software or there are no other installation options -> App Store
+2. If it is proprietary software, or distributed as DMG -> homebrew
+3. Else -> nix

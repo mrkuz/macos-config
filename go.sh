@@ -115,7 +115,7 @@ function clean() {
     done
     pause
 
-    info "Collecting garbate"
+    info "Collecting garbage"
     HOME=/var/root sudo nix-collect-garbage
     pause
 
