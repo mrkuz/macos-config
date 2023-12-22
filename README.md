@@ -42,3 +42,4 @@ Deletes old generations, removes unused brew dependencies and clean brew cache.
 1. If it is offical Apple software or there are no other installation options -> App Store
 2. If it is proprietary software, or distributed as DMG -> homebrew
 3. Else -> nix
+

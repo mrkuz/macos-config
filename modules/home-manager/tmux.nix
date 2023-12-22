@@ -23,6 +23,7 @@ in
       mouse = true;
       shell = cfg.shell;
       terminal = "screen-256color";
+      plugins = [ pkgs.tmuxPlugins.extrakto ];
       extraConfig = ''
         set -g default-command "${cfg.shell}"
 

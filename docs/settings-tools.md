@@ -39,3 +39,11 @@ Menu: Android Studio -> Settings
 ### Keymap
 
 - Keymap: Emacs
+
+## Plugins
+
+Settings -> Plugins
+
+### Installed
+
+- Gradle Dependency Updates

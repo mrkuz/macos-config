@@ -33,3 +33,5 @@ ln -s ~/etc/hammerspoon.git ~/.hammerspoon
 ## iCloud documents
 
 `ln -s ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/ ~/iCloud`
+`ln -s /Applications/IntelliJ\ IDEA\ CE.app/Contents/MacOS/idea ~/bin/`
+

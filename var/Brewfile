@@ -1,7 +1,10 @@
 tap "homebrew/bundle"
+tap "homebrew/cask-versions"
 cask "android-studio"
 cask "betterdisplay"
+cask "firefox-developer-edition"
 cask "hammerspoon"
+cask "insomnia"
 cask "intellij-idea-ce"
 cask "key-codes"
 cask "libreoffice"
@@ -12,6 +15,7 @@ cask "vorta"
 cask "whisky"
 cask "xquartz"
 mas "Outlanders", id: 1468558187
+mas "Pro Snooker & Pool 2024", id: 1586517737
 mas "Xcode", id: 497799835
 vscode "lfs.vscode-emacs-friendly"
 vscode "ms-vscode.live-server"
