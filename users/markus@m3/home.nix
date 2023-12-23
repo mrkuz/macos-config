@@ -77,6 +77,7 @@
     };
     interactiveShellInit = ''
       set -U fish_greeting
+      fish_add_path $HOME/bin
       ${pkgs.fnm}/bin/fnm env | source
     '';
   };
