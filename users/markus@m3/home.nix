@@ -28,6 +28,7 @@
       android-tools
       awscli2
       bat
+      cloc
       fd
       fnm
       htop

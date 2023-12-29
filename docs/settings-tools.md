@@ -14,7 +14,7 @@ Menu: IntelliJ IDEA -> Settings
 
 ### Tools
 
-- Actions on Save -> Reformat code: Yes, Changed lines
+- Actions on Save -> Reformat code: Yes, Whole file
 - Actions on Save -> Optimize imports: Yes
 
 ### Advanced Settings
@@ -27,6 +27,8 @@ Settings -> Plugins
 
 ### Installed
 
+- detekt
+- Ktlint
 - Kotest
 - Lombok
 
