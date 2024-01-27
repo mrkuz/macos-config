@@ -16,6 +16,9 @@ in
       fontDir.enable = true;
       fonts = with pkgs; [
         dejavu_fonts
+        fira-code
+        hack-font
+        inconsolata
         source-code-pro
         ubuntu_font_family
       ];
