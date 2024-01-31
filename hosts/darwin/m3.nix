@@ -18,5 +18,5 @@
     home = "/Users/markus";
   };
 
-  home-manager.users."markus" = ./. + "/../../users/markus@m3/home.nix";
+  home-manager.users."markus" = ./. + "/../../users/darwin/markus@m3.nix";
 }

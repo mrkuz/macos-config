@@ -63,27 +63,29 @@
               user = "markus";
             };
           }
-          ./hosts/m3/configuration.nix
+          ./hosts/darwin/m3.nix
         ] ++ utils.attrsToValues self.darwinModules;
       };
 
       packages = {
         aarch64-darwin = {
-          hd = inputs.home-manager.packages.aarch64-darwin.docs-json;
-          aa = (nixpkgs.lib.nixosSystem {
+          home-manager-options-json = inputs.home-manager.packages.aarch64-darwin.docs-json;
+          nixos-options-json = (nixpkgs.lib.nixosSystem {
             modules = [
-              {nixpkgs = {
-                 hostPlatform = "aarch64-darwin";
-               };
+              {
+                nixpkgs = {
+                  hostPlatform = "aarch64-darwin";
+                };
               }
             ];
           }).config.system.build.manual.optionsJSON;
           
-          xx = (inputs.nix-darwin.lib.darwinSystem {
+          darwin-options-json = (inputs.nix-darwin.lib.darwinSystem {
             modules = [
-              {nixpkgs = {
-                 hostPlatform = "aarch64-darwin";
-               };
+              {
+                nixpkgs = {
+                  hostPlatform = "aarch64-darwin";
+                };
               }
             ];
           }).config.system.build.manual.optionsJSON;
