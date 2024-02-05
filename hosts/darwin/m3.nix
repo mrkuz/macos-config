@@ -9,6 +9,18 @@
 
   documentation.info.enable = false;
 
+  nix.linux-builder = {
+    enable = true;
+    ephemeral = true;
+  };
+  # Disable auto-start, use 'sudo launchctl start org.nixos.linux-builder'
+  launchd.daemons.linux-builder.serviceConfig = {
+    KeepAlive = lib.mkForce false;
+    RunAtLoad = lib.mkForce false;
+  };
+
+  nix.settings.trusted-users = [ "root" "markus" ];
+
   programs = {
     fish.enable = true;
     zsh.enable = true;

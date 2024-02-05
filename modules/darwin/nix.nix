@@ -49,5 +49,10 @@ in
     };
 
     services.nix-daemon.enable = true;
+
+    # Workaround for issue: 'sandbox-exec: pattern serialization length X exceeds maximum (65535)'
+    system.systemBuilderArgs.sandboxProfile = ''
+      (allow file-read* file-write* process-exec mach-lookup (subpath "${builtins.storeDir}"))
+    '';
   };
 }
