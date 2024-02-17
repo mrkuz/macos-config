@@ -8,6 +8,11 @@
     nix.enable = true;
   };
 
+  networking = {
+    dhcpcd.enable = false;
+    useDHCP = false;
+  };
+
   security.sudo = {
     execWheelOnly = true;
     wheelNeedsPassword = false;
@@ -19,6 +24,25 @@
 
       Type 'Ctrl-a c' to switch to the QEMU console
     '';
+  };
+
+  systemd.network = {
+    enable = true;
+    networks = {
+      "default" = {
+        matchConfig = {
+          Name = "eth0";
+        };
+        address = [
+          "10.0.2.15/24"
+        ];
+        DHCP = "no";
+        gateway = [ "10.0.2.2" ];
+        dns = [ "10.0.2.3" ];
+      };
+    };
+    # Speed up boot
+    wait-online.enable = false;
   };
 
   users = {
