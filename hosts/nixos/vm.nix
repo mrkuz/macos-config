@@ -8,6 +8,14 @@
     nix.enable = true;
   };
 
+  environment = {
+    systemPackages = with pkgs; [ xterm htop ];
+    loginShellInit = ''
+      eval $(resize)
+      export TERM=screen-256color
+    '';
+  };
+
   networking = {
     dhcpcd.enable = false;
     useDHCP = false;
