@@ -104,6 +104,9 @@ in {
     wait-online.enable = false;
   };
 
+  # Disable virtual console
+  systemd.units."autovt@tty1.service".enable = false;
+
   users = {
     allowNoPasswordLogin = true;
     mutableUsers = false;
@@ -129,5 +132,9 @@ in {
       { from = "host"; guest.port = 22; host.port = 2201; }
     ];
     graphics = false;
+    qemu = {
+      options = [ "-vga none" ];
+      consoles = [ "ttyAMA0,115200n8" ];
+    };
   };
 }
