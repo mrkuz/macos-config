@@ -1,31 +1,11 @@
 { pkgs, lib, nixpkgs, self, ... }:
-let
-  # See: https://unix.stackexchange.com/questions/16578/resizable-serial-console-window
-  resize = pkgs.writeScriptBin "resize" ''
-    if [ -e /dev/tty ]; then
-      old=$(stty -g)
-      stty raw -echo min 0 time 5
-      printf '\033[18t' > /dev/tty
-      IFS=';t' read -r _ rows cols _ < /dev/tty
-      stty "$old"
-      stty cols "$cols" rows "$rows"
-    fi
-  '';
-in {
+{
   imports = [
     ../../profiles/nixos/minimal.nix
   ];
 
   modules = {
     nix.enable = true;
-  };
-
-  environment = {
-    systemPackages = with pkgs; [ htop resize ];
-    loginShellInit = ''
-      "${resize}/bin/resize";
-      export TERM=screen-256color
-    '';
   };
 
   environment.etc = {
@@ -47,6 +27,8 @@ in {
     };
   };
 
+  environment.systemPackages = with pkgs; [ htop ];
+
   networking = {
     dhcpcd.enable = false;
     useDHCP = false;
@@ -67,10 +49,6 @@ in {
 
   services.getty = {
     autologinUser = self.vars.primaryUser;
-    helpLine = ''
-
-      Type 'Ctrl-a c' to switch to the QEMU console
-    '';
   };
 
   services.openssh = {
@@ -104,9 +82,6 @@ in {
     wait-online.enable = false;
   };
 
-  # Disable virtual console
-  systemd.units."autovt@tty1.service".enable = false;
-
   users = {
     allowNoPasswordLogin = true;
     mutableUsers = false;
@@ -120,21 +95,6 @@ in {
     };
     users.root = {
       hashedPassword = "*";
-    };
-  };
-
-  virtualisation = {
-    diskImage = null;
-    cores = 2;
-    memorySize = 4096;
-    forwardPorts = [
-      # openssh
-      { from = "host"; guest.port = 22; host.port = 2201; }
-    ];
-    graphics = false;
-    qemu = {
-      options = [ "-vga none" ];
-      consoles = [ "ttyAMA0,115200n8" ];
     };
   };
 }

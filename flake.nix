@@ -56,10 +56,35 @@
           systemName = "vm";
         };
         modules = [
-          "${nixpkgs}/nixos/modules/virtualisation/qemu-vm.nix"
+          ./profiles/nixos/qemu-vm.nix
           {
             nixpkgs.pkgs = utils.mkPkgs "aarch64-linux";
-            virtualisation.host.pkgs = pkgs;
+
+            virtualisation = {
+              host.pkgs = pkgs;
+              diskImage = null;
+              cores = 2;
+              memorySize = 4096;
+              forwardPorts = [
+                # openssh
+                { from = "host"; host.port = 2201; guest.port = 22;  }
+              ];
+              graphics = false;
+            };
+          }
+          ./hosts/nixos/vm.nix
+        ] ++ utils.attrsToValues self.nixosModules;
+      };
+
+      nixosConfigurations.qcow2 = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit self nixpkgs;
+          systemName = "image";
+        };
+        modules = [
+          ./profiles/nixos/qemu-qcow2.nix
+          {
+            nixpkgs.pkgs = utils.mkPkgs "aarch64-linux";
           }
           ./hosts/nixos/vm.nix
         ] ++ utils.attrsToValues self.nixosModules;
@@ -103,6 +128,22 @@
           darwin-options-json = (inputs.nix-darwin.lib.darwinSystem {
             modules = [ { nixpkgs.pkgs = pkgs; } ];
           }).config.system.build.manual.optionsJSON;
+
+          qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
+            lib = nixpkgs.lib;
+            config = self.nixosConfigurations.qcow2.config;
+            pkgs = utils.mkPkgs "aarch64-linux";
+            diskSize = "auto";
+            format = "qcow2";
+            partitionTableType = "efi";
+            # Defaults
+            installBootLoader = true;
+            onlyNixStore = false;
+            label = "nixos";
+            additionalSpace = "512M";
+            # Custom
+            copyChannel = false;
+          };
         };
         aarch64-linux = {};
       };
