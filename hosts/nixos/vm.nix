@@ -97,4 +97,28 @@
       hashedPassword = "*";
     };
   };
+
+  services.xserver = {
+    enable = false;
+    displayManager = {
+      lightdm = {
+        enable = false;
+        autoLogin.timeout = 0;
+      };
+      autoLogin.user = self.vars.primaryUser;
+      defaultSession = "default";
+      session = [
+        {
+          manage = "desktop";
+          name = "default";
+          start = ''
+            ${pkgs.xterm}/bin/xterm &
+            WINDOW=$(${pkgs.xdotool}/bin/xdotool search --sync --onlyvisible --pid $!)
+            ${pkgs.xdotool}/bin/xdotool windowsize $WINDOW 100% 100%
+            waitPID=$!
+          '';
+        }
+      ];
+    };
+  };
 }

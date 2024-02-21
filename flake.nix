@@ -18,6 +18,10 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    apple-silicon = {
+      url = "github:tpwrules/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs:
@@ -31,6 +35,7 @@
           config.allowUnfree = true;
           overlays = [
             inputs.emacs-overlay.overlay
+            inputs.apple-silicon.overlays.apple-silicon-overlay
             (_: super: self.packages."${system}")
           ] ++ utils.attrsToValues self.overlays;
         };
@@ -70,6 +75,8 @@
                 { from = "host"; host.port = 2201; guest.port = 22;  }
               ];
               graphics = false;
+              # graphics = true;
+              # resolution = { x = 1600; y = 1200; };
             };
           }
           ./hosts/nixos/vm.nix

@@ -35,10 +35,17 @@ in {
     units."autovt@tty1.service".enable = false;
   };
 
-  virtualisation = lib.mkIf (!config.virtualisation.graphics) {
-    qemu = {
-      options = [ "-vga none" ];
-      consoles = [ "ttyAMA0,115200n8" ];
-    };
-  };
+  virtualisation = lib.mkMerge [
+    (lib.mkIf (!config.virtualisation.graphics) {
+      qemu = {
+        options = [ "-vga none" ];
+        consoles = [ "ttyAMA0,115200n8" ];
+      };
+    })
+    (lib.mkIf (config.virtualisation.graphics) {
+      qemu = {
+        options = [ "-display default,show-cursor=on" ];
+      };
+    })
+  ];
 }
