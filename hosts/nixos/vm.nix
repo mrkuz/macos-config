@@ -63,6 +63,36 @@
     };
   };
 
+  services.cage = {
+    enable = false;
+    program = "${pkgs.xterm}/bin/xterm";
+    user = self.vars.primaryUser;
+  };
+
+  services.xserver = {
+    enable = false;
+    displayManager = {
+      lightdm = {
+        enable = false;
+        autoLogin.timeout = 0;
+      };
+      autoLogin.user = self.vars.primaryUser;
+      defaultSession = "default";
+      session = [
+        {
+          manage = "desktop";
+          name = "default";
+          start = ''
+            ${pkgs.xterm}/bin/xterm &
+            WINDOW=$(${pkgs.xdotool}/bin/xdotool search --sync --onlyvisible --pid $!)
+            ${pkgs.xdotool}/bin/xdotool windowsize $WINDOW 100% 100%
+            waitPID=$!
+          '';
+        }
+      ];
+    };
+  };
+
   systemd.network = {
     enable = false;
     networks = {
@@ -95,30 +125,6 @@
     };
     users.root = {
       hashedPassword = "*";
-    };
-  };
-
-  services.xserver = {
-    enable = false;
-    displayManager = {
-      lightdm = {
-        enable = false;
-        autoLogin.timeout = 0;
-      };
-      autoLogin.user = self.vars.primaryUser;
-      defaultSession = "default";
-      session = [
-        {
-          manage = "desktop";
-          name = "default";
-          start = ''
-            ${pkgs.xterm}/bin/xterm &
-            WINDOW=$(${pkgs.xdotool}/bin/xdotool search --sync --onlyvisible --pid $!)
-            ${pkgs.xdotool}/bin/xdotool windowsize $WINDOW 100% 100%
-            waitPID=$!
-          '';
-        }
-      ];
     };
   };
 }
