@@ -72,7 +72,11 @@
               memorySize = 4096;
               forwardPorts = [
                 # openssh
-                { from = "host"; host.port = 2201; guest.port = 22;  }
+                { from = "host"; host.port = 2201; guest.port = 22; }
+                # docker
+                { from = "host"; host.port = 2375; guest.port = 2375; }
+                # k3s
+                { from = "host"; host.port = 6443; guest.port = 6443; }
               ];
               graphics = false;
               # graphics = true;

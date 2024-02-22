@@ -1,4 +1,4 @@
-{ pkgs, lib, nixpkgs, self, ... }:
+{ config, lib, pkgs, nixpkgs, self, ... }:
 {
   imports = [
     ../../profiles/nixos/minimal.nix
@@ -40,6 +40,15 @@
         prefixLength = 24;
       }
     ];
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        # docker
+        2375
+        # k3s
+        6443
+      ];
+    };
   };
 
   security.sudo = {
@@ -63,6 +72,8 @@
     };
   };
 
+  services.k3s.enable = false;
+
   services.cage = {
     enable = false;
     program = "${pkgs.xterm}/bin/xterm";
@@ -73,7 +84,7 @@
     enable = false;
     displayManager = {
       lightdm = {
-        enable = false;
+        enable = config.services.xserver.enable;
         autoLogin.timeout = 0;
       };
       autoLogin.user = self.vars.primaryUser;
@@ -126,5 +137,10 @@
     users.root = {
       hashedPassword = "*";
     };
+  };
+
+  virtualisation.docker = {
+    enable = false;
+    listenOptions = [ "/run/docker.sock" "0.0.0.0:2375" ];
   };
 }

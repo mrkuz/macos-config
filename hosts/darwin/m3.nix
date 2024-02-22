@@ -1,4 +1,4 @@
-{ pkgs, lib, nixpkgs, self, ... }:
+{ config, lib, pkgs, nixpkgs, self, ... }:
 {
   modules = {
     fonts.enable = true;
