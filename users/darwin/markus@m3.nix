@@ -20,6 +20,8 @@
       colima
       lima-bin
       mas
+      # Virtualisation
+      qemu
       # GUI utils
       baobab
       vscode
@@ -35,6 +37,8 @@
       iftop
       inetutils
       jq
+      kubectl
+      kubernetes-helm
       ncdu
       pdftk
       pstree

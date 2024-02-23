@@ -68,6 +68,7 @@
             virtualisation = {
               host.pkgs = pkgs;
               diskImage = null;
+              # diskSize = 10240;
               cores = 2;
               memorySize = 4096;
               forwardPorts = [
@@ -81,6 +82,10 @@
               graphics = false;
               # graphics = true;
               # resolution = { x = 1600; y = 1200; };
+              # qemu.networkingOptions = [
+              #   "-device virtio-net-device,netdev=net.0"
+              #   "-netdev vmnet-shared,id=net.0,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
+              # ];
             };
           }
           ./hosts/nixos/vm.nix
