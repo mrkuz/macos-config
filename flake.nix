@@ -1,6 +1,8 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
+    nixos-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     nix-darwin = {
       url = "github:LnL7/nix-darwin/master";
@@ -47,6 +49,7 @@
         darwin.stateVersion = 4;
         homeManager.stateVersion = "23.11";
         nixos.stateVersion = "24.05";
+        nixos.stableVersion = "23.11";
         rev = self.rev or self.dirtyRev or "dirty";
       };
 

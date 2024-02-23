@@ -2,6 +2,18 @@
 with lib;
 let
   cfg = config.modules.nix;
+  mkRegistry = id: branch: {
+    from = {
+      inherit id;
+      type = "indirect";
+    };
+    to = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      ref = branch;
+    };
+  };
 in
 {
   options.modules.nix = {
@@ -23,15 +35,20 @@ in
 
     nix = {
       # Use local nixpkgs
-      registry.nixpkgs = {
-        from = {
-          id = "nixpkgs";
-          type = "indirect";
+      registry = {
+        nixpkgs = {
+          from = {
+            id = "nixpkgs";
+            type = "indirect";
+          };
+          to = lib.mkForce {
+            path = "${nixpkgs}";
+            type = "path";
+          };
         };
-        to = lib.mkForce {
-          path = "${nixpkgs}";
-          type = "path";
-        };
+        nixpkgs-unstable = mkRegistry "nixpkgs-unstable" "nixpkgs-unstable";
+        nixos-stable = mkRegistry "nixos-stable" "nixos-${self.vars.nixos.stableVersion}";
+        nixos-unstable = mkRegistry "nixos-unstable" "nixos-unstable";
       };
       settings = {
         experimental-features = "nix-command flakes";
