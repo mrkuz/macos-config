@@ -68,6 +68,9 @@
         modules = [
           ./profiles/nixos/qemu-vm.nix
           {
+            modules.qemuGuest.enable = true;
+          }
+          {
             nixpkgs.pkgs = utils.mkPkgs "aarch64-linux" nixpkgs;
           }
           {
@@ -197,6 +200,7 @@
       nixosModules = {
         minimize = import ./modules/nixos/minimize.nix;
         nix = import ./modules/nixos/nix.nix;
+        qemu-quest = import ./modules/nixos/qemu-guest.nix;
       };
 
       overlays = {
