@@ -195,6 +195,7 @@
       };
 
       nixosModules = {
+        minimize = import ./modules/nixos/minimize.nix;
         nix = import ./modules/nixos/nix.nix;
       };
 

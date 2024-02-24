@@ -1,10 +1,7 @@
 { config, lib, pkgs, nixpkgs, self, ... }:
 {
-  imports = [
-    ../../profiles/nixos/minimal.nix
-  ];
-
   modules = {
+    minimize.enable = true;
     nix.enable = true;
   };
 
@@ -69,6 +66,9 @@
 
   services.getty = {
     autologinUser = self.vars.primaryUser;
+    # loginProgram = "${pkgs.coreutils-full}/bin/sleep";
+    # loginOptions = "infinity";
+    # extraArgs = [ "--skip-login" ];
   };
 
   services.openssh = {
