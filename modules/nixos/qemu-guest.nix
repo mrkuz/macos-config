@@ -22,38 +22,34 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    environment = mkIf (!config.virtualisation.graphics) {
-      systemPackages = with pkgs; [resize ];
-      loginShellInit = ''
-        "${resize}/bin/resize";
-        export TERM=screen-256color
-      '';
-    };
+  config = mkIf cfg.enable (mkMerge [
+    {
+    }
+    (mkIf (config.virtualisation.graphics) {
+      virtualisation.qemu = {
+        options = [ "-display default,show-cursor=on" ];
+      };
+    })
+    (mkIf (!config.virtualisation.graphics) {
+      environment = {
+        systemPackages = with pkgs; [resize ];
+        loginShellInit = ''
+          "${resize}/bin/resize";
+          export TERM=screen-256color
+        '';
+      };
 
-    services = mkIf (!config.virtualisation.graphics) {
-      getty.helpLine = ''
+      services.getty.helpLine = ''
         Type 'Ctrl-a c' to switch to the QEMU console
       '';
-    };
 
-    systemd = mkIf (!config.virtualisation.graphics) {
       # Disable virtual console
-      units."autovt@tty1.service".enable = false;
-    };
+      systemd.units."autovt@tty1.service".enable = false;
 
-    virtualisation = mkMerge [
-      (mkIf (!config.virtualisation.graphics) {
-        qemu = {
-          options = [ "-vga none" ];
-          consoles = [ "ttyAMA0,115200n8" ];
-        };
-      })
-      (mkIf (config.virtualisation.graphics) {
-        qemu = {
-          options = [ "-display default,show-cursor=on" ];
-        };
-      })
-    ];
-  };
+      virtualisation.qemu = {
+        options = [ "-vga none" ];
+        consoles = [ "ttyAMA0,115200n8" ];
+      };
+    })
+  ]);
 }
