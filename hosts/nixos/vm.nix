@@ -30,6 +30,7 @@
   environment.systemPackages = with pkgs; [ htop ];
 
   networking = {
+    hostName = "nixos-demo";
     dhcpcd.enable = false;
     useDHCP = false;
     defaultGateway = "10.0.2.2";
@@ -58,6 +59,8 @@
       ];
     };
   };
+
+  # programs.fish.enable = true;
 
   security.sudo = {
     execWheelOnly = true;
@@ -136,6 +139,7 @@
     mutableUsers = false;
     users."${self.vars.primaryUser}" = {
       isNormalUser = true;
+      # shell = pkgs.fish;
       hashedPassword = "*";
       extraGroups = [ "wheel" "docker" ];
       openssh.authorizedKeys.keyFiles = [
@@ -146,6 +150,8 @@
       hashedPassword = "*";
     };
   };
+
+  # home-manager.users."${self.vars.primaryUser}" = ./vm/home.nix;
 
   virtualisation.docker = {
     enable = false;

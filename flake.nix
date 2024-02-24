@@ -1,38 +1,39 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
     nixos-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     nix-darwin = {
       url = "github:LnL7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nix-homebrew = {
       url = "github:zhaofengli-wip/nix-homebrew";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     apple-silicon = {
       url = "github:tpwrules/nixos-apple-silicon";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
 
-  outputs = { self, nixpkgs, ... } @ inputs:
+  outputs = { self, ... } @ inputs:
     let
+      nixpkgs = inputs.nixpkgs-unstable;
       utils = {
         attrsToValues = attrs:
           nixpkgs.lib.attrsets.mapAttrsToList (name: value: value) attrs;
 
-        mkPkgs = system: import nixpkgs {
+        mkPkgs = system: nixpkgs: import nixpkgs {
           inherit system;
           config.allowUnfree = true;
           overlays = [
@@ -53,7 +54,7 @@
         rev = self.rev or self.dirtyRev or "dirty";
       };
 
-      pkgs = utils.mkPkgs vars.currentSystem;
+      pkgs = utils.mkPkgs vars.currentSystem nixpkgs;
     in
     {
       inherit vars;
@@ -62,12 +63,14 @@
         specialArgs = {
           inherit self nixpkgs;
           systemName = "vm";
+          pkgs-stable = utils.mkPkgs "aarch64-linux" inputs.nixos-stable;
         };
         modules = [
           ./profiles/nixos/qemu-vm.nix
           {
-            nixpkgs.pkgs = utils.mkPkgs "aarch64-linux";
-
+            nixpkgs.pkgs = utils.mkPkgs "aarch64-linux" nixpkgs;
+          }
+          {
             virtualisation = {
               host.pkgs = pkgs;
               diskImage = null;
@@ -91,6 +94,17 @@
               # ];
             };
           }
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              #  extraSpecialArgs = { inherit self; };
+              sharedModules = [
+                { home.stateVersion = vars.homeManager.stateVersion; }
+              ] ++ utils.attrsToValues self.homeManagerModules;
+            };
+          }
           ./hosts/nixos/vm.nix
         ] ++ utils.attrsToValues self.nixosModules;
       };
@@ -103,7 +117,7 @@
         modules = [
           ./profiles/nixos/qemu-qcow2.nix
           {
-            nixpkgs.pkgs = utils.mkPkgs "aarch64-linux";
+            nixpkgs.pkgs = utils.mkPkgs "aarch64-linux" nixpkgs;
           }
           ./hosts/nixos/vm.nix
         ] ++ utils.attrsToValues self.nixosModules;
