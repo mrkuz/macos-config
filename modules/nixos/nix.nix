@@ -50,11 +50,5 @@ in
         ];
       };
     };
-
-    system = {
-      name = systemName;
-      stateVersion = self.vars.nixos.stateVersion;
-      configurationRevision = self.vars.rev;
-    };
   };
 }

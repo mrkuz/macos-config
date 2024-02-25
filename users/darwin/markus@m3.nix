@@ -17,8 +17,6 @@
     packages = with pkgs; [
       docker
       # MacOS
-      colima
-      lima-bin
       mas
       # Virtualisation
       qemu

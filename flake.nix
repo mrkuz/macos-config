@@ -80,6 +80,12 @@
               nixpkgs.pkgs = utils.mkPkgs { system = targetSystem; };
               modules.qemuGuest.enable = true;
               virtualisation.host.pkgs = hostPkgs;
+
+              system = {
+                inherit name;
+                stateVersion = vars.nixos.stateVersion;
+                configurationRevision = vars.rev;
+              };
             }
             inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule {})
             (./hosts/nixos/vm + "/${name}.nix")
@@ -92,6 +98,7 @@
 
       nixosConfigurations.playground-vm = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.toolbox-vm = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };
+      nixosConfigurations.docker-vm = utils.mkVm { name = "docker"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.qcow2 = lib.nixosSystem {
         specialArgs = {
           inherit self nixpkgs;
@@ -132,6 +139,7 @@
           # VMs
           playground-vm = self.nixosConfigurations.playground-vm.config.system.build.vm;
           toolbox-vm = self.nixosConfigurations.toolbox-vm.config.system.build.vm;
+          docker-vm = self.nixosConfigurations.docker-vm.config.system.build.vm;
           # QCOW2 images
           qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
             inherit lib;
