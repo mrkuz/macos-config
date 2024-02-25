@@ -27,17 +27,6 @@
   environment.systemPackages = with pkgs; [ htop ];
 
   networking = {
-    hostName = "nixos-demo";
-    dhcpcd.enable = false;
-    useDHCP = false;
-    defaultGateway = "10.0.2.2";
-    nameservers = [ "10.0.2.3" ];
-    interfaces.eth0.ipv4.addresses = [
-      {
-        address = "10.0.2.15";
-        prefixLength = 24;
-      }
-    ];
     # defaultGateway = "192.168.64.1";
     # nameservers = [ "192.168.64.1" ];
     # interfaces.eth0.ipv4.addresses = [
@@ -59,13 +48,7 @@
 
   # programs.fish.enable = true;
 
-  security.sudo = {
-    execWheelOnly = true;
-    wheelNeedsPassword = false;
-  };
-
   services.getty = {
-    autologinUser = self.vars.primaryUser;
     # loginProgram = "${pkgs.coreutils-full}/bin/sleep";
     # loginOptions = "infinity";
     # extraArgs = [ "--skip-login" ];
@@ -115,46 +98,35 @@
     };
   };
 
-  systemd.network = {
-    enable = false;
-    networks = {
-      "default" = {
-        matchConfig = {
-          Name = "eth0";
-        };
-        address = [
-          "10.0.2.15/24"
-        ];
-        DHCP = "no";
-        gateway = [ "10.0.2.2" ];
-        dns = [ "10.0.2.3" ];
-      };
-    };
-    # Speed up boot
-    wait-online.enable = false;
-  };
-
   users = {
-    allowNoPasswordLogin = true;
-    mutableUsers = false;
     users."${self.vars.primaryUser}" = {
-      isNormalUser = true;
       # shell = pkgs.fish;
-      hashedPassword = "*";
-      extraGroups = [ "wheel" "docker" ];
       openssh.authorizedKeys.keyFiles = [
         ../../users/darwin/markus/files/id_rsa.pub
       ];
-    };
-    users.root = {
-      hashedPassword = "*";
     };
   };
 
   # home-manager.users."${self.vars.primaryUser}" = ./vm/home.nix;
 
-  virtualisation.docker = {
-    enable = false;
-    listenOptions = [ "/run/docker.sock" "0.0.0.0:2375" ];
+  virtualisation = {
+    # forwardPorts = [
+      # openssh
+      # { from = "host"; host.port = 2201; guest.port = 22; }
+      # docker
+      # { from = "host"; host.port = 2375; guest.port = 2375; }
+      # k3s
+      # { from = "host"; host.port = 6443; guest.port = 6443; }
+    # ];
+    #
+    # qemu.networkingOptions = [
+    #   "-device virtio-net-device,netdev=net.0"
+    #   "-netdev vmnet-shared,id=net.0,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
+    # ];
+
+    docker = {
+      enable = false;
+      listenOptions = [ "/run/docker.sock" "0.0.0.0:2375" ];
+    };
   };
 }

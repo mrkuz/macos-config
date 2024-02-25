@@ -29,20 +29,8 @@
   outputs = { self, ... } @ inputs:
     let
       nixpkgs = inputs.nixpkgs-unstable;
-      utils = {
-        attrsToValues = attrs:
-          nixpkgs.lib.attrsets.mapAttrsToList (name: value: value) attrs;
-
-        mkPkgs = system: nixpkgs: import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-          overlays = [
-            inputs.emacs-overlay.overlay
-            inputs.apple-silicon.overlays.apple-silicon-overlay
-            (_: super: self.packages."${system}")
-          ] ++ utils.attrsToValues self.overlays;
-        };
-      };
+      lib = nixpkgs.lib;
+      pkgs = utils.mkPkgs {};
 
       vars = {
         currentSystem = "aarch64-darwin";
@@ -54,65 +42,56 @@
         rev = self.rev or self.dirtyRev or "dirty";
       };
 
-      pkgs = utils.mkPkgs vars.currentSystem nixpkgs;
+      utils = {
+        attrsToValues = attrs:
+          lib.attrsets.mapAttrsToList (name: value: value) attrs;
+
+        mkPkgs = { system ? vars.currentSystem, nixpkgs ? inputs.nixpkgs-unstable } : import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = [
+            inputs.emacs-overlay.overlay
+            inputs.apple-silicon.overlays.apple-silicon-overlay
+            (_: super: self.packages."${system}")
+          ] ++ utils.attrsToValues self.overlays;
+        };
+
+        mkHomeManagerModule = { version ? vars.homeManagerStateVersion }: {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            #  extraSpecialArgs = { inherit self; };
+            sharedModules = [
+              { home.stateVersion = version; }
+            ] ++ utils.attrsToValues self.homeManagerModules;
+          };
+        };
+
+        mkVm = { name, targetSystem ? vars.currentSystem, hostPkgs ? pkgs}: lib.nixosSystem {
+          specialArgs = {
+            inherit self nixpkgs;
+            systemName = name;
+            pkgsStable = utils.mkPkgs { system  = targetSystem; nixpkgs = inputs.nixos-stable; };
+          };
+          modules = [
+            ./profiles/nixos/qemu-vm.nix
+            {
+              networking.hostName = lib.mkDefault name;
+              nixpkgs.pkgs = utils.mkPkgs { system = targetSystem; };
+              modules.qemuGuest.enable = true;
+              virtualisation.host.pkgs = hostPkgs;
+            }
+            inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule {})
+            (./hosts/nixos/vm + "/${name}.nix")
+          ] ++ utils.attrsToValues self.nixosModules;
+        };
+      };
     in
     {
       inherit vars;
 
-      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit self nixpkgs;
-          systemName = "vm";
-          pkgs-stable = utils.mkPkgs "aarch64-linux" inputs.nixos-stable;
-        };
-        modules = [
-          ./profiles/nixos/qemu-vm.nix
-          {
-            modules.qemuGuest.enable = true;
-          }
-          {
-            nixpkgs.pkgs = utils.mkPkgs "aarch64-linux" nixpkgs;
-          }
-          {
-            virtualisation = {
-              host.pkgs = pkgs;
-              diskImage = null;
-              # diskSize = 10240;
-              cores = 2;
-              memorySize = 4096;
-              forwardPorts = [
-                # openssh
-                { from = "host"; host.port = 2201; guest.port = 22; }
-                # docker
-                { from = "host"; host.port = 2375; guest.port = 2375; }
-                # k3s
-                { from = "host"; host.port = 6443; guest.port = 6443; }
-              ];
-              graphics = false;
-              # graphics = true;
-              # resolution = { x = 1600; y = 1200; };
-              # qemu.networkingOptions = [
-              #   "-device virtio-net-device,netdev=net.0"
-              #   "-netdev vmnet-shared,id=net.0,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
-              # ];
-            };
-          }
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              #  extraSpecialArgs = { inherit self; };
-              sharedModules = [
-                { home.stateVersion = vars.homeManager.stateVersion; }
-              ] ++ utils.attrsToValues self.homeManagerModules;
-            };
-          }
-          ./hosts/nixos/vm.nix
-        ] ++ utils.attrsToValues self.nixosModules;
-      };
-
-      nixosConfigurations.qcow2 = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.playground-vm = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; };
+      nixosConfigurations.qcow2 = lib.nixosSystem {
         specialArgs = {
           inherit self nixpkgs;
           systemName = "image";
@@ -120,7 +99,7 @@
         modules = [
           ./profiles/nixos/qemu-qcow2.nix
           {
-            nixpkgs.pkgs = utils.mkPkgs "aarch64-linux" nixpkgs;
+            nixpkgs.pkgs = utils.mkPkgs { system = "aarch64-linux"; };
           }
           ./hosts/nixos/vm.nix
         ] ++ utils.attrsToValues self.nixosModules;
@@ -130,17 +109,7 @@
         specialArgs = { inherit self nixpkgs; };
         modules = [
           { nixpkgs.pkgs = pkgs; }
-          inputs.home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              #  extraSpecialArgs = { inherit self; };
-              sharedModules = [
-                { home.stateVersion = vars.homeManager.stateVersion; }
-              ] ++ utils.attrsToValues self.homeManagerModules;
-            };
-          }
+          inputs.home-manager.darwinModules.home-manager (utils.mkHomeManagerModule {})
           inputs.nix-homebrew.darwinModules.nix-homebrew
           {
             nix-homebrew = {
@@ -155,20 +124,17 @@
 
       packages = {
         aarch64-darwin = {
-          vm = self.nixosConfigurations.vm.config.system.build.vm;
           # options.json
           home-manager-options-json = inputs.home-manager.packages.aarch64-darwin.docs-json;
-          nixos-options-json = (nixpkgs.lib.nixosSystem {
-            modules = [ { nixpkgs.pkgs = pkgs; } ];
-          }).config.system.build.manual.optionsJSON;
-          darwin-options-json = (inputs.nix-darwin.lib.darwinSystem {
-            modules = [ { nixpkgs.pkgs = pkgs; } ];
-          }).config.system.build.manual.optionsJSON;
-
+          nixos-options-json = (lib.nixosSystem { modules = [ { nixpkgs.pkgs = pkgs; } ]; }).config.system.build.manual.optionsJSON;
+          darwin-options-json = (inputs.nix-darwin.lib.darwinSystem { modules = [ { nixpkgs.pkgs = pkgs; } ]; }).config.system.build.manual.optionsJSON;
+          # VMs
+          playground-vm = self.nixosConfigurations.playground-vm.config.system.build.vm;
+          # QCOW2 images
           qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
-            lib = nixpkgs.lib;
+            inherit lib;
             config = self.nixosConfigurations.qcow2.config;
-            pkgs = utils.mkPkgs "aarch64-linux";
+            pkgs = utils.mkPkgs { system = "aarch64-linux"; };
             diskSize = "auto";
             format = "qcow2";
             partitionTableType = "efi";
