@@ -27,7 +27,6 @@
         enable = config.services.xserver.enable;
         autoLogin.timeout = 0;
       };
-      autoLogin.user = self.vars.primaryUser;
       defaultSession = "default";
       session = [
         {
@@ -53,10 +52,5 @@
       # k3s
       # { from = "host"; host.port = 6443; guest.port = 6443; }
     # ];
-
-    docker = {
-      enable = false;
-      listenOptions = [ "/run/docker.sock" "0.0.0.0:2375" ];
-    };
   };
 }

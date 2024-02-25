@@ -99,6 +99,7 @@
       nixosConfigurations.playground-vm = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.toolbox-vm = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.docker-vm = utils.mkVm { name = "docker"; targetSystem = "aarch64-linux"; };
+      nixosConfigurations.desktop-vm = utils.mkVm { name = "desktop"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.qcow2 = lib.nixosSystem {
         specialArgs = {
           inherit self nixpkgs;
@@ -140,6 +141,7 @@
           playground-vm = self.nixosConfigurations.playground-vm.config.system.build.vm;
           toolbox-vm = self.nixosConfigurations.toolbox-vm.config.system.build.vm;
           docker-vm = self.nixosConfigurations.docker-vm.config.system.build.vm;
+          desktop-vm = self.nixosConfigurations.desktop-vm.config.system.build.vm;
           # QCOW2 images
           qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
             inherit lib;

@@ -59,7 +59,7 @@ in
       };
 
       virtualisation = {
-        graphics = false;
+        graphics = mkDefault false;
         resolution = { x = 1920; y = 1200; };
         diskImage = null;
         diskSize = 10240;
@@ -103,6 +103,7 @@ in
         AllowUsers = [ cfg.user ];
         PermitRootLogin = "no";
       };
+      services.xserver.displayManager.autoLogin.user = cfg.user;
 
       users.users."${cfg.user}" = {
         isNormalUser = true;

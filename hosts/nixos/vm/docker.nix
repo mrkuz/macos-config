@@ -7,7 +7,6 @@
       noLogin = true;
       sshd = true;
       vmnet = true;
-      # user = "markus";
     };
   };
 
