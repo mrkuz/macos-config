@@ -56,7 +56,7 @@
           ] ++ utils.attrsToValues self.overlays;
         };
 
-        mkHomeManagerModule = { version ? vars.homeManagerStateVersion }: {
+        mkHomeManagerModule = { version ? vars.homeManager.stateVersion }: {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
@@ -91,6 +91,7 @@
       inherit vars;
 
       nixosConfigurations.playground-vm = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; };
+      nixosConfigurations.toolbox-vm = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.qcow2 = lib.nixosSystem {
         specialArgs = {
           inherit self nixpkgs;
@@ -130,6 +131,7 @@
           darwin-options-json = (inputs.nix-darwin.lib.darwinSystem { modules = [ { nixpkgs.pkgs = pkgs; } ]; }).config.system.build.manual.optionsJSON;
           # VMs
           playground-vm = self.nixosConfigurations.playground-vm.config.system.build.vm;
+          toolbox-vm = self.nixosConfigurations.toolbox-vm.config.system.build.vm;
           # QCOW2 images
           qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
             inherit lib;

@@ -46,7 +46,6 @@
     };
   };
 
-  # programs.fish.enable = true;
 
   services.getty = {
     # loginProgram = "${pkgs.coreutils-full}/bin/sleep";
@@ -100,14 +99,13 @@
 
   users = {
     users."${self.vars.primaryUser}" = {
-      # shell = pkgs.fish;
       openssh.authorizedKeys.keyFiles = [
         ../../users/darwin/markus/files/id_rsa.pub
       ];
     };
   };
 
-  # home-manager.users."${self.vars.primaryUser}" = ./vm/home.nix;
+
 
   virtualisation = {
     # forwardPorts = [

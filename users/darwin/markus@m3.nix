@@ -28,7 +28,6 @@
       # CLI utils
       age
       android-tools
-      awscli2
       bat
       cloc
       fd
@@ -37,8 +36,6 @@
       iftop
       inetutils
       jq
-      kubectl
-      kubernetes-helm
       ncdu
       pdftk
       pstree
