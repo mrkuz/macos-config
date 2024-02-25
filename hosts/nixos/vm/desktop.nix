@@ -1,9 +1,10 @@
-{ config, lib, pkgs, nixpkgs, self, ... }:
+{ config, lib, pkgs, nixpkgs, self, options, ... }:
 {
   modules = {
     nix.enable = true;
     minimize.enable = false;
     qemuGuest = {
+      graphics = true;
       user = self.vars.primaryUser;
       dhcp = false;
       sshd = true;
@@ -26,8 +27,7 @@
     ];
   };
 
-  virtualisation = {
-    graphics = lib.mkForce true;
+  virtualisation = lib.vmAttrs options {
     forwardPorts = [
       { from = "host"; host.port = 2201; guest.port = 22; }
     ];

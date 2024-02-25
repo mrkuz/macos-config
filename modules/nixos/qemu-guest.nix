@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, modulesPath, options, ... }:
+{ config, lib, pkgs, nixpkgs, self, options, ... }:
 with lib;
 let
   cfg = config.modules.qemuGuest;
@@ -17,6 +17,10 @@ in
 {
   options.modules.qemuGuest = {
     enable = mkOption {
+      default = false;
+      type = types.bool;
+    };
+    graphics = mkOption {
       default = false;
       type = types.bool;
     };
@@ -61,11 +65,10 @@ in
         };
       };
 
-      virtualisation = {
-        graphics = mkDefault false;
+      virtualisation = vmAttrs options {
         resolution = { x = 1920; y = 1200; };
         diskImage = null;
-        diskSize = 10240;
+        diskSize = 10 * 1024;
         cores = 2;
         memorySize = 4096;
       };
@@ -99,10 +102,12 @@ in
       ]);
     })
     (mkIf (cfg.vmnet) {
-      virtualisation.qemu.networkingOptions = [
-        "-device virtio-net-device,netdev=net.0"
-        "-netdev vmnet-shared,id=net.0,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
-      ];
+      virtualisation = vmAttrs options {
+        qemu.networkingOptions = [
+          "-device virtio-net-device,netdev=net.0"
+          "-netdev vmnet-shared,id=net.0,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
+        ];
+      };
     })
     (mkIf (cfg.noLogin) {
       services.getty = {
@@ -156,12 +161,15 @@ in
         };
       };
     })
-    (mkIf (config.virtualisation.graphics) {
-      virtualisation.qemu = {
-        options = [ "-display default,show-cursor=on" ];
+    (mkIf (cfg.graphics) {
+      virtualisation = vmAttrs options {
+        graphics = true;
+        qemu = {
+          options = [ "-display default,show-cursor=on" ];
+        };
       };
     })
-    (mkIf (!config.virtualisation.graphics) {
+    (mkIf (!cfg.graphics) {
       environment = {
         systemPackages = with pkgs; [resize ];
         loginShellInit = ''
@@ -177,9 +185,12 @@ in
       # Disable virtual console
       systemd.units."autovt@tty1.service".enable = false;
 
-      virtualisation.qemu = {
-        options = [ "-vga none" ];
-        consoles = [ "ttyAMA0,115200n8" ];
+      virtualisation = vmAttrs options {
+        graphics = false;
+        qemu = {
+          options = [ "-vga none" ];
+          consoles = [ "ttyAMA0,115200n8" ];
+        };
       };
     })
   ]);

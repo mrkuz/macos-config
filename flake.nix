@@ -29,7 +29,7 @@
   outputs = { self, ... } @ inputs:
     let
       nixpkgs = inputs.nixpkgs-unstable;
-      lib = nixpkgs.lib;
+      lib = utils.extendLib nixpkgs.lib;
       pkgs = utils.mkPkgs {};
 
       vars = {
@@ -45,6 +45,10 @@
       utils = {
         attrsToValues = attrs:
           lib.attrsets.mapAttrsToList (name: value: value) attrs;
+
+        extendLib = lib: lib.extend(self: super: {
+          vmAttrs = options: block: if (builtins.hasAttr "cores" options.virtualisation) then block else {};
+        });
 
         mkPkgs = { system ? vars.currentSystem, nixpkgs ? inputs.nixpkgs-unstable } : import nixpkgs {
           inherit system;
@@ -67,26 +71,28 @@
           };
         };
 
-        mkVm = { name, targetSystem ? vars.currentSystem, hostPkgs ? pkgs}: lib.nixosSystem {
+        mkVm = { name, targetSystem ? vars.currentSystem, hostPkgs ? pkgs, profile ? ./profiles/nixos/qemu-vm.nix }: lib.nixosSystem {
           specialArgs = {
             inherit self nixpkgs;
             systemName = name;
             pkgsStable = utils.mkPkgs { system  = targetSystem; nixpkgs = inputs.nixos-stable; };
           };
           modules = [
-            ./profiles/nixos/qemu-vm.nix
-            {
+            profile
+            ({ lib, options, ... }:  {
               networking.hostName = lib.mkDefault name;
               nixpkgs.pkgs = utils.mkPkgs { system = targetSystem; };
               modules.qemuGuest.enable = true;
-              virtualisation.host.pkgs = hostPkgs;
+              virtualisation = lib.vmAttrs options {
+                host.pkgs = hostPkgs;
+              };
 
               system = {
                 inherit name;
                 stateVersion = vars.nixos.stateVersion;
                 configurationRevision = vars.rev;
               };
-            }
+            })
             inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule {})
             (./hosts/nixos/vm + "/${name}.nix")
           ] ++ utils.attrsToValues self.nixosModules;
@@ -100,19 +106,7 @@
       nixosConfigurations.toolbox-vm = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.docker-vm = utils.mkVm { name = "docker"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.desktop-vm = utils.mkVm { name = "desktop"; targetSystem = "aarch64-linux"; };
-      nixosConfigurations.qcow2 = lib.nixosSystem {
-        specialArgs = {
-          inherit self nixpkgs;
-          systemName = "image";
-        };
-        modules = [
-          ./profiles/nixos/qemu-qcow2.nix
-          {
-            nixpkgs.pkgs = utils.mkPkgs { system = "aarch64-linux"; };
-          }
-          ./hosts/nixos/vm.nix
-        ] ++ utils.attrsToValues self.nixosModules;
-      };
+      nixosConfigurations.playground-qcow2 = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; profile = ./profiles/nixos/qemu-qcow2.nix; };
 
       darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
         specialArgs = { inherit self nixpkgs; };
@@ -143,9 +137,9 @@
           docker-vm = self.nixosConfigurations.docker-vm.config.system.build.vm;
           desktop-vm = self.nixosConfigurations.desktop-vm.config.system.build.vm;
           # QCOW2 images
-          qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
+          playground-qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
             inherit lib;
-            config = self.nixosConfigurations.qcow2.config;
+            config = self.nixosConfigurations.playground-qcow2.config;
             pkgs = utils.mkPkgs { system = "aarch64-linux"; };
             diskSize = "auto";
             format = "qcow2";
@@ -183,6 +177,9 @@
 
       overlays = {
         nixos-option = import ./overlays/tools/nix/nixos-option;
+        lib = self: super: {
+          lib = utils.extendLib super.lib;
+        };
       };
     };
 }
