@@ -3,6 +3,9 @@
   modules = {
     nix.enable = true;
     minimize.enable = false;
-    qemuGuest.user = self.vars.primaryUser;
+    qemuGuest = {
+      user = self.vars.primaryUser;
+      autoLogin = true;
+    };
   };
 }

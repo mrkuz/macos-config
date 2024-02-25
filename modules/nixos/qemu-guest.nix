@@ -24,6 +24,14 @@ in
       default = null;
       type = types.nullOr types.str;
     };
+    autoLogin = mkOption {
+      default = false;
+      type = types.bool;
+    };
+    dhcp = mkOption {
+      default = false;
+      type = types.bool;
+    };
     sshd = mkOption {
       default = false;
       type = types.bool;
@@ -40,11 +48,6 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
-      networking = {
-        dhcpcd.enable = false;
-        useDHCP = false;
-      };
-
       security.sudo = {
         execWheelOnly = true;
         wheelNeedsPassword = false;
@@ -67,28 +70,39 @@ in
         memorySize = 4096;
       };
     }
-    (mkIf (cfg.vmnet) {
+    (mkIf (cfg.dhcp) {
       networking = {
-        defaultGateway = "192.168.64.1";
-        nameservers = [ "192.168.64.1" ];
+        dhcpcd.enable = true;
+        useDHCP = true;
       };
-
+    })
+    (mkIf (!cfg.dhcp) {
+      networking = (mkMerge [
+        {
+          dhcpcd.enable = false;
+          useDHCP = false;
+        }
+        (mkIf (cfg.vmnet) {
+          defaultGateway = "192.168.64.1";
+          nameservers = [ "192.168.64.1" ];
+        })
+        (mkIf (!cfg.vmnet) {
+          defaultGateway = "10.0.2.2";
+          nameservers = [ "10.0.2.3" ];
+          interfaces.eth0.ipv4.addresses = [
+            {
+              address = "10.0.2.15";
+              prefixLength = 24;
+            }
+          ];
+        })
+      ]);
+    })
+    (mkIf (cfg.vmnet) {
       virtualisation.qemu.networkingOptions = [
         "-device virtio-net-device,netdev=net.0"
         "-netdev vmnet-shared,id=net.0,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
       ];
-    })
-    (mkIf (!cfg.vmnet) {
-      networking = {
-        defaultGateway = "10.0.2.2";
-        nameservers = [ "10.0.2.3" ];
-        interfaces.eth0.ipv4.addresses = [
-          {
-            address = "10.0.2.15";
-            prefixLength = 24;
-          }
-        ];
-      };
     })
     (mkIf (cfg.noLogin) {
       services.getty = {
@@ -98,16 +112,17 @@ in
       };
     })
     (mkIf (cfg.user != null) {
-      services.getty.autologinUser = cfg.user;
+      services.getty.autologinUser = mkIf cfg.autoLogin cfg.user;
+      services.xserver.displayManager.autoLogin.user = mkIf cfg.autoLogin cfg.user;
+
       services.openssh.settings = {
         AllowUsers = [ cfg.user ];
         PermitRootLogin = "no";
       };
-      services.xserver.displayManager.autoLogin.user = cfg.user;
 
       users.users."${cfg.user}" = {
         isNormalUser = true;
-        hashedPassword = "*";
+        hashedPassword = mkIf (config.users.users."${cfg.user}".password == null) "*";
         extraGroups = [ "wheel" ];
       };
     })
