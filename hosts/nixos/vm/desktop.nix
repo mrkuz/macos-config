@@ -6,7 +6,7 @@
     qemuGuest = {
       graphics = true;
       user = self.vars.primaryUser;
-      dhcp = false;
+      dhcp = true;
       sshd = true;
     };
   };

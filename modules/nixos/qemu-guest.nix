@@ -75,15 +75,15 @@ in
     }
     (mkIf (cfg.dhcp) {
       networking = {
-        dhcpcd.enable = true;
-        useDHCP = true;
+        dhcpcd.enable = mkDefault true;
+        useDHCP = mkDefault true;
       };
     })
     (mkIf (!cfg.dhcp) {
       networking = (mkMerge [
         {
-          dhcpcd.enable = false;
-          useDHCP = false;
+          dhcpcd.enable = mkDefault false;
+          useDHCP = mkDefault false;
         }
         (mkIf (cfg.vmnet) {
           defaultGateway = "192.168.64.1";
