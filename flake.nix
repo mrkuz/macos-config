@@ -106,6 +106,7 @@
       nixosConfigurations.toolbox-vm = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.docker-vm = utils.mkVm { name = "docker"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.desktop-vm = utils.mkVm { name = "desktop"; targetSystem = "aarch64-linux"; };
+      nixosConfigurations.firefox-vm = utils.mkVm { name = "firefox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.playground-qcow2 = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; profile = ./profiles/nixos/qemu-qcow2.nix; };
 
       darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
@@ -136,6 +137,7 @@
           toolbox-vm = self.nixosConfigurations.toolbox-vm.config.system.build.vm;
           docker-vm = self.nixosConfigurations.docker-vm.config.system.build.vm;
           desktop-vm = self.nixosConfigurations.desktop-vm.config.system.build.vm;
+          firefox-vm = self.nixosConfigurations.firefox-vm.config.system.build.vm;
           # QCOW2 images
           playground-qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
             inherit lib;
