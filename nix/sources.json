@@ -1,0 +1,14 @@
+{
+    "socket_vmnet": {
+        "branch": "master",
+        "description": "vmnet.framework support for unmodified rootless QEMU (no dependency on VDE)",
+        "homepage": "https://github.com/lima-vm/socket_vmnet",
+        "owner": "lima-vm",
+        "repo": "socket_vmnet",
+        "rev": "8513f80c74e429f209176a79a93d347f09fe975e",
+        "sha256": "1wd3r0z7rjvaiqs85dlh3i24y0fm1x3dj87499ncga852gv6abjl",
+        "type": "tarball",
+        "url": "https://github.com/lima-vm/socket_vmnet/archive/8513f80c74e429f209176a79a93d347f09fe975e.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

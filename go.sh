@@ -51,7 +51,7 @@ function info() {
 
 function pause() {
     echo -e "\n${YELLOW}>>>${RESET} Press any key to continue..."
-    read -n1    
+    read -n1
 }
 
 function pull() {
@@ -72,6 +72,10 @@ function update() {
     info "Updating flake inputs"
     nix flake update
     git diff flake.lock
+    pause
+
+    info "Updating niv dependencies"
+    niv update
     pause
 
     info "Updating brew"
@@ -165,4 +169,3 @@ case "$1" in
         usage
         ;;
 esac
-

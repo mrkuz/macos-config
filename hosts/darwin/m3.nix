@@ -9,6 +9,13 @@
 
   documentation.info.enable = false;
 
+  environment.systemPackages = with pkgs; [ socket_vmnet ];
+  environment.launchDaemons.socket_vmnet = {
+    source = "${pkgs.socket_vmnet}/Library/LaunchDaemons/io.github.lima-vm.socket_vmnet.plist";
+    target = "io.github.lima-vm.socket_vmnet.plist";
+    copy = true;
+  };
+
   nix.linux-builder = {
     enable = true;
     ephemeral = true;

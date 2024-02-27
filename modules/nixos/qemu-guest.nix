@@ -44,6 +44,10 @@ in
       default = false;
       type = types.bool;
     };
+    socketVmnet = mkOption {
+      default = false;
+      type = types.bool;
+    };
     noLogin = mkOption {
       default = false;
       type = types.bool;
@@ -85,11 +89,15 @@ in
           dhcpcd.enable = mkDefault false;
           useDHCP = mkDefault false;
         }
-        (mkIf (cfg.vmnet) {
+        (mkIf (cfg.socketVmnet) {
+          defaultGateway = "192.168.105.1";
+          nameservers = [ "192.168.105.1" ];
+        })
+        (mkIf (!cfg.socketVmnet && cfg.vmnet) {
           defaultGateway = "192.168.64.1";
           nameservers = [ "192.168.64.1" ];
         })
-        (mkIf (!cfg.vmnet) {
+        (mkIf (!cfg.socketVmnet && !cfg.vmnet) {
           defaultGateway = "10.0.2.2";
           nameservers = [ "10.0.2.3" ];
           interfaces.eth0.ipv4.addresses = [
@@ -101,7 +109,15 @@ in
         })
       ]);
     })
-    (mkIf (cfg.vmnet) {
+    (mkIf (cfg.socketVmnet) {
+      virtualisation = vmAttrs options {
+        qemu.networkingOptions = [
+          "-device virtio-net-device,netdev=net.0"
+          "-netdev socket,id=net.0,fd=3,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
+        ];
+      };
+    })
+    (mkIf (!cfg.socketVmnet && cfg.vmnet) {
       virtualisation = vmAttrs options {
         qemu.networkingOptions = [
           "-device virtio-net-device,netdev=net.0"

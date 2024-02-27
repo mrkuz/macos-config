@@ -28,6 +28,7 @@
 
   outputs = { self, ... } @ inputs:
     let
+      sources = import ./nix/sources.nix;
       nixpkgs = inputs.nixpkgs-unstable;
       lib = utils.extendLib nixpkgs.lib;
       pkgs = utils.mkPkgs {};
@@ -59,6 +60,9 @@
             (_: super: self.packages."${system}")
           ] ++ utils.attrsToValues self.overlays;
         };
+
+        callPkg = package:
+          pkgs.callPackage package { inherit sources; };
 
         mkHomeManagerModule = { version ? vars.homeManager.stateVersion }: {
           home-manager = {
@@ -154,6 +158,8 @@
             # Custom
             copyChannel = false;
           };
+          # Packages
+          socket_vmnet = (utils.callPkg ./pkgs/darwin/applications/virtualization/socket_vmnet);
         };
         aarch64-linux = {};
       };
