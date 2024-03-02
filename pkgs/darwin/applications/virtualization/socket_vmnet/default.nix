@@ -15,8 +15,6 @@ in stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    description = source.description;
-    homepage = source.homepage;
     platforms = platforms.darwin;
   };
 }
