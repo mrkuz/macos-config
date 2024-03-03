@@ -1,12 +1,12 @@
 { stdenv, lib, pkgs, sources, ... }:
 let
-  source = sources.virglrenderer;
+  source = sources.virglrenderer-akihikodaki;
 in stdenv.mkDerivation rec {
-  name = "virglrenderer-angle";
+  name = "virglrenderer";
   src = source;
 
   nativeBuildInputs = with pkgs; [ meson ninja python3 pkg-config ];
-  buildInputs = with pkgs; [ libepoxy-angle ];
+  buildInputs = with pkgs; [ macos.angle macos.libepoxy ];
 
   mesonFlags = [
     "-Ddrm=disabled"

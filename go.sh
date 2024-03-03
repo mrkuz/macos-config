@@ -76,7 +76,7 @@ function update() {
 
     info "Updating niv dependencies"
     niv update
-    git diff nix/sources.json 
+    git diff nix/sources.json
     pause
 
     info "Updating brew"

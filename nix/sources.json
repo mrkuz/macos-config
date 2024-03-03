@@ -2,7 +2,7 @@
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "0ed0de4f0b7f5a81fbe35b28e6a68a739f365556",
+        "rev": "fc440afa62a7686163a36dc2723557795ebb08fc",
         "type": "git"
     },
     "chromium": {
@@ -18,25 +18,12 @@
         "rev": "2df68f811fc1a5f0a6d372ecdb887333ad3f540f",
         "type": "git"
     },
-    "libepoxy-angle": {
-        "branch": "macos",
-        "repo": "git@github.com:akihikodaki/libepoxy",
-        "rev": "ec54e0ff95dd98cd5d5c62b38d9ae427e4e6e747",
-        "type": "git"
-    },
     "qemu": {
         "sha256": "1gi9fyc6sk632bnqqp1jy1qciqxbamsva8jzghc9spqpb08paql5",
         "type": "file",
         "url": "https://download.qemu.org/qemu-8.2.1.tar.xz",
         "url_template": "https://download.qemu.org/qemu-<version>.tar.xz",
         "version": "8.2.1"
-    },
-    "qemu-utm": {
-        "branch": "utm-edition",
-        "repo": "git@github.com:utmapp/qemu",
-        "rev": "8eb68166a76802a18bead9bc966eb97a723eb3a8",
-        "submodules": true,
-        "type": "git"
     },
     "socket_vmnet": {
         "branch": "master",
@@ -48,6 +35,12 @@
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
         "rev": "6bea22eb30f425386764d992217cbbf3731b2719",
+        "type": "git"
+    },
+    "virglrenderer-akihikodaki": {
+        "branch": "macos",
+        "repo": "git@github.com:akihikodaki/virglrenderer",
+        "rev": "7ab8493b9855d3230a1140597c3723d20352b924",
         "type": "git"
     }
 }

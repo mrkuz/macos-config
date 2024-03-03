@@ -2,11 +2,14 @@
 let
   source = sources.qemu;
 in stdenv.mkDerivation rec {
-  name = "qemu-osx";
+  name = "qemu";
   src = source;
 
   nativeBuildInputs = with pkgs; [ pkg-config ninja python3Packages.python ];
-  buildInputs = with pkgs; [ glib pixman
+  buildInputs = with pkgs; [
+    glib
+    libslirp
+    pixman
     darwin.stubs.rez
     darwin.stubs.setfile
     darwin.sigtool
@@ -14,10 +17,10 @@ in stdenv.mkDerivation rec {
     darwin.apple_sdk.frameworks.Cocoa
     darwin.apple_sdk.frameworks.Hypervisor
     darwin.apple_sdk.frameworks.vmnet
-    libslirp
-    SDL2
-    libepoxy-angle
-    virglrenderer-angle
+    # SDL2
+    macos.angle
+    macos.libepoxy
+    macos.virglrenderer
   ];
 
   dontUseMesonConfigure = true;
@@ -27,7 +30,8 @@ in stdenv.mkDerivation rec {
     tar xJf $src --strip-components=1
   '';
 
-  patches = [ ./shader.patch ];
+  # See: https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5
+  patches = [ ./akihikodaki.patch ];
 
   configureFlags = [
     "--disable-strip"
@@ -44,9 +48,11 @@ in stdenv.mkDerivation rec {
     # OpenGL
     "--enable-opengl"
     "--enable-virglrenderer"
-    "--enable-sdl"
+    # "--enable-sdl"
   ];
   preBuild = "cd build";
+
+  env.NIX_CFLAGS_COMPILE = "-Wno-error=implicit-function-declaration";
 
   meta = with lib; {
     platforms = platforms.darwin;

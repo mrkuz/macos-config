@@ -159,11 +159,13 @@
             copyChannel = false;
           };
           # Packages
-          socket_vmnet = (utils.callPkg ./pkgs/darwin/applications/virtualization/socket_vmnet);
-          angle = (utils.callPkg ./pkgs/darwin/development/libraries/angle);
-          libepoxy-angle = (utils.callPkg ./pkgs/darwin/development/libraries/libepoxy-angle);
-          virglrenderer-angle = (utils.callPkg ./pkgs/darwin/development/libraries/virglrenderer);
-          qemu-osx = (utils.callPkg ./pkgs/darwin/applications/virtualization/qemu-osx);
+          macos = {
+            socket_vmnet = (utils.callPkg ./pkgs/darwin/applications/virtualization/socket_vmnet);
+            angle = (utils.callPkg ./pkgs/darwin/development/libraries/angle); 
+            libepoxy = (utils.callPkg ./pkgs/darwin/development/libraries/libepoxy);
+            virglrenderer = (utils.callPkg ./pkgs/darwin/development/libraries/virglrenderer);
+            qemu = (utils.callPkg ./pkgs/darwin/applications/virtualization/qemu);
+          };
         };
         aarch64-linux = {};
       };
