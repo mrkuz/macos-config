@@ -4,17 +4,11 @@
     fonts.enable = true;
     hunspell.enable = true;
     nix.enable = true;
+    socketVmnet.enable = true;
     tuptime.enable = true;
   };
 
   documentation.info.enable = false;
-
-  environment.systemPackages = with pkgs; [ macos.socket_vmnet ];
-  environment.launchDaemons.socket_vmnet = {
-    source = "${pkgs.macos.socket_vmnet}/Library/LaunchDaemons/io.github.lima-vm.socket_vmnet.plist";
-    target = "io.github.lima-vm.socket_vmnet.plist";
-    copy = true;
-  };
 
   nix.linux-builder = {
     enable = true;

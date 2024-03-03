@@ -111,6 +111,7 @@
       nixosConfigurations.docker-vm = utils.mkVm { name = "docker"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.desktop-vm = utils.mkVm { name = "desktop"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.firefox-vm = utils.mkVm { name = "firefox"; targetSystem = "aarch64-linux"; };
+      nixosConfigurations.k3s-vm = utils.mkVm { name = "k3s"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.playground-qcow2 = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; profile = ./profiles/nixos/qemu-qcow2.nix; };
 
       darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
@@ -137,11 +138,12 @@
           nixos-options-json = (lib.nixosSystem { modules = [ { nixpkgs.pkgs = pkgs; } ]; }).config.system.build.manual.optionsJSON;
           darwin-options-json = (inputs.nix-darwin.lib.darwinSystem { modules = [ { nixpkgs.pkgs = pkgs; } ]; }).config.system.build.manual.optionsJSON;
           # VMs
-          playground-vm = self.nixosConfigurations.playground-vm.config.system.build.vm;
-          toolbox-vm = self.nixosConfigurations.toolbox-vm.config.system.build.vm;
-          docker-vm = self.nixosConfigurations.docker-vm.config.system.build.vm;
-          desktop-vm = self.nixosConfigurations.desktop-vm.config.system.build.vm;
-          firefox-vm = self.nixosConfigurations.firefox-vm.config.system.build.vm;
+          playground-vm = self.nixosConfigurations.playground-vm.config.system.build.startVm;
+          toolbox-vm = self.nixosConfigurations.toolbox-vm.config.system.build.startVm;
+          docker-vm = self.nixosConfigurations.docker-vm.config.system.build.startVm;
+          desktop-vm = self.nixosConfigurations.desktop-vm.config.system.build.startVm;
+          firefox-vm = self.nixosConfigurations.firefox-vm.config.system.build.startVm;
+          k3s-vm = self.nixosConfigurations.k3s-vm.config.system.build.startVm;
           # QCOW2 images
           playground-qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
             inherit lib;
@@ -174,6 +176,7 @@
         fonts = import ./modules/darwin/fonts.nix;
         hunspell = import ./modules/darwin/hunspell.nix;
         nix = import ./modules/darwin/nix.nix;
+        socket-vmnet = import ./modules/darwin/socket-vmnet.nix;
         tuptime = import ./modules/darwin/tuptime.nix;
       };
 
@@ -186,7 +189,7 @@
       nixosModules = {
         minimize = import ./modules/nixos/minimize.nix;
         nix = import ./modules/nixos/nix.nix;
-        qemu-quest = import ./modules/nixos/qemu-guest.nix;
+        qemu-guest = import ./modules/nixos/qemu-guest.nix;
       };
 
       overlays = {

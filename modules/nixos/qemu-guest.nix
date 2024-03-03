@@ -2,6 +2,7 @@
 with lib;
 let
   cfg = config.modules.qemuGuest;
+  hostPkgs = config.virtualisation.host.pkgs;
   # See: https://unix.stackexchange.com/questions/16578/resizable-serial-console-window
   resize = pkgs.writeScriptBin "resize" ''
     if [ -e /dev/tty ]; then
@@ -21,6 +22,10 @@ in
       type = types.bool;
     };
     graphics = mkOption {
+      default = false;
+      type = types.bool;
+    };
+    opengl = mkOption {
       default = false;
       type = types.bool;
     };
@@ -70,12 +75,32 @@ in
       };
 
       virtualisation = vmAttrs options {
+        qemu.package = mkIf hostPkgs.stdenv.isDarwin hostPkgs.macos.qemu;
         resolution = { x = 1920; y = 1200; };
         diskImage = null;
         diskSize = 10 * 1024;
         cores = 2;
         memorySize = 4096;
       };
+
+      system.build.startVm = hostPkgs.runCommand "start-vm" {
+        preferLocalBuild = true;
+        meta.mainProgram = "start-${config.system.name}-vm";
+      }
+        ''
+          mkdir -p $out/bin
+          cp "${config.system.build.vm}/bin/run-${config.system.name}-vm" $out/bin/start-${config.system.name}-vm
+          ${if (cfg.graphics && cfg.opengl) then ''
+            substituteInPlace $out/bin/start-${config.system.name}-vm --replace "-display default" "-display default,gl=es"
+            substituteInPlace $out/bin/start-${config.system.name}-vm --replace "-device virtio-gpu-pci" "-device virtio-gpu-gl-pci"
+          '' else ""}
+          ${if (cfg.socketVmnet) then ''
+            substituteInPlace $out/bin/start-${config.system.name}-vm --replace "exec " "exec ${hostPkgs.macos.socket_vmnet}/bin/socket_vmnet_client /var/run/socket_vmnet "
+          '' else ""}
+          ${if (cfg.vmnet) then ''
+            substituteInPlace $out/bin/start-${config.system.name}-vm --replace "exec " "exec sudo "
+          '' else ""}
+        '';
     }
     (mkIf (cfg.dhcp) {
       networking = {
@@ -181,7 +206,7 @@ in
       virtualisation = vmAttrs options {
         graphics = true;
         qemu = {
-          options = [ "-display default,show-cursor=on" ];
+          options = [ "-display default" ];
         };
       };
     })

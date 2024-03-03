@@ -19,7 +19,7 @@
       # MacOS
       mas
       # Virtualisation
-      qemu
+      macos.qemu
       # GUI utils
       baobab
       vscode

@@ -43,8 +43,8 @@ in
           "/bin/wait4path ${pkgs.tuptime} &amp;&amp; ${tuptimed}"
         ];
         RunAtLoad = true;
-        # StandardOutPath = "/var/log/tuptime/stdout";
-        # StandardErrorPath = "/var/log/tuptime/stderr";
+        StandardOutPath = "/var/log/tuptime/stdout";
+        StandardErrorPath = "/var/log/tuptime/stderr";
       };
     };
   };

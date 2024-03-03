@@ -1,4 +1,10 @@
 {
+    "SDL2": {
+        "branch": "SDL2",
+        "repo": "git@github.com:libsdl-org/SDL",
+        "rev": "05f670961708925f95fb799d469aecaf216b1d46",
+        "type": "git"
+    },
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",

@@ -36,6 +36,7 @@ Usage: $0 COMMAND
 
 Commands:
 
+- setup
 - pull
 - update
 - rebuild HOST
@@ -52,6 +53,11 @@ function info() {
 function pause() {
     echo -e "\n${YELLOW}>>>${RESET} Press any key to continue..."
     read -n1
+}
+
+function setup() {
+    info "Launching Linux builder"
+    sudo launchctl start org.nixos.linux-builder
 }
 
 function pull() {
@@ -137,6 +143,9 @@ function clean() {
 }
 
 case "$1" in
+    "setup")
+        setup
+        ;;
     "pull")
         pull "home-manager"
         pull "nix-darwin"

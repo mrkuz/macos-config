@@ -10,7 +10,8 @@ in {
       user = self.vars.primaryUser;
       autoLogin = true;
       dhcp = true;
-      vmnet = true;
+      socketVmnet = true;
+      opengl = true;
     };
   };
 

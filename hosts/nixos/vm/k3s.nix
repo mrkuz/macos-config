@@ -13,7 +13,7 @@
   networking.firewall.enable = false;
   networking.interfaces.eth0.ipv4.addresses = [
     {
-      address = "192.168.105.101";
+      address = "192.168.105.102";
       prefixLength = 24;
     }
   ];
@@ -22,8 +22,7 @@
     ../../../users/darwin/markus/files/id_rsa.pub
   ];
 
-  virtualisation.docker = {
+  services.k3s = {
     enable = true;
-    listenOptions = [ "/run/docker.sock" "0.0.0.0:2375" ];
   };
 }
