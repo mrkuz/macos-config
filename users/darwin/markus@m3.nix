@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, hostName, ... }:
 {
   modules = {
     emacs.enable = true;
@@ -47,7 +47,7 @@
       wget
     ];
     sessionVariables = {
-      HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/Brewfile";
+      HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${hostName}/Brewfile";
     };
   };
 

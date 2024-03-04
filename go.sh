@@ -7,7 +7,8 @@ if [[ ! -f "flake.nix" ]]; then
   exit 1
 fi
 
-SRC_DIR="/Users/markus/src/nix/"
+USERS_DIR="$(dirname $HOME)"
+SRC_DIR="src"
 KEEP_GENERATIONS="1"
 
 # Colors
@@ -67,8 +68,9 @@ function pull() {
     cd "$SRC_DIR/$1"
 
     git branch
-    git tag -f previous
+    git tag -f "pull/previous"
     git pull
+    git tag -f "pull/$(date +%Y%m%d)"
     pause
 
     popd
@@ -118,10 +120,10 @@ function clean() {
     info "Deleting up old generations"
     HOME=/var/root sudo nix-env --delete-generations +"$KEEP_GENERATIONS" --profile /nix/var/nix/profiles/system
 
-    for path in /Users/*; do
+    for path in $USERS_DIR/*; do
         user=${path##*/}
-        if [[ -d "/Users/$user/.local/state/nix/profiles/home-manager" ]]; then
-            HOME=/var/root sudo nix-env --delete-generations +"$KEEP_GENERATIONS" --profile "/Users/$user/.local/state/nix/profiles/home-manager"
+        if [[ -d "$USERS_DIR/$user/.local/state/nix/profiles/home-manager" ]]; then
+            HOME=/var/root sudo nix-env --delete-generations +"$KEEP_GENERATIONS" --profile "$USERS_DIR/$user/.local/state/nix/profiles/home-manager"
         fi
     done
     pause

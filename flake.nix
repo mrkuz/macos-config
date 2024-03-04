@@ -64,11 +64,11 @@
         callPkg = package:
           pkgs.callPackage package { inherit sources; };
 
-        mkHomeManagerModule = { version ? vars.homeManager.stateVersion }: {
+        mkHomeManagerModule = { name, version ? vars.homeManager.stateVersion }: {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            #  extraSpecialArgs = { inherit self; };
+            extraSpecialArgs = { hostName = name; };
             sharedModules = [
               { home.stateVersion = version; }
             ] ++ utils.attrsToValues self.homeManagerModules;
@@ -78,7 +78,7 @@
         mkVm = { name, targetSystem ? vars.currentSystem, hostPkgs ? pkgs, profile ? ./profiles/nixos/qemu-vm.nix }: lib.nixosSystem {
           specialArgs = {
             inherit self nixpkgs;
-            systemName = name;
+            hostName = name;
             pkgsStable = utils.mkPkgs { system  = targetSystem; nixpkgs = inputs.nixos-stable; };
           };
           modules = [
@@ -97,7 +97,7 @@
                 configurationRevision = vars.rev;
               };
             })
-            inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule {})
+            inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule { inherit name; })
             (./hosts/nixos/vm + "/${name}.nix")
           ] ++ utils.attrsToValues self.nixosModules;
         };
@@ -115,10 +115,13 @@
       nixosConfigurations.playground-qcow2 = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; profile = ./profiles/nixos/qemu-qcow2.nix; };
 
       darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
-        specialArgs = { inherit self nixpkgs; };
+        specialArgs = {
+          inherit self nixpkgs;
+          hostName = "m3";
+        };
         modules = [
           { nixpkgs.pkgs = pkgs; }
-          inputs.home-manager.darwinModules.home-manager (utils.mkHomeManagerModule {})
+          inputs.home-manager.darwinModules.home-manager (utils.mkHomeManagerModule { name = "m3"; })
           inputs.nix-homebrew.darwinModules.nix-homebrew
           {
             nix-homebrew = {

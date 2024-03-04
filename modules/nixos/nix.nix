@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, systemName, ... }:
+{ config, lib, pkgs, nixpkgs, self, hostName, ... }:
 with lib;
 let
   cfg = config.modules.nix;
@@ -11,7 +11,7 @@ in
         nix = {
           nixPath = [ "nixpkgs=${nixpkgs}" ];
         };
-        system.name = "${systemName}";
+        system.name = "${hostName}";
         system.stateVersion = "${self.vars.nixos.stateVersion}";
         system.configurationRevision = "${self.vars.rev}";
       '';
@@ -28,7 +28,7 @@ in
         let
           current = import ${self};
         in
-          current.nixosConfigurations."${systemName}"
+          current.nixosConfigurations."${hostName}"
       '';
     };
 
