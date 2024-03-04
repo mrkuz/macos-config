@@ -1,4 +1,4 @@
-# Settings
+# System Settings
 
 ## Wi-Fi
 

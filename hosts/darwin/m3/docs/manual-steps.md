@@ -1,4 +1,6 @@
-# Manual steps
+# Manual setup
+
+This document collects manual installation/configuration steps.
 
 # Software
 
