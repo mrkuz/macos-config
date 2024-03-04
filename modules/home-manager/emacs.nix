@@ -14,7 +14,14 @@ in
 
   config = mkIf cfg.enable {
     home = {
-      packages = [ emacsPkg ];
+      packages = with pkgs; [
+        emacsPkg
+        # Dependencies
+        pandoc
+        # Dependencies: Lua
+        luajitPackages.luacheck
+        luajitPackages.lua-lsp
+      ];
     };
 
     launchd = {

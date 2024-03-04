@@ -45,9 +45,6 @@
       tree
       watch
       wget
-      # Lua
-      luajitPackages.luacheck
-      luajitPackages.lua-lsp
     ];
     sessionVariables = {
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/Brewfile";
