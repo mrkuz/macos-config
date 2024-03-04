@@ -2,7 +2,6 @@
 with lib;
 let
   cfg = config.modules.qemuGuest;
-  hostPkgs = config.virtualisation.host.pkgs;
   # See: https://unix.stackexchange.com/questions/16578/resizable-serial-console-window
   resize = pkgs.writeScriptBin "resize" ''
     if [ -e /dev/tty ]; then
@@ -73,34 +72,6 @@ in
           hashedPassword = "*";
         };
       };
-
-      virtualisation = vmAttrs options {
-        qemu.package = mkIf hostPkgs.stdenv.isDarwin hostPkgs.macos.qemu;
-        resolution = { x = 1920; y = 1200; };
-        diskImage = null;
-        diskSize = 10 * 1024;
-        cores = 2;
-        memorySize = 4096;
-      };
-
-      system.build.startVm = hostPkgs.runCommand "start-vm" {
-        preferLocalBuild = true;
-        meta.mainProgram = "start-${config.system.name}-vm";
-      }
-        ''
-          mkdir -p $out/bin
-          cp "${config.system.build.vm}/bin/run-${config.system.name}-vm" $out/bin/start-${config.system.name}-vm
-          ${if (cfg.graphics && cfg.opengl) then ''
-            substituteInPlace $out/bin/start-${config.system.name}-vm --replace "-display default" "-display default,gl=es"
-            substituteInPlace $out/bin/start-${config.system.name}-vm --replace "-device virtio-gpu-pci" "-device virtio-gpu-gl-pci"
-          '' else ""}
-          ${if (cfg.socketVmnet) then ''
-            substituteInPlace $out/bin/start-${config.system.name}-vm --replace "exec " "exec ${hostPkgs.macos.socket_vmnet}/bin/socket_vmnet_client /var/run/socket_vmnet "
-          '' else ""}
-          ${if (cfg.vmnet) then ''
-            substituteInPlace $out/bin/start-${config.system.name}-vm --replace "exec " "exec sudo "
-          '' else ""}
-        '';
     }
     (mkIf (cfg.dhcp) {
       networking = {
@@ -133,22 +104,6 @@ in
           ];
         })
       ]);
-    })
-    (mkIf (cfg.socketVmnet) {
-      virtualisation = vmAttrs options {
-        qemu.networkingOptions = [
-          "-device virtio-net-device,netdev=net.0"
-          "-netdev socket,id=net.0,fd=3,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
-        ];
-      };
-    })
-    (mkIf (!cfg.socketVmnet && cfg.vmnet) {
-      virtualisation = vmAttrs options {
-        qemu.networkingOptions = [
-          "-device virtio-net-device,netdev=net.0"
-          "-netdev vmnet-shared,id=net.0,\${QEMU_NET_OPTS:+,$QEMU_NET_OPTS}"
-        ];
-      };
     })
     (mkIf (cfg.noLogin) {
       services.getty = {
@@ -202,14 +157,6 @@ in
         };
       };
     })
-    (mkIf (cfg.graphics) {
-      virtualisation = vmAttrs options {
-        graphics = true;
-        qemu = {
-          options = [ "-display default" ];
-        };
-      };
-    })
     (mkIf (!cfg.graphics) {
       environment = {
         systemPackages = with pkgs; [resize ];
@@ -225,14 +172,6 @@ in
 
       # Disable virtual console
       systemd.units."autovt@tty1.service".enable = false;
-
-      virtualisation = vmAttrs options {
-        graphics = false;
-        qemu = {
-          options = [ "-vga none" ];
-          consoles = [ "ttyAMA0,115200n8" ];
-        };
-      };
     })
   ]);
 }

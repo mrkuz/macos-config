@@ -49,7 +49,7 @@
           lib.attrsets.mapAttrsToList (name: value: value) attrs;
 
         extendLib = lib: lib.extend(self: super: {
-          vmAttrs = options: block: if (builtins.hasAttr "cores" options.virtualisation) then block else {};
+          vmHostAttrs = options: block: if (builtins.hasAttr "cores" options.virtualisation) then block else {};
         });
 
         mkPkgs = { system ? vars.currentSystem, nixpkgs ? inputs.nixpkgs-unstable } : import nixpkgs {
@@ -88,7 +88,7 @@
               networking.hostName = lib.mkDefault name;
               nixpkgs.pkgs = utils.mkPkgs { system = targetSystem; };
               modules.qemuGuest.enable = true;
-              virtualisation = lib.vmAttrs options {
+              virtualisation = lib.vmHostAttrs options {
                 host.pkgs = hostPkgs;
               };
 
