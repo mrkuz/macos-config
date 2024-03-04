@@ -6,12 +6,12 @@ in {
     nix.enable = false;
     minimize.enable = false;
     qemuGuest = {
-      graphics = true;
-      user = self.vars.primaryUser;
       autoLogin = true;
       dhcp = true;
-      socketVmnet = true;
+      graphics = true;
       opengl = true;
+      socketVmnet = true;
+      user = self.vars.primaryUser;
     };
   };
 

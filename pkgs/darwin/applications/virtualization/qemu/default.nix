@@ -27,7 +27,9 @@ in stdenv.mkDerivation rec {
   dontStrip = true;
 
   unpackPhase = ''
+    runHook preUnpack
     tar xJf $src --strip-components=1
+    runHook postUnpack
   '';
 
   # See: https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5

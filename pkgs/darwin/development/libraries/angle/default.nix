@@ -12,10 +12,12 @@ in stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
+    runHook preInstall
     mkdir -p $out/lib
     cp chrome-mac/Chromium.app/Contents/Frameworks/Chromium\ Framework.framework/Libraries/libEGL.dylib $out/lib/
     cp chrome-mac/Chromium.app/Contents/Frameworks/Chromium\ Framework.framework/Libraries/libGLESv2.dylib $out/lib/
     cp -r include $out
+    runHook postInstall
   '';
 
   meta = with lib; {

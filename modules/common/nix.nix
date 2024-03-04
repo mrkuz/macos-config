@@ -33,6 +33,12 @@ in
       export NIX_PATH="nixpkgs=${nixpkgs}"
     '';
 
+    environment.systemPackages = with pkgs; [
+      nil
+      niv
+      nix-index
+    ];
+
     nix = {
       # Use local nixpkgs
       registry = {

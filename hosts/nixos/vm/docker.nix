@@ -5,8 +5,8 @@
     minimize.enable = true;
     qemuGuest = {
       noLogin = true;
-      sshd = true;
       socketVmnet = true;
+      sshd = true;
     };
   };
 
@@ -16,10 +16,6 @@
       address = "192.168.105.101";
       prefixLength = 24;
     }
-  ];
-
-  users.users.root.openssh.authorizedKeys.keyFiles = [
-    ../../../users/darwin/markus/files/id_rsa.pub
   ];
 
   virtualisation.docker = {

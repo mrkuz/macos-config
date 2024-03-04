@@ -17,6 +17,7 @@
     #   virtualisation.darwin-builder.diskSize = 30 * 1024;
     # });
   };
+
   # Disable auto-start, use 'sudo launchctl start org.nixos.linux-builder'
   launchd.daemons.linux-builder.serviceConfig = {
     KeepAlive = lib.mkForce false;

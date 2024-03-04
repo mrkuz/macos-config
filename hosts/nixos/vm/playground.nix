@@ -4,8 +4,10 @@
     nix.enable = true;
     minimize.enable = false;
     qemuGuest = {
-      user = self.vars.primaryUser;
       autoLogin = true;
+      dhcp = true;
+      user = self.vars.primaryUser;
+      socketVmnet = true;
     };
   };
 }

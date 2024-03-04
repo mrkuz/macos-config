@@ -74,6 +74,7 @@
       gd = "git diff";
       gdc = "git diff --cached";
       gs = "git status";
+      nb = "nix build --log-format bar-with-logs";
     };
     interactiveShellInit = ''
       set -U fish_greeting

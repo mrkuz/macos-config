@@ -35,6 +35,7 @@ in
         RunAtLoad = true;
         StandardOutPath = "/var/log/socket-vmnet/stdout";
         StandardErrorPath = "/var/log/socket-vmnet/stderr";
+        UserName = "root";
       };
     };
   };

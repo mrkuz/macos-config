@@ -36,6 +36,7 @@
       vars = {
         currentSystem = "aarch64-darwin";
         primaryUser = "markus";
+        sshKeyFile = ./users/darwin/markus/files/id_rsa.pub;
         darwin.stateVersion = 4;
         homeManager.stateVersion = "23.11";
         nixos.stateVersion = "24.05";
@@ -96,10 +97,32 @@
                 stateVersion = vars.nixos.stateVersion;
                 configurationRevision = vars.rev;
               };
+
+              users.users.root.openssh.authorizedKeys.keyFiles = [ vars.sshKeyFile ];
             })
             inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule { inherit name; })
             (./hosts/nixos/vm + "/${name}.nix")
           ] ++ utils.attrsToValues self.nixosModules;
+        };
+
+        mkDarwin = { name }: inputs.nix-darwin.lib.darwinSystem {
+          specialArgs = {
+            inherit self nixpkgs;
+            hostName = name;
+          };
+          modules = [
+            { nixpkgs.pkgs = pkgs; }
+            inputs.home-manager.darwinModules.home-manager (utils.mkHomeManagerModule { inherit name; })
+            inputs.nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                enableRosetta = false;
+                user = vars.primaryUser;
+              };
+            }
+            (./hosts/darwin + "/${name}.nix")
+          ] ++ utils.attrsToValues self.darwinModules;
         };
       };
     in
@@ -114,25 +137,7 @@
       nixosConfigurations.k3s-vm = utils.mkVm { name = "k3s"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.playground-qcow2 = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; profile = ./profiles/nixos/qemu-qcow2.nix; };
 
-      darwinConfigurations."m3" = inputs.nix-darwin.lib.darwinSystem {
-        specialArgs = {
-          inherit self nixpkgs;
-          hostName = "m3";
-        };
-        modules = [
-          { nixpkgs.pkgs = pkgs; }
-          inputs.home-manager.darwinModules.home-manager (utils.mkHomeManagerModule { name = "m3"; })
-          inputs.nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              enableRosetta = false;
-              user = vars.primaryUser;
-            };
-          }
-          ./hosts/darwin/m3.nix
-        ] ++ utils.attrsToValues self.darwinModules;
-      };
+      darwinConfigurations."m3" = utils.mkDarwin { name = "m3"; };
 
       packages = {
         aarch64-darwin = {

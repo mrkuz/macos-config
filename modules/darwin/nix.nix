@@ -6,11 +6,6 @@ in
 {
   imports = [ ../common/nix.nix ];
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      nil
-      niv
-      nix-index
-    ];
 
     services.nix-daemon.enable = true;
     

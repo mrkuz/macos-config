@@ -4,12 +4,16 @@
     nix.enable = true;
     minimize.enable = false;
     qemuGuest = {
-      user = self.vars.primaryUser;
       autoLogin = true;
+      dhcp = true;
+      socketVmnet = true;
+      user = self.vars.primaryUser;
     };
   };
 
   programs.fish.enable = true;
+  users.users."${self.vars.primaryUser}".shell = pkgs.fish;
+
   home-manager.users."${self.vars.primaryUser}" = {
     home.packages = with pkgs; [
       bat
@@ -32,5 +36,4 @@
       enableFishIntegration = true;
     };
   };
-  users.users."${self.vars.primaryUser}".shell = pkgs.fish;
 }

@@ -34,7 +34,6 @@ in
 
     environment.systemPackages = with pkgs; [
       nixos-option
-      niv
     ];
 
     nix = {
