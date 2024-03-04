@@ -10,9 +10,9 @@ in stdenv.mkDerivation rec {
 
   patches = [
     # See: https://github.com/NixOS/nixpkgs/blob/79baff8812a0d68e24a836df0a364c678089e2c7/pkgs/development/libraries/libepoxy/default.nix#L27
-    ./libgl-path.patch
-    # Seem: https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5
-    ./akihikodaki.patch
+    ./libepoxy/libgl-path.patch
+    # See: https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5
+    ./libepoxy/akihikodaki.patch
   ];
 
   postPatch = ''

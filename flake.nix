@@ -170,11 +170,11 @@
           };
           # Packages
           macos = {
-            socket_vmnet = (utils.callPkg ./pkgs/darwin/applications/virtualization/socket_vmnet);
-            angle = (utils.callPkg ./pkgs/darwin/development/libraries/angle); 
-            libepoxy = (utils.callPkg ./pkgs/darwin/development/libraries/libepoxy);
-            virglrenderer = (utils.callPkg ./pkgs/darwin/development/libraries/virglrenderer);
-            qemu = (utils.callPkg ./pkgs/darwin/applications/virtualization/qemu);
+            socket_vmnet = (utils.callPkg ./pkgs/darwin/applications/virtualization/socket_vmnet.nix);
+            angle = (utils.callPkg ./pkgs/darwin/development/libraries/angle.nix);
+            libepoxy = (utils.callPkg ./pkgs/darwin/development/libraries/libepoxy.nix);
+            virglrenderer = (utils.callPkg ./pkgs/darwin/development/libraries/virglrenderer.nix);
+            qemu = (utils.callPkg ./pkgs/darwin/applications/virtualization/qemu.nix);
           };
         };
         aarch64-linux = {};
@@ -201,7 +201,7 @@
       };
 
       overlays = {
-        nixos-option = import ./overlays/tools/nix/nixos-option;
+        nixos-option = import ./overlays/tools/nix/nixos-option.nix;
         lib = self: super: {
           lib = utils.extendLib super.lib;
         };
