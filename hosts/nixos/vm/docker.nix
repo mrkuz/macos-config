@@ -18,6 +18,8 @@
     }
   ];
 
+  services.journald.console = "/dev/console";
+
   virtualisation.docker = {
     enable = true;
     listenOptions = [ "/run/docker.sock" "0.0.0.0:2375" ];

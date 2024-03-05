@@ -18,6 +18,8 @@
     }
   ];
 
+  services.journald.console = "/dev/console";
+
   services.k3s = {
     enable = true;
   };

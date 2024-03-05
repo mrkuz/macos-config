@@ -4,6 +4,10 @@
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
     nixos-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
+    nix-alien = {
+      url = "github:thiagokokada/nix-alien";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     nix-darwin = {
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -58,6 +62,7 @@
           overlays = [
             inputs.emacs-overlay.overlay
             inputs.apple-silicon.overlays.apple-silicon-overlay
+            inputs.nix-alien.overlays.default
             (_: super: self.packages."${system}")
           ] ++ utils.attrsToValues self.overlays;
         };

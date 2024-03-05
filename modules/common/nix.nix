@@ -37,6 +37,7 @@ in
       nil
       niv
       nix-index
+      nix-index-update
     ];
 
     nix = {

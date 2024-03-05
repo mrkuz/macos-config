@@ -13,6 +13,7 @@ in {
 
   config = mkIf cfg.enable (profile // {
     environment.noXlibs = false;
+    system.disableInstallerTools = true;
     systemd.oomd.enable = false;
     xdg.menus.enable = false;
   });
