@@ -8,7 +8,7 @@ in stdenv.mkDerivation rec {
   nativeBuildInputs = with pkgs; [ unzip ];
 
   buildPhase = ''
-    unzip ${sources.chromium}
+    unzip ${sources.chromium-aarch64-darwin}
   '';
 
   installPhase = ''
@@ -21,6 +21,6 @@ in stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    platforms = platforms.darwin;
+    platforms = [ "aarch64-darwin" ];
   };
 }

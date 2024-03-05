@@ -41,6 +41,8 @@
         mkPkgs = { system ? vars.currentSystem, nixpkgs ? inputs.nixpkgs-unstable } : import nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          # Hack to allow 'callPkg' to build for other systems
+          config.allowUnsupportedSystem = true;
           overlays = [
             inputs.emacs-overlay.overlay
             inputs.apple-silicon.overlays.apple-silicon-overlay
@@ -164,7 +166,9 @@
             qemu = (utils.callPkg ./pkgs/darwin/applications/virtualization/qemu.nix);
           };
         };
-        aarch64-linux = {};
+        aarch64-linux = {
+          k3s-bin = (utils.callPkg ./pkgs/nixos/networking/cluster/k3s-bin.nix);
+        };
       };
 
       darwinModules = {

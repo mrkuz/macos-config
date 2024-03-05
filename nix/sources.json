@@ -11,12 +11,19 @@
         "rev": "2ad7b23b13aef70384a3ffe641ea28bc12f83dec",
         "type": "git"
     },
-    "chromium": {
+    "chromium-aarch64-darwin": {
         "sha256": "16ssq0l2bfchwcqr7v2wr9ywcdhalyx3xzrzl4wnayabys9gvdj0",
         "type": "file",
         "url": "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac_Arm%2F1267441%2Fchrome-mac.zip?alt=media",
         "url_template": "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac_Arm%2F<version>%2Fchrome-mac.zip?alt=media",
         "version": "1267441"
+    },
+    "k3s-aarch64-linux": {
+        "sha256": "11n5fv9146kgx2mq30g7ykw282jbzbgv7cjc8xp7rg2k0pwnmkk2",
+        "type": "file",
+        "url": "https://github.com/k3s-io/k3s/releases/download/v1.28.7+k3s1/k3s-arm64",
+        "url_template": "https://github.com/k3s-io/k3s/releases/download/<version>/k3s-arm64",
+        "version": "v1.28.7+k3s1"
     },
     "libepoxy": {
         "branch": "master",

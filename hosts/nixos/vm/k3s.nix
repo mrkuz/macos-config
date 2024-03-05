@@ -22,5 +22,6 @@
 
   services.k3s = {
     enable = true;
+    package = pkgs.k3s-bin;
   };
 }
