@@ -15,6 +15,7 @@ in
         system.stateVersion = "${self.vars.nixos.stateVersion}";
         system.configurationRevision = "${self.vars.rev}";
       '';
+
       # Provide compatibility layer for non-flake utils
       "nixos/compat/default.nix".text = ''
         { ... }:

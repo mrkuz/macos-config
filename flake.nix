@@ -4,30 +4,12 @@
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
     nixos-stable.url = "github:nixos/nixpkgs/nixos-23.11";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
-    nix-alien = {
-      url = "github:thiagokokada/nix-alien";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    apple-silicon = {
-      url = "github:tpwrules/nixos-apple-silicon";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    nix-alien = { url = "github:thiagokokada/nix-alien"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
+    nix-darwin = { url = "github:LnL7/nix-darwin/master"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
+    nix-homebrew = { url = "github:zhaofengli-wip/nix-homebrew"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
+    home-manager = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
+    emacs-overlay = { url = "github:nix-community/emacs-overlay"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
+    apple-silicon = { url = "github:tpwrules/nixos-apple-silicon"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
   };
 
   outputs = { self, ... } @ inputs:
@@ -203,6 +185,7 @@
         minimize = import ./modules/nixos/minimize.nix;
         nix = import ./modules/nixos/nix.nix;
         qemu-guest = import ./modules/nixos/qemu-guest.nix;
+        kiosk = import ./modules/nixos/kiosk.nix;
       };
 
       overlays = {

@@ -16,6 +16,7 @@
 
   home-manager.users."${self.vars.primaryUser}" = {
     home.packages = with pkgs; [
+      # General utils
       bat
       htop
       # Cloud utils
