@@ -69,7 +69,7 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { hostName = name; };
+            extraSpecialArgs = { systemName = name; };
             sharedModules = [
               { home.stateVersion = version; }
             ] ++ utils.attrsToValues self.homeManagerModules;
@@ -79,7 +79,7 @@
         mkVm = { name, targetSystem ? vars.currentSystem, hostPkgs ? pkgs, profile ? ./profiles/nixos/qemu-vm.nix }: lib.nixosSystem {
           specialArgs = {
             inherit self nixpkgs;
-            hostName = name;
+            systemName = name;
             pkgsStable = utils.mkPkgs { system  = targetSystem; nixpkgs = inputs.nixos-stable; };
           };
           modules = [
@@ -108,7 +108,7 @@
         mkDarwin = { name }: inputs.nix-darwin.lib.darwinSystem {
           specialArgs = {
             inherit self nixpkgs;
-            hostName = name;
+            systemName = name;
           };
           modules = [
             { nixpkgs.pkgs = pkgs; }
@@ -132,7 +132,7 @@
       nixosConfigurations.playground-vm = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.toolbox-vm = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.docker-vm = utils.mkVm { name = "docker"; targetSystem = "aarch64-linux"; };
-      nixosConfigurations.desktop-vm = utils.mkVm { name = "desktop"; targetSystem = "aarch64-linux"; };
+      nixosConfigurations.gnome-vm = utils.mkVm { name = "gnome"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.firefox-vm = utils.mkVm { name = "firefox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.k3s-vm = utils.mkVm { name = "k3s"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.playground-qcow2 = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; profile = ./profiles/nixos/qemu-qcow2.nix; };
@@ -149,7 +149,7 @@
           playground-vm = self.nixosConfigurations.playground-vm.config.system.build.startVm;
           toolbox-vm = self.nixosConfigurations.toolbox-vm.config.system.build.startVm;
           docker-vm = self.nixosConfigurations.docker-vm.config.system.build.startVm;
-          desktop-vm = self.nixosConfigurations.desktop-vm.config.system.build.startVm;
+          gnome-vm = self.nixosConfigurations.gnome-vm.config.system.build.startVm;
           firefox-vm = self.nixosConfigurations.firefox-vm.config.system.build.startVm;
           k3s-vm = self.nixosConfigurations.k3s-vm.config.system.build.startVm;
           # QCOW2 images
