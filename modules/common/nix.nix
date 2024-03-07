@@ -59,7 +59,7 @@ in
       };
       settings = {
         experimental-features = "nix-command flakes";
-        narinfo-cache-positive-ttl = 86400;
+        narinfo-cache-positive-ttl = 604800;
         keep-outputs = true;
         keep-derivations = true;
         auto-optimise-store = true;
