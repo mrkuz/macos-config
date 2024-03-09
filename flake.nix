@@ -64,7 +64,13 @@
           };
         };
 
-        mkVm = { name, targetSystem ? vars.currentSystem, hostPkgs ? pkgs, profile ? ./profiles/nixos/qemu-vm.nix }: lib.nixosSystem {
+        mkVm = {
+          name,
+          targetSystem ? vars.currentSystem,
+          hostPkgs ? pkgs,
+          profile ? ./profiles/nixos/qemu-vm.nix,
+          configuration ? ./hosts/nixos/vm + "/${name}.nix"
+        } : lib.nixosSystem {
           specialArgs = {
             inherit self nixpkgs;
             systemName = name;
@@ -89,7 +95,7 @@
               users.users.root.openssh.authorizedKeys.keyFiles = [ vars.sshKeyFile ];
             })
             inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule { inherit name; })
-            (./hosts/nixos/vm + "/${name}.nix")
+            configuration
           ] ++ utils.attrsToValues self.nixosModules;
         };
 
