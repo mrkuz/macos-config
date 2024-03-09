@@ -210,11 +210,11 @@
         "nixpkgs-unstable": "nixpkgs-unstable"
       },
       "locked": {
-        "lastModified": 1710004114,
-        "narHash": "sha256-q6Cic9r5kkcC+PweVrpsr5UGsOK3GMIXHDiqTu0nJbw=",
+        "lastModified": 1710004543,
+        "narHash": "sha256-mWITrF86fUqIPn+VU87Tsg5c7mRlzLAq6FqK5WAbYMg=",
         "owner": "mrkuz",
         "repo": "macos-config",
-        "rev": "e43cdf3c61b7f5480eba7d1cbaeca6181cb15e83",
+        "rev": "1fcab978f86d327d8b5f52345a0ceeee1b926c8c",
         "type": "github"
       },
       "original": {
