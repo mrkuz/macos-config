@@ -18,6 +18,7 @@
       nixpkgs = inputs.nixpkgs-unstable;
       lib = utils.extendLib nixpkgs.lib;
       pkgs = utils.mkPkgs {};
+      pkgsLinux = utils.mkPkgs { system = "aarch64-linux"; };
 
       vars = {
         currentSystem = "aarch64-darwin";
@@ -41,8 +42,6 @@
         mkPkgs = { system ? vars.currentSystem, nixpkgs ? inputs.nixpkgs-unstable } : import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          # Hack to allow 'callPkg' to build for other systems
-          config.allowUnsupportedSystem = true;
           overlays = [
             inputs.emacs-overlay.overlay
             inputs.apple-silicon.overlays.apple-silicon-overlay
@@ -116,7 +115,7 @@
       };
     in
     {
-      inherit vars;
+      inherit utils vars;
 
       nixosConfigurations.playground = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.toolbox = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };
@@ -147,7 +146,7 @@
           playground-qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
             inherit lib;
             config = self.nixosConfigurations.playground-qcow2.config;
-            pkgs = utils.mkPkgs { system = "aarch64-linux"; };
+            pkgs = pkgsLinux;
             diskSize = "auto";
             format = "qcow2";
             partitionTableType = "efi";
@@ -169,7 +168,7 @@
           };
         };
         aarch64-linux = {
-          k3s-bin = (utils.callPkg ./pkgs/nixos/networking/cluster/k3s-bin.nix);
+          k3s-bin = (pkgsLinux.callPackage ./pkgs/nixos/networking/cluster/k3s-bin.nix { inherit sources; });
         };
       };
 
