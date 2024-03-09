@@ -67,12 +67,14 @@
         mkVm = {
           name,
           targetSystem ? vars.currentSystem,
+          selfReference ? self,
           hostPkgs ? pkgs,
           profile ? ./profiles/nixos/qemu-vm.nix,
           configuration ? ./hosts/nixos/vm + "/${name}.nix"
         } : lib.nixosSystem {
           specialArgs = {
-            inherit self nixpkgs;
+            inherit vars nixpkgs;
+            self = selfReference;
             systemName = name;
             pkgsStable = utils.mkPkgs { system  = targetSystem; nixpkgs = inputs.nixos-stable; };
           };
@@ -101,7 +103,7 @@
 
         mkDarwin = { name }: inputs.nix-darwin.lib.darwinSystem {
           specialArgs = {
-            inherit self nixpkgs;
+            inherit self vars nixpkgs;
             systemName = name;
           };
           modules = [
@@ -121,7 +123,7 @@
       };
     in
     {
-      inherit utils vars;
+      inherit utils;
 
       nixosConfigurations.playground = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.toolbox = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };

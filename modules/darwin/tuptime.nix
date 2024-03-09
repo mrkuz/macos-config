@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, ... }:
+{ config, lib, pkgs, nixpkgs, ... }:
 with lib;
 let
   cfg = config.modules.tuptime;

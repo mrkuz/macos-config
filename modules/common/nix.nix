@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, ... }:
+{ config, lib, pkgs, nixpkgs, self, vars, ... }:
 with lib;
 let
   cfg = config.modules.nix;
@@ -54,7 +54,7 @@ in
           };
         };
         nixpkgs-unstable = mkRegistry "nixpkgs-unstable" "nixpkgs-unstable";
-        nixos-stable = mkRegistry "nixos-stable" "nixos-${self.vars.nixos.stableVersion}";
+        nixos-stable = mkRegistry "nixos-stable" "nixos-${vars.nixos.stableVersion}";
         nixos-unstable = mkRegistry "nixos-unstable" "nixos-unstable";
       };
       settings = {

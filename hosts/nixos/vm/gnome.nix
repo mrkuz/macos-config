@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, options, ... }:
+{ config, lib, pkgs, nixpkgs, vars, options, ... }:
 {
   modules = {
     nix.enable = true;
@@ -7,7 +7,7 @@
       dhcp = true;
       graphics = true;
       socketVmnet = true;
-      user = self.vars.primaryUser;
+      user = vars.primaryUser;
     };
   };
 
@@ -20,7 +20,7 @@
     displayManager.gdm.enable = true;
   };
 
-  users.users."${self.vars.primaryUser}" = {
-    password = self.vars.primaryUser;
+  users.users."${vars.primaryUser}" = {
+    password = vars.primaryUser;
   };
 }

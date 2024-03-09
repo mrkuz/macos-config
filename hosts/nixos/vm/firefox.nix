@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, options, ... }:
+{ config, lib, pkgs, nixpkgs, vars, options, ... }:
 {
   modules = {
     nix.enable = false;
@@ -9,12 +9,12 @@
       graphics = true;
       opengl = true;
       socketVmnet = true;
-      user = self.vars.primaryUser;
+      user = vars.primaryUser;
     };
     kiosk = {
       enable = true;
       program = "${pkgs.firefox-devedition}/bin/firefox-devedition";
-      user = self.vars.primaryUser;
+      user = vars.primaryUser;
     };
   };
 }

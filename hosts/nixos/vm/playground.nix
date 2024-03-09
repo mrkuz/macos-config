@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, ... }:
+{ config, lib, pkgs, nixpkgs, vars, ... }:
 {
   modules = {
     nix.enable = true;
@@ -6,7 +6,7 @@
     qemuGuest = {
       autoLogin = true;
       dhcp = true;
-      user = self.vars.primaryUser;
+      user = vars.primaryUser;
       socketVmnet = true;
     };
   };

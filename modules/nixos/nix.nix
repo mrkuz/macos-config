@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, systemName, ... }:
+{ config, lib, pkgs, nixpkgs, self, vars, systemName, ... }:
 with lib;
 let
   cfg = config.modules.nix;
@@ -12,8 +12,8 @@ in
           nixPath = [ "nixpkgs=${nixpkgs}" ];
         };
         system.name = "${systemName}";
-        system.stateVersion = "${self.vars.nixos.stateVersion}";
-        system.configurationRevision = "${self.vars.rev}";
+        system.stateVersion = "${vars.nixos.stateVersion}";
+        system.configurationRevision = "${vars.rev}";
       '';
 
       # Provide compatibility layer for non-flake utils

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, ... }:
+{ config, lib, pkgs, nixpkgs, vars, ... }:
 {
   modules = {
     nix.enable = true;
@@ -7,14 +7,14 @@
       autoLogin = true;
       dhcp = true;
       socketVmnet = true;
-      user = self.vars.primaryUser;
+      user = vars.primaryUser;
     };
   };
 
   programs.fish.enable = true;
-  users.users."${self.vars.primaryUser}".shell = pkgs.fish;
+  users.users."${vars.primaryUser}".shell = pkgs.fish;
 
-  home-manager.users."${self.vars.primaryUser}" = {
+  home-manager.users."${vars.primaryUser}" = {
     home.packages = with pkgs; [
       # General utils
       bat

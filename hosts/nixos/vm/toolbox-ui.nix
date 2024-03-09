@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, options, ... }:
+{ config, lib, pkgs, nixpkgs, vars, options, ... }:
 {
   modules = {
     nix.enable = true;
@@ -8,7 +8,7 @@
       dhcp = true;
       graphics = true;
       socketVmnet = true;
-      user = self.vars.primaryUser;
+      user = vars.primaryUser;
       opengl = true;
     };
   };
@@ -38,12 +38,12 @@
     desktopManager.pantheon.enable = true;
   };
 
-  users.users."${self.vars.primaryUser}" = {
-    password = self.vars.primaryUser;
+  users.users."${vars.primaryUser}" = {
+    password = vars.primaryUser;
     shell = pkgs.fish;
   };
 
-  home-manager.users."${self.vars.primaryUser}" = {
+  home-manager.users."${vars.primaryUser}" = {
     modules = {
       tmux = {
         enable = true;

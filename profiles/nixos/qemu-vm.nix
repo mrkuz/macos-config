@@ -1,4 +1,4 @@
-{ config, lib, pkgs, nixpkgs, self, modulesPath, ... }:
+{ config, lib, pkgs, nixpkgs, modulesPath, ... }:
 with lib;
 let
   cfg = config.modules.qemuGuest;
