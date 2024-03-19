@@ -34,7 +34,7 @@
       iftop
       inetutils
       jq
-      ncdu
+      # ncdu
       pdftk
       pstree
       pwgen

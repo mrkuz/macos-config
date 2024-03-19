@@ -102,7 +102,7 @@ function update() {
 
 function rebuild() {
     info "Rebuild and switch"
-    darwin-rebuild switch -v --flake ".#$1"
+    darwin-rebuild switch --keep-going  -v --flake ".#$1"
 }
 
 function upgrade() {
