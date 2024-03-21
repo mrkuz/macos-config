@@ -159,7 +159,7 @@ in
     })
     (mkIf (!cfg.graphics) {
       environment = {
-        systemPackages = with pkgs; [resize ];
+        systemPackages = with pkgs; [ resize ];
         loginShellInit = ''
           "${resize}/bin/resize";
           export TERM=screen-256color
@@ -171,7 +171,8 @@ in
       '';
 
       # Disable virtual console
-      systemd.units."autovt@tty1.service".enable = false;
+      systemd.services."autovt@".enable = false;
+      systemd.services."getty@".enable = false;
     })
   ]);
 }

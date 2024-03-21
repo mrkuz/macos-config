@@ -199,6 +199,19 @@ Runs a single application in fullscreen mode.
 | program | Path to application to run (required)                                   | -       | `${pkgs.firefox}/bin/firefox` |
 | user    | Run as this user (required)                                             | -       |                               |
 
+
+### minimize
+
+Creates a minimized variant of NixOS.
+
+*Options*
+
+| Name    | Description                               | Default | Example |
+|---------|-------------------------------------------|---------|---------|
+| noLogin | Disable console login                     | false   |         |
+| noNix   | Remove nix package and disable daemon     | false   |         |
+| noXlibs | Remove dependency to X11 client libraries | false   |         |
+
 <a id="qemu-guest"></a>
 
 ### qemu-guest

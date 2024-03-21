@@ -2,9 +2,12 @@
 {
   modules = {
     nix.enable = false;
-    minimize.enable = true;
-    qemuGuest = {
+    minimize = {
+      enable = true;
       noLogin = true;
+      noNix = true;
+    };
+    qemuGuest = {
       socketVmnet = true;
       sshd = true;
     };
@@ -17,8 +20,6 @@
       prefixLength = 24;
     }
   ];
-
-  services.journald.console = "/dev/console";
 
   virtualisation.docker = {
     enable = true;

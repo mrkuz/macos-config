@@ -116,6 +116,11 @@
                 enableRosetta = false;
                 user = vars.primaryUser;
               };
+
+              system = {
+                stateVersion = vars.darwin.stateVersion;
+                configurationRevision = vars.rev;
+              };
             }
             (./hosts/darwin + "/${name}.nix")
           ] ++ utils.attrsToValues self.darwinModules;
