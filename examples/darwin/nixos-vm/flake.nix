@@ -12,7 +12,11 @@
         inherit name;
         selfReference = self;
         targetSystem = "aarch64-linux";
-        configuration = ./configuration.nix;
+        configuration = {
+          imports = [
+            ./configuration.nix
+          ];
+        }
       };
       packages."${system}".default = self.nixosConfigurations."${name}".config.system.build.startVm;
     };

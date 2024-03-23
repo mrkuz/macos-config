@@ -1,4 +1,4 @@
-{ config, pkgs, systemName, ... }:
+{ config, lib, pkgs, systemName, ... }:
 {
   modules = {
     emacs.enable = true;
@@ -45,6 +45,17 @@
       tree
       watch
       wget
+      # VMs
+      (lib.buildQemuVm {
+        name = "docker";
+        targetSystem = "aarch64-linux";
+        configuration = {
+          imports = [
+            ../../hosts/nixos/vm/docker.nix
+          ];
+          virtualisation.diskImage = "/Users/markus/var/docker.qcow2";
+        };
+      })
     ];
     sessionVariables = {
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";

@@ -36,7 +36,10 @@
           lib.attrsets.mapAttrsToList (name: value: value) attrs;
 
         extendLib = lib: lib.extend(self: super: {
+          hm = inputs.home-manager.lib.hm;
           vmHostAttrs = options: block: if (builtins.hasAttr "cores" options.virtualisation) then block else {};
+          buildQemuVm = { name, targetSystem, configuration }:
+            (utils.mkVm { inherit name targetSystem configuration; }).config.system.build.startVm;
         });
 
         mkPkgs = { system ? vars.currentSystem, nixpkgs ? inputs.nixpkgs-unstable } : import nixpkgs {
@@ -57,7 +60,10 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = { systemName = name; };
+            extraSpecialArgs = {
+              systemName = name;
+              inherit lib;
+            };
             sharedModules = [
               { home.stateVersion = version; }
             ] ++ utils.attrsToValues self.homeManagerModules;
@@ -70,7 +76,7 @@
           selfReference ? self,
           hostPkgs ? pkgs,
           profile ? ./profiles/nixos/qemu-vm.nix,
-          configuration ? ./hosts/nixos/vm + "/${name}.nix"
+          configuration ? { imports = [ (./hosts/nixos/vm + "/${name}.nix") ]; }
         } : lib.nixosSystem {
           specialArgs = {
             inherit vars nixpkgs;

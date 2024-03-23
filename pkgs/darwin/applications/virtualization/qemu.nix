@@ -37,7 +37,6 @@ in stdenv.mkDerivation rec {
 
   configureFlags = [
     "--disable-strip"
-    "--disable-tools"
     "--target-list=aarch64-softmmu"
     "--disable-dbus-display"
     "--enable-slirp"

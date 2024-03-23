@@ -30,11 +30,11 @@ in {
   virtualisation = (mkMerge [
     {
       qemu.package = mkIf hostPkgs.stdenv.isDarwin hostPkgs.macos.qemu;
-      resolution = { x = 1920; y = 1200; };
-      diskImage = null;
-      diskSize = 10 * 1024;
-      cores = 2;
-      memorySize = 4096;
+      resolution = mkDefault { x = 1920; y = 1200; };
+      diskImage = mkDefault null;
+      diskSize = mkDefault (10 * 1024);
+      cores = mkDefault 2;
+      memorySize = mkDefault 4096;
     }
     (mkIf (cfg.socketVmnet) {
       qemu.networkingOptions = [
