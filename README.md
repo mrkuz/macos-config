@@ -240,6 +240,7 @@ Technically profiles are also modules. But they are intended to be used in [flak
 
 | Name       | Description                            |
 |------------|----------------------------------------|
+| docker-tar | Used to create Docker image (tar)      |
 | qemu-qcow2 | Used to create NixOS QCOW2 disk images |
 | qemu-vm    | Used to create NixOS QEMU VMs          |
 

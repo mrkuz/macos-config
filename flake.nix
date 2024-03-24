@@ -107,6 +107,35 @@
           ] ++ utils.attrsToValues self.nixosModules;
         };
 
+        mkDocker = {
+          name,
+          targetSystem ? vars.currentSystem,
+          selfReference ? self,
+          configuration ? { imports = [ (./hosts/nixos/vm + "/${name}.nix") ]; }
+        } : lib.nixosSystem {
+          specialArgs = {
+            inherit vars nixpkgs;
+            self = selfReference;
+            systemName = name;
+            pkgsStable = utils.mkPkgs { system  = targetSystem; nixpkgs = inputs.nixos-stable; };
+          };
+          modules = [
+            ./profiles/nixos/docker-tar.nix
+            ({ lib, options, ... }:  {
+              networking.hostName = lib.mkDefault name;
+              nixpkgs.pkgs = (utils.mkPkgs { system = targetSystem; });
+
+              system = {
+                inherit name;
+                stateVersion = vars.nixos.stateVersion;
+                configurationRevision = vars.rev;
+              };
+            })
+            inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule { inherit name; })
+            configuration
+          ] ++ utils.attrsToValues self.nixosModules;
+        };
+
         mkDarwin = { name }: inputs.nix-darwin.lib.darwinSystem {
           specialArgs = {
             inherit self vars nixpkgs;
@@ -177,6 +206,8 @@
             # Custom
             copyChannel = false;
           };
+          # Docker images
+          playground-docker = (utils.mkDocker { name = "playground"; targetSystem = "aarch64-linux"; }).config.system.build.tarball;
           # Packages
           macos = {
             socket_vmnet = (utils.callPkg ./pkgs/darwin/applications/virtualization/socket_vmnet.nix);

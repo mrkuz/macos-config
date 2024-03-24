@@ -157,6 +157,9 @@ in
         };
       };
     })
+    (mkIf (cfg.graphics) {
+      hardware.opengl.enable = mkDefault cfg.opengl;
+    })
     (mkIf (!cfg.graphics) {
       environment = {
         systemPackages = with pkgs; [ resize ];
