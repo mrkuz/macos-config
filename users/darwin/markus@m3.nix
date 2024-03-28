@@ -116,6 +116,4 @@
       };
     };
   };
-
-  services.syncthing.enable = true;
 }
