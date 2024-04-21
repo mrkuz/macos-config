@@ -29,6 +29,7 @@
 - Stage Manager: Show in Menu Bar
 - Sound: Always Show In Menu Bar
 - Now Playing: Don’t Show in Menu Bar
+- Music Recognition: Show in Control Center
 - Fast User Switching / Show in Menu Bar: Don’t Show
 - Spotlight: Don’t Show in Menu Bar
 - Siri: Don’t Show in Menu Bar
