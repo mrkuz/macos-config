@@ -25,11 +25,9 @@
       vscode
       # CLI utils
       age
-      android-tools
       bat
       cloc
       fd
-      fnm
       htop
       iftop
       inetutils
@@ -45,6 +43,15 @@
       tree
       watch
       wget
+      # Android
+      android-tools
+      # Node.js
+      fnm
+      # Cloud
+      (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
+      kubectl
+      kubernetes-helm
+      terraform
       # VMs
       (lib.buildQemuVm {
         name = "docker";
