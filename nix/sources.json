@@ -2,13 +2,13 @@
     "SDL2": {
         "branch": "SDL2",
         "repo": "git@github.com:libsdl-org/SDL",
-        "rev": "4e29be814e2a67992e7487b2b1814e37ff4c6980",
+        "rev": "ab10bf54f20aaa0a0efef7dc1b2a1cb6a5f76db1",
         "type": "git"
     },
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "23b8a833f3da67e3a1bd7985fcec256ab3241bb2",
+        "rev": "0e7d735b144d766915003e42498c4ac27fad6c15",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
@@ -32,11 +32,11 @@
         "type": "git"
     },
     "qemu": {
-        "sha256": "1gi9fyc6sk632bnqqp1jy1qciqxbamsva8jzghc9spqpb08paql5",
+        "sha256": "0sfshvrwq8hd3b9fmpbhgmcnviy1f73nia9ycf9cin1hdk38lw1j",
         "type": "file",
-        "url": "https://download.qemu.org/qemu-8.2.1.tar.xz",
+        "url": "https://download.qemu.org/qemu-9.0.0.tar.xz",
         "url_template": "https://download.qemu.org/qemu-<version>.tar.xz",
-        "version": "8.2.1"
+        "version": "9.0.0"
     },
     "socket_vmnet": {
         "branch": "master",
