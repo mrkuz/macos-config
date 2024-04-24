@@ -25,7 +25,7 @@ in {
   config = mkIf cfg.enable {
     services.cage = {
       enable = cfg.wayland;
-      user = cfg.usr;
+      user = cfg.user;
       program = cfg.program;
     };
 
