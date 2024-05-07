@@ -38,6 +38,7 @@ in
       niv
       nix-index
       nix-index-update
+      nvd
     ];
 
     nix = {

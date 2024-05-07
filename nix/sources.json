@@ -2,13 +2,13 @@
     "SDL2": {
         "branch": "SDL2",
         "repo": "git@github.com:libsdl-org/SDL",
-        "rev": "ab10bf54f20aaa0a0efef7dc1b2a1cb6a5f76db1",
+        "rev": "8c92af5e54ba7b3e52b8da9f7557ecd863633a1f",
         "type": "git"
     },
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "0e7d735b144d766915003e42498c4ac27fad6c15",
+        "rev": "5c78d084206f095337c663ac7747e02fdc5b72d9",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
@@ -47,7 +47,7 @@
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "2aeffe412d868614e54d95c457278a6ed09fdca2",
+        "rev": "6ddeb0dc992e65a46ee48206cd5ab29e58d1a7a0",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {

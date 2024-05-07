@@ -27,6 +27,7 @@
       age
       bat
       cloc
+      eza
       fd
       htop
       iftop
