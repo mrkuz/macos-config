@@ -103,6 +103,13 @@ function update() {
 function rebuild() {
     info "Rebuild and switch"
     darwin-rebuild switch --keep-going  -v --flake ".#$1"
+    current=$(HOME=/var/root sudo nix-env --profile "/nix/var/nix/profiles/system" --list-generations | awk '/current/{print $1}')
+    prev=$((current - 1))
+    if [[ -e "/nix/var/nix/profiles/system-$current-link" ]]; then
+        if [[ -e "/nix/var/nix/profiles/system-$prev-link" ]]; then
+            nvd diff /nix/var/nix/profiles/system-{$prev,$current}-link/
+        fi
+    fi
 }
 
 function upgrade() {

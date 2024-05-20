@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgsStable, ... }:
 with lib;
 let
   cfg = config.modules.kitty;
@@ -22,6 +22,7 @@ in
   config = mkIf cfg.enable {
     programs.kitty = {
       enable = true;
+      package = pkgsStable.kitty;
       shellIntegration = {
         enableFishIntegration = cfg.enableFishIntegration;
         mode = "no-cursor";

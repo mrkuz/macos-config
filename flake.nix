@@ -63,6 +63,7 @@
             extraSpecialArgs = {
               systemName = name;
               inherit lib;
+              pkgsStable = utils.mkPkgs { nixpkgs = inputs.nixos-stable; };
             };
             sharedModules = [
               { home.stateVersion = version; }
@@ -140,6 +141,7 @@
           specialArgs = {
             inherit self vars nixpkgs;
             systemName = name;
+            # pkgsStable = utils.mkPkgs { nixpkgs = inputs.nixos-stable; };
           };
           modules = [
             { nixpkgs.pkgs = pkgs; }
