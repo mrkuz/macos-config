@@ -22,7 +22,7 @@ in
   config = mkIf cfg.enable {
     programs.kitty = {
       enable = true;
-      package = pkgsStable.kitty;
+      package = pkgs.kitty;
       shellIntegration = {
         enableFishIntegration = cfg.enableFishIntegration;
         mode = "no-cursor";

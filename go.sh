@@ -11,6 +11,8 @@ USERS_DIR="$(dirname $HOME)"
 SRC_DIR="src"
 KEEP_GENERATIONS="1"
 
+export HOMEBREW_AUTO_UPDATE_SECS=3600
+
 # Colors
 
 BLACK="\e[0;30m"
