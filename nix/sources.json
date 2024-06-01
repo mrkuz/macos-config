@@ -2,13 +2,13 @@
     "SDL2": {
         "branch": "SDL2",
         "repo": "git@github.com:libsdl-org/SDL",
-        "rev": "d5e5d4a802095951fbb60fc4ee97a0d431b06447",
+        "rev": "35d719ef2522385a4950ca4900f95808eb47dc5f",
         "type": "git"
     },
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "e3cba40e9a673744900fbb89d324e7f9699d9009",
+        "rev": "1fa6c0208216bebedb807eb8c72438b37b567107",
         "type": "git"
     },
     "chromium-aarch64-darwin": {

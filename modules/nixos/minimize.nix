@@ -31,6 +31,10 @@ in {
         channel.enable = false;
         enable = !cfg.noNix;
       };
+      nixpkgs.flake = {
+        setNixPath = false;
+        setFlakeRegistry = false;
+      };
       services.timesyncd.enable = false;
       system.disableInstallerTools = true;
       systemd = {

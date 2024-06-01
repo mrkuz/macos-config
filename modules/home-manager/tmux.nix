@@ -11,7 +11,7 @@ in
     };
     shell = mkOption {
       default = "${pkgs.zsh}/bin/zsh";
-      type = types.string;
+      type = types.str;
     };
   };
 

@@ -50,5 +50,11 @@ in
         ];
       };
     };
+
+    nixpkgs.flake = {
+      # We take care of this on our own (see modules/common/nix.nix)
+      setNixPath = false;
+      setFlakeRegistry = false;
+    };
   };
 }
