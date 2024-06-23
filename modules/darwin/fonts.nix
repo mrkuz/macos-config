@@ -13,8 +13,7 @@ in
 
   config = mkIf cfg.enable {
     fonts = {
-      fontDir.enable = true;
-      fonts = with pkgs; [
+      packages = with pkgs; [
         dejavu_fonts
         fira-code
         hack-font
