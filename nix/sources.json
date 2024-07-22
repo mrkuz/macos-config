@@ -2,13 +2,13 @@
     "SDL2": {
         "branch": "SDL2",
         "repo": "git@github.com:libsdl-org/SDL",
-        "rev": "2eeb39298e81fefb28ec6545cedb20915eb1657e",
+        "rev": "73066492f6d32d10f12ca490508efdbeea0f4ad9",
         "type": "git"
     },
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "a5161f01b4b4b756b0aed95b62d4320a1a84c201",
+        "rev": "975674ea9de0cd52fdafb48d118861378e3bfa5d",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
@@ -28,7 +28,7 @@
     "libepoxy": {
         "branch": "master",
         "repo": "git@github.com:anholt/libepoxy",
-        "rev": "2df68f811fc1a5f0a6d372ecdb887333ad3f540f",
+        "rev": "f13c13c11cfe271844a8735beb9dc0480572405a",
         "type": "git"
     },
     "qemu": {
@@ -47,7 +47,7 @@
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "76e654a0e5df0dffec7d01b175b7141189a50e1c",
+        "rev": "137e45ecb5424a5306083a469422fd259a240344",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
