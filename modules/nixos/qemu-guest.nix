@@ -52,7 +52,7 @@ in
       default = false;
       type = types.bool;
     };
-    noLogin = mkOption {
+    skipLogin = mkOption {
       default = false;
       type = types.bool;
     };
@@ -105,7 +105,7 @@ in
         })
       ]);
     })
-    (mkIf (cfg.noLogin) {
+    (mkIf (cfg.skipLogin) {
       services.getty = {
         loginProgram = "${pkgs.coreutils-full}/bin/sleep";
         loginOptions = "infinity";

@@ -232,7 +232,7 @@ Also check out the existing NixOS options (`virtualisation.*`) for customisation
 | sshd        | Configure and start SSH server                                              | false   |
 | vmnet       | Use [vmnet](https://developer.apple.com/documentation/vmnet) for networking | false   |
 | socketVmnet | Use [socket_vmnet](https://github.com/lima-vm/socket_vmnet) for networking  | false   |
-| noLogin     | Disable login on serial console                                             | false   |
+| skipLogin   | Skip login on serial console                                             | false   |
 
 ## Profiles
 
