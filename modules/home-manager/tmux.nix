@@ -20,7 +20,7 @@ in
       enable = true;
       baseIndex = 1;
       clock24 = true;
-      mouse = false;
+      mouse = true;
       shell = cfg.shell;
       terminal = "screen-256color";
       plugins = [ pkgs.tmuxPlugins.extrakto ];

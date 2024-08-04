@@ -8,10 +8,6 @@ in stdenv.mkDerivation rec {
   nativeBuildInputs = with pkgs; [ meson ninja python3 pkg-config ];
   buildInputs = with pkgs; [ macos.angle macos.libepoxy ];
 
-  mesonFlags = [
-    "-Ddrm=disabled"
-  ];
-
   meta = with lib; {
     platforms = platforms.darwin;
   };
