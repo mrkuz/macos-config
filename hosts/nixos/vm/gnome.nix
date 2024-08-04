@@ -6,6 +6,7 @@
     qemuGuest = {
       dhcp = true;
       graphics = true;
+      opengl = true;
       socketVmnet = true;
       user = vars.primaryUser;
     };

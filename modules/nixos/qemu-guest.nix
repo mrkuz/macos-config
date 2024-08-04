@@ -114,7 +114,7 @@ in
     })
     (mkIf (cfg.user != null) {
       services.getty.autologinUser = mkIf cfg.autoLogin cfg.user;
-      services.xserver.displayManager.autoLogin.user = mkIf cfg.autoLogin cfg.user;
+      services.displayManager.autoLogin.user = mkIf cfg.autoLogin cfg.user;
 
       services.openssh.settings = {
         AllowUsers = [ cfg.user ];
@@ -158,7 +158,7 @@ in
       };
     })
     (mkIf (cfg.graphics) {
-      hardware.opengl.enable = mkDefault cfg.opengl;
+      hardware.graphics.enable = mkDefault true;
     })
     (mkIf (!cfg.graphics) {
       environment = {
