@@ -247,6 +247,7 @@
 
       overlays = {
         nixos-option = import ./overlays/tools/nix/nixos-option.nix;
+        emacs = import ./overlays/applications/editors/emacs.nix;
         lib = self: super: {
           lib = utils.extendLib super.lib;
         };
