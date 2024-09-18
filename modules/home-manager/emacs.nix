@@ -2,7 +2,7 @@
 with lib;
 let
   cfg = config.modules.emacs;
-  emacsPkg = ((pkgs.emacsPackagesFor pkgs.emacs-unstable).emacsWithPackages (epkgs: [ epkgs.vterm ]));
+  emacsPkg = ((pkgs.emacsPackagesFor pkgs.emacs-plus).emacsWithPackages (epkgs: [ epkgs.vterm ]));
 in
 {
   options.modules.emacs = {
