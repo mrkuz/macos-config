@@ -17,16 +17,11 @@ in {
       default = false;
       type = types.bool;
     };
-    noXlibs = mkOption {
-      default = false;
-      type = types.bool;
-    };
   };
 
   config = mkIf cfg.enable (mkMerge [
     profile
     {
-      environment.noXlibs = cfg.noXlibs;
       nix = {
         channel.enable = false;
         enable = !cfg.noNix;

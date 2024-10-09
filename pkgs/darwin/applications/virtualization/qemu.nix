@@ -17,7 +17,6 @@ in stdenv.mkDerivation rec {
     darwin.apple_sdk.frameworks.Cocoa
     darwin.apple_sdk.frameworks.Hypervisor
     darwin.apple_sdk.frameworks.vmnet
-    # SDL2
     macos.angle
     macos.libepoxy
     macos.virglrenderer

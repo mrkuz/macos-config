@@ -1,14 +1,8 @@
 {
-    "SDL2": {
-        "branch": "SDL2",
-        "repo": "git@github.com:libsdl-org/SDL",
-        "rev": "d9b4b7d0e0a7f83167f099687fb2d94d07c6fb49",
-        "type": "git"
-    },
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "d1f23926370054a9409092aa122ae90a93644469",
+        "rev": "1c14a0b0b30164f07a3c439858f04b5ec9c58e0a",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
@@ -41,13 +35,13 @@
     "socket_vmnet": {
         "branch": "master",
         "repo": "git@github.com:lima-vm/socket_vmnet",
-        "rev": "8513f80c74e429f209176a79a93d347f09fe975e",
+        "rev": "0b6aed916e194309bfc3f1245003a5fdc3438848",
         "type": "git"
     },
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "2537891819bef0280b99157dc5dbfe882244f228",
+        "rev": "29f466f607deb95c59e82cc04b70fbb53bbef96b",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {

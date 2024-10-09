@@ -153,7 +153,6 @@ in
         settings = {
           StrictModes = false;
           PasswordAuthentication = false;
-          X11Forwarding = true;
         };
       };
     })

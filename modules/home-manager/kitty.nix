@@ -27,7 +27,7 @@ in
         enableFishIntegration = cfg.enableFishIntegration;
         mode = "no-cursor";
       };
-      theme = "Solarized Dark - Patched";
+      themeFile = "Solarized_Dark_-_Patched";
       font = {
         name = "SF Mono";
         size = 14;

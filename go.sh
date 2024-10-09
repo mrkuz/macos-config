@@ -162,6 +162,7 @@ case "$1" in
         pull "home-manager"
         pull "nix-darwin"
         pull "nixpkgs"
+        pull "rfcs"
         ;;
     "update")
         update

@@ -210,7 +210,6 @@ Creates a minimized variant of NixOS.
 |---------|-------------------------------------------|---------|---------|
 | noLogin | Disable console login                     | false   |         |
 | noNix   | Remove nix package and disable daemon     | false   |         |
-| noXlibs | Remove dependency to X11 client libraries | false   |         |
 
 <a id="qemu-guest"></a>
 
