@@ -2,7 +2,7 @@
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "1c14a0b0b30164f07a3c439858f04b5ec9c58e0a",
+        "rev": "4aa12e9e17f5ab6b140febd83185583e8b7ac9d4",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
@@ -35,13 +35,13 @@
     "socket_vmnet": {
         "branch": "master",
         "repo": "git@github.com:lima-vm/socket_vmnet",
-        "rev": "0b6aed916e194309bfc3f1245003a5fdc3438848",
+        "rev": "273726b8d731f9daef2be4027be7a0edc7dbd1cb",
         "type": "git"
     },
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "29f466f607deb95c59e82cc04b70fbb53bbef96b",
+        "rev": "c180a39932154002ad75550eceb10584d2c6ecdb",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
