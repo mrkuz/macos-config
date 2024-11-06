@@ -1,8 +1,9 @@
 {
   inputs = {
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
-    nixos-stable.url = "github:nixos/nixpkgs/nixos-23.11";
+    # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
+    # nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     nix-alien = { url = "github:thiagokokada/nix-alien"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
     nix-darwin = { url = "github:LnL7/nix-darwin/master"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
@@ -75,6 +76,7 @@
           name,
           targetSystem ? vars.currentSystem,
           selfReference ? self,
+          nixpkgs ? inputs.nixpkgs-unstable,
           hostPkgs ? pkgs,
           profile ? ./profiles/nixos/qemu-vm.nix,
           configuration ? { imports = [ (./hosts/nixos/vm + "/${name}.nix") ]; }
@@ -83,13 +85,13 @@
             inherit vars nixpkgs;
             self = selfReference;
             systemName = name;
-            pkgsStable = utils.mkPkgs { system  = targetSystem; nixpkgs = inputs.nixos-stable; };
+            pkgsStable = utils.mkPkgs { system = targetSystem; nixpkgs = inputs.nixos-stable; };
           };
           modules = [
             profile
             ({ lib, options, ... }:  {
               networking.hostName = lib.mkDefault name;
-              nixpkgs.pkgs = utils.mkPkgs { system = targetSystem; };
+              nixpkgs.pkgs = utils.mkPkgs { system = targetSystem; inherit nixpkgs; };
               modules.qemuGuest.enable = true;
               virtualisation = lib.vmHostAttrs options {
                 host.pkgs = hostPkgs;
