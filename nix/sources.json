@@ -2,15 +2,15 @@
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "5a9f361c53bdf98f2faf4288f625b1c1b791fcdf",
+        "rev": "d399841a9226bbe2c6ad4e0c55a9d50b25ec1728",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
-        "sha256": "16ssq0l2bfchwcqr7v2wr9ywcdhalyx3xzrzl4wnayabys9gvdj0",
+        "sha256": "1sjriz6rqfdq3d83l2i6c84vxy1sa4hw95pfhazd66v0n0pm9wzg",
         "type": "file",
-        "url": "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac_Arm%2F1267441%2Fchrome-mac.zip?alt=media",
+        "url": "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac_Arm%2F1379013%2Fchrome-mac.zip?alt=media",
         "url_template": "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac_Arm%2F<version>%2Fchrome-mac.zip?alt=media",
-        "version": "1267441"
+        "version": "1379013"
     },
     "k3s-aarch64-linux": {
         "sha256": "11n5fv9146kgx2mq30g7ykw282jbzbgv7cjc8xp7rg2k0pwnmkk2",
@@ -26,11 +26,11 @@
         "type": "git"
     },
     "qemu": {
-        "sha256": "0sfshvrwq8hd3b9fmpbhgmcnviy1f73nia9ycf9cin1hdk38lw1j",
+        "sha256": "12d8pga3gss613yhcmz4dqiryqbbldih0cgk02al9zwiakdgkh3x",
         "type": "file",
-        "url": "https://download.qemu.org/qemu-9.0.0.tar.xz",
+        "url": "https://download.qemu.org/qemu-9.1.1.tar.xz",
         "url_template": "https://download.qemu.org/qemu-<version>.tar.xz",
-        "version": "9.0.0"
+        "version": "9.1.1"
     },
     "socket_vmnet": {
         "branch": "master",
@@ -41,7 +41,7 @@
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "55ff365afd3c7f66084e5957ab1061493bfa2181",
+        "rev": "e091dc02ecd60926555bcda1e6725e2cbb5d5681",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {

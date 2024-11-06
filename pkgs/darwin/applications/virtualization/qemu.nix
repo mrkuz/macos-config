@@ -1,22 +1,28 @@
-{ stdenv, lib, pkgs, sources, ... }:
+{ stdenv, overrideSDK, lib, pkgs, sources, ... }:
 let
   source = sources.qemu;
-in stdenv.mkDerivation rec {
+  stdenv123 = overrideSDK stdenv {
+    darwinSdkVersion = "12.3";
+    darwinMinVersion = "12.0";
+  };
+in stdenv123.mkDerivation rec {
   name = "qemu";
   src = source;
 
   nativeBuildInputs = with pkgs; [ pkg-config ninja python3Packages.python ];
   buildInputs = with pkgs; [
+    dtc
     glib
     libslirp
     pixman
     darwin.stubs.rez
     darwin.stubs.setfile
     darwin.sigtool
-    darwin.apple_sdk.frameworks.CoreServices
-    darwin.apple_sdk.frameworks.Cocoa
-    darwin.apple_sdk.frameworks.Hypervisor
-    darwin.apple_sdk.frameworks.vmnet
+    darwin.apple_sdk_12_3.frameworks.CoreServices
+    darwin.apple_sdk_12_3.frameworks.Cocoa
+    darwin.apple_sdk_12_3.frameworks.Hypervisor
+    darwin.apple_sdk_12_3.frameworks.Kernel
+    darwin.apple_sdk_12_3.frameworks.vmnet
     macos.angle
     macos.libepoxy
     macos.virglrenderer
