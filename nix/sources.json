@@ -49,5 +49,11 @@
         "repo": "git@github.com:akihikodaki/virglrenderer",
         "rev": "4a489584344787ea52226ac50dd9fa86a1f38f90",
         "type": "git"
+    },
+    "virglrenderer-utm": {
+        "branch": "macos",
+        "repo": "git@github.com:utmapp/virglrenderer",
+        "rev": "dc039d9ecd74fc671a85bfbe7c4e4bc552b7b855",
+        "type": "git"
     }
 }

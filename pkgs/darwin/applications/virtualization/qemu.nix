@@ -38,7 +38,8 @@ in stdenv123.mkDerivation rec {
   '';
 
   # See: https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5
-  patches = [ ./qemu/akihikodaki.patch ];
+  patches = [ ./qemu/akihikodaki-9.1.1.patch ];
+  # patches = [ ./qemu/utm-9.1.0.patch ];
 
   configureFlags = [
     "--disable-strip"
