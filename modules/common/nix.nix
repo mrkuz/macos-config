@@ -58,12 +58,12 @@ in
         nixos-stable = mkRegistry "nixos-stable" "nixos-${vars.nixos.stableVersion}";
         nixos-unstable = mkRegistry "nixos-unstable" "nixos-unstable";
       };
+      optimise.automatic = true;
       settings = {
         experimental-features = "nix-command flakes";
         narinfo-cache-positive-ttl = 604800;
         keep-outputs = true;
         keep-derivations = true;
-        auto-optimise-store = true;
         sandbox = true;
       };
     };

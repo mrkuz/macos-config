@@ -2,7 +2,7 @@
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "d399841a9226bbe2c6ad4e0c55a9d50b25ec1728",
+        "rev": "5754fb80662a9f4baf682ce017052ba5c1b4cbaf",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
@@ -22,7 +22,7 @@
     "libepoxy": {
         "branch": "master",
         "repo": "git@github.com:anholt/libepoxy",
-        "rev": "f13c13c11cfe271844a8735beb9dc0480572405a",
+        "rev": "e98617e62e74a835d4e403cd270afaf296afe839",
         "type": "git"
     },
     "qemu": {
@@ -35,13 +35,13 @@
     "socket_vmnet": {
         "branch": "master",
         "repo": "git@github.com:lima-vm/socket_vmnet",
-        "rev": "273726b8d731f9daef2be4027be7a0edc7dbd1cb",
+        "rev": "f486d475d4842bbddfe8f66ba09f7d1cb10cfbed",
         "type": "git"
     },
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "e091dc02ecd60926555bcda1e6725e2cbb5d5681",
+        "rev": "57a2b82e0958f08d02ade8400786e1ca0935c9b1",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
