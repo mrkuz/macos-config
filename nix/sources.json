@@ -2,7 +2,7 @@
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "5754fb80662a9f4baf682ce017052ba5c1b4cbaf",
+        "rev": "c56867ece5d3f0dfcd59438003ba786397f6dc17",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
