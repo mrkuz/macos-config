@@ -28,10 +28,6 @@ in
         mode = "no-cursor";
       };
       themeFile = "Solarized_Dark_-_Patched";
-      font = {
-        name = "SF Mono";
-        size = 14;
-      };
       settings = {
         cursor_shape = "block";
         cursor_blink_interval = 0;
@@ -40,6 +36,8 @@ in
         shell = cfg.shell;
         strip_trailing_spaces = "smart";
         macos_quit_when_last_window_closed = true;
+        # sync_to_monitor = false;
+        wayland_enable_ime = false;
       };
     };
   };
