@@ -235,6 +235,7 @@
       };
 
       homeManagerModules = {
+        alacritty = import ./modules/home-manager/alacritty.nix;
         emacs = import ./modules/home-manager/emacs.nix;
         kitty = import ./modules/home-manager/kitty.nix;
         tmux = import ./modules/home-manager/tmux.nix;

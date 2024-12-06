@@ -1,9 +1,8 @@
 { config, lib, pkgs, systemName, ... }:
 {
   modules = {
-    kitty = {
+    alacritty = {
       enable = true;
-      enableFishIntegration = true;
       shell = "${pkgs.tmux}/bin/tmux";
     };
     tmux = {
@@ -42,10 +41,6 @@
   programs.fish = {
     enable = true;
     plugins = [
-      {
-        name = "sdkman";
-        src = pkgs.fishPlugins.sdkman-for-fish.src;
-      }
       {
         name = "pure";
         src = pkgs.fishPlugins.pure.src;

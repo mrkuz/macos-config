@@ -42,14 +42,26 @@
     };
   };
 
-  programs.kitty = {
-    font = {
-      name = "SF Mono";
-      size = 16;
+  programs.alacritty = {
+    settings = {
+      font = {
+        normal = {
+          family = "Ubuntu Mono";
+          style = "Regular";
+        };
+        offset = { x = 0; y = 2; };
+        size = 18;
+      };
     };
   };
 
   programs.fish = {
+    plugins = [
+      {
+        name = "sdkman";
+        src = pkgs.fishPlugins.sdkman-for-fish.src;
+      }
+    ];
     shellAliases = {
       ec = "emacsclient --socket-name /var/folders/tm/s0rmv44130v_l7p3jynpdkm00000gn/T/emacs501/default -n -c";
     };
