@@ -57,6 +57,8 @@
     };
     interactiveShellInit = ''
       set -U fish_greeting
+      set -U pure_symbol_prompt ">"
+      set -U pure_color_mute "brgreen"
       fish_add_path $HOME/bin
     '';
   };

@@ -29,6 +29,12 @@ in
 
         set -g status-left " #S:#I.#P | "
         set -g status-right "%Y/%m/%d %H:%M "
+        set -g status-style "bg=default fg=yellow"
+
+        # Add empty status line for padding
+        set -Fg "status-format[1]" "#{status-format[0]}"
+        set -g "status-format[0]" ""
+        set -g status 2
 
         # Show activity notification for other windows
         setw -g monitor-activity on
