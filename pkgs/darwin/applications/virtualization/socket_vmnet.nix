@@ -4,7 +4,7 @@ let
 in stdenv.mkDerivation rec {
   name = "socket_vmnet";
   src = source;
-  buildInputs = [ pkgs.darwin.apple_sdk.frameworks.vmnet ];
+  buildInputs = [ pkgs.darwin.apple_sdk.frameworks.vmnet pkgs.util-linux ];
 
   installPhase = ''
     runHook preInstall
