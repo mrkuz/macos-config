@@ -18,8 +18,6 @@
       vscode
       # Android
       android-tools
-      # Node.js
-      fnm
       # Cloud
       (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
       kubectl
@@ -56,12 +54,6 @@
   };
 
   programs.fish = {
-    plugins = [
-      {
-        name = "sdkman";
-        src = pkgs.fishPlugins.sdkman-for-fish.src;
-      }
-    ];
     shellAliases = {
       ec = "emacsclient --socket-name /var/folders/tm/s0rmv44130v_l7p3jynpdkm00000gn/T/emacs501/default -n -c";
     };
@@ -71,7 +63,6 @@
     interactiveShellInit = ''
       set -U fish_greeting
       fish_add_path $HOME/bin
-      ${pkgs.fnm}/bin/fnm env | source
     '';
   };
 }

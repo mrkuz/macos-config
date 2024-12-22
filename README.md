@@ -18,7 +18,6 @@ Notes:
     1. If it is offical Apple software or there are no other options -> App Store (using [mas](https://github.com/mas-cli/mas))
     2. If it is proprietary software or distributed as DMG -> [Homebrew](https://brew.sh)
     3. Else -> nix
-- Exception: Some tools for development (e.g. [SDKMAN!](https://sdkman.io) to manage JDK installations)
 - [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle) keeps track of software installed via App Store or Homebrew
 - Not handled by Home Manger:
     - [Emacs](https://www.gnu.org/software/emacs/) configuration (see [here](https://github.com/mrkuz/emacs.d))

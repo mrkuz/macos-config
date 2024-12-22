@@ -24,6 +24,7 @@
       iftop
       inetutils
       jq
+      mise
       # ncdu
       pdftk
       pstree
@@ -60,6 +61,7 @@
       set -U pure_symbol_prompt ">"
       set -U pure_color_mute "brgreen"
       fish_add_path $HOME/bin
+      ${pkgs.mise}/bin/mise activate | source
     '';
   };
 
