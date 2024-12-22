@@ -26,9 +26,9 @@
         primaryUser = "markus";
         sshKeyFile = ./users/darwin/markus/files/id_rsa.pub;
         darwin.stateVersion = 4;
-        homeManager.stateVersion = "24.11";
-        nixos.stateVersion = "24.11";
-        nixos.stableVersion = "24.05";
+        homeManager.stateVersion = "25.05";
+        nixos.stateVersion = "25.05";
+        nixos.stableVersion = "24.11";
         rev = self.rev or self.dirtyRev or "dirty";
       };
 

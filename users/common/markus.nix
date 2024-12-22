@@ -17,6 +17,7 @@
       age
       bat
       cloc
+      colordiff
       eza
       fd
       file
@@ -35,6 +36,7 @@
       socat
       tree
       watch
+      wdiff
       wget
     ];
   };

@@ -2,7 +2,7 @@
     "angle": {
         "branch": "main",
         "repo": "git@github.com:google/angle",
-        "rev": "00d9ef8f182ca015ca6ec6a0fa4bd76512a9bca2",
+        "rev": "81a41e4f10f960a290d89147c7a152fcd48f09a4",
         "type": "git"
     },
     "chromium-aarch64-darwin": {
@@ -41,7 +41,7 @@
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "6bb0cc14c586fae810eb3021f0c6dd58157fb75a",
+        "rev": "1a8a95775029e75147f3a6c46cbb27077b6b0bfa",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
