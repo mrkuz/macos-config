@@ -1,11 +1,8 @@
-{ stdenv, overrideSDK, lib, pkgs, sources, ... }:
+{ stdenv, darwinMinVersionHook, lib, pkgs, sources, ... }:
 let
   source = sources.qemu;
-  stdenv123 = overrideSDK stdenv {
-    darwinSdkVersion = "12.3";
-    darwinMinVersion = "12.0";
-  };
-in stdenv123.mkDerivation rec {
+  darwinSDK = [ pkgs.apple-sdk_13 (darwinMinVersionHook "13") ];
+in stdenv.mkDerivation rec {
   name = "qemu";
   src = source;
 
@@ -18,11 +15,7 @@ in stdenv123.mkDerivation rec {
     darwin.stubs.rez
     darwin.stubs.setfile
     darwin.sigtool
-    darwin.apple_sdk_12_3.frameworks.CoreServices
-    darwin.apple_sdk_12_3.frameworks.Cocoa
-    darwin.apple_sdk_12_3.frameworks.Hypervisor
-    darwin.apple_sdk_12_3.frameworks.Kernel
-    darwin.apple_sdk_12_3.frameworks.vmnet
+    darwinSDK
     macos.angle
     macos.libepoxy
     macos.virglrenderer
@@ -38,13 +31,14 @@ in stdenv123.mkDerivation rec {
   '';
 
   # See: https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5
-  patches = [ ./qemu/akihikodaki-9.1.1.patch ];
+  patches = [ ./qemu/akihikodaki-9.2.0.patch ];
   # patches = [ ./qemu/utm-9.1.0.patch ];
 
   configureFlags = [
     "--disable-strip"
     "--target-list=aarch64-softmmu"
     "--disable-dbus-display"
+    "--disable-plugins"
     "--enable-slirp"
     "--enable-tcg"
     "--enable-virtfs"

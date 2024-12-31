@@ -26,11 +26,11 @@
         "type": "git"
     },
     "qemu": {
-        "sha256": "12d8pga3gss613yhcmz4dqiryqbbldih0cgk02al9zwiakdgkh3x",
+        "sha256": "156qkc44vd1gcmy6i9i1r7r5mvpcrwmwks5v83837xg1cnyg0ngq",
         "type": "file",
-        "url": "https://download.qemu.org/qemu-9.1.1.tar.xz",
+        "url": "https://download.qemu.org/qemu-9.2.0.tar.xz",
         "url_template": "https://download.qemu.org/qemu-<version>.tar.xz",
-        "version": "9.1.1"
+        "version": "9.2.0"
     },
     "socket_vmnet": {
         "branch": "master",
