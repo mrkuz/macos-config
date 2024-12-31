@@ -10,11 +10,13 @@ cask "intellij-idea-ce"
 cask "key-codes"
 cask "libreoffice"
 cask "porting-kit"
-cask "slack"
 cask "steam"
 cask "vorta"
 cask "whisky"
 cask "zoom"
+mas "Developer", id: 640199958
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
 mas "Xcode", id: 497799835
 vscode "lfs.vscode-emacs-friendly"
 vscode "ms-vscode.live-server"
