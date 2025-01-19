@@ -27,7 +27,7 @@
       jq
       mise
       # ncdu
-      pdftk
+      # pdftk
       pstree
       pwgen
       rclone
@@ -63,7 +63,7 @@
       set -U pure_symbol_prompt ">"
       set -U pure_color_mute "brgreen"
       fish_add_path $HOME/bin
-      ${pkgs.mise}/bin/mise activate | source
+      ${pkgs.mise}/bin/mise activate fish | source
     '';
   };
 
