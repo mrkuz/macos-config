@@ -12,9 +12,9 @@
       # MacOS
       mas
       # Virtualisation
+      lima
       macos.qemu
       # GUI utils
-      baobab
       vscode
       # Android
       android-tools

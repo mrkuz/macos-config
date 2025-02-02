@@ -26,7 +26,7 @@
       inetutils
       jq
       mise
-      # ncdu
+      ncdu
       # pdftk
       pstree
       pwgen
@@ -62,6 +62,7 @@
       set -U fish_greeting
       set -U pure_symbol_prompt ">"
       set -U pure_color_mute "brgreen"
+      set -U pure_enable_nixdevshell true
       fish_add_path $HOME/bin
       ${pkgs.mise}/bin/mise activate fish | source
     '';
