@@ -25,6 +25,9 @@
         currentSystem = "aarch64-darwin";
         primaryUser = "markus";
         sshKeyFile = ./users/darwin/markus/files/id_rsa.pub;
+      };
+
+      versions = {
         darwin.stateVersion = 4;
         homeManager.stateVersion = "25.05";
         nixos.stateVersion = "25.05";
@@ -57,7 +60,7 @@
         callPkg = package:
           pkgs.callPackage package { inherit sources; };
 
-        mkHomeManagerModule = { name, version ? vars.homeManager.stateVersion }: {
+        mkHomeManagerModule = { name, version ? versions.homeManager.stateVersion }: {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
@@ -82,7 +85,7 @@
           configuration ? { imports = [ (./hosts/nixos/vm + "/${name}.nix") ]; }
         } : lib.nixosSystem {
           specialArgs = {
-            inherit vars nixpkgs;
+            inherit vars versions nixpkgs;
             self = selfReference;
             systemName = name;
             pkgsStable = utils.mkPkgs { system = targetSystem; nixpkgs = inputs.nixos-stable; };
@@ -99,8 +102,8 @@
 
               system = {
                 inherit name;
-                stateVersion = vars.nixos.stateVersion;
-                configurationRevision = vars.rev;
+                stateVersion = versions.nixos.stateVersion;
+                configurationRevision = versions.rev;
               };
 
               users.users.root.openssh.authorizedKeys.keyFiles = [ vars.sshKeyFile ];
@@ -117,7 +120,7 @@
           configuration ? { imports = [ (./hosts/nixos/vm + "/${name}.nix") ]; }
         } : lib.nixosSystem {
           specialArgs = {
-            inherit vars nixpkgs;
+            inherit vars versions nixpkgs;
             self = selfReference;
             systemName = name;
             pkgsStable = utils.mkPkgs { system  = targetSystem; nixpkgs = inputs.nixos-stable; };
@@ -130,8 +133,8 @@
 
               system = {
                 inherit name;
-                stateVersion = vars.nixos.stateVersion;
-                configurationRevision = vars.rev;
+                stateVersion = versions.nixos.stateVersion;
+                configurationRevision = versions.rev;
               };
             })
             inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule { inherit name; })
@@ -141,7 +144,7 @@
 
         mkDarwin = { name }: inputs.nix-darwin.lib.darwinSystem {
           specialArgs = {
-            inherit self vars nixpkgs;
+            inherit self vars versions nixpkgs;
             systemName = name;
             # pkgsStable = utils.mkPkgs { nixpkgs = inputs.nixos-stable; };
           };
@@ -157,8 +160,8 @@
               };
 
               system = {
-                stateVersion = vars.darwin.stateVersion;
-                configurationRevision = vars.rev;
+                stateVersion = versions.darwin.stateVersion;
+                configurationRevision = versions.rev;
               };
             }
             (./hosts/darwin + "/${name}.nix")
