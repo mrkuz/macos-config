@@ -60,9 +60,5 @@
     shellAbbrs = {
       a86 = "arch -x86_64";
     };
-    interactiveShellInit = ''
-      set -U fish_greeting
-      fish_add_path $HOME/bin
-    '';
   };
 }
