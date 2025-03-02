@@ -89,5 +89,9 @@
         rebase = true;
       };
     };
+    signing = {
+      signByDefault = false;
+      format = "openpgp";
+    };
   };
 }

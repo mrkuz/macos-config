@@ -6,9 +6,6 @@ in
 {
   imports = [ ../common/nix.nix ];
   config = mkIf cfg.enable {
-
-    services.nix-daemon.enable = true;
-    
     system = {
       # Workaround for issue: 'sandbox-exec: pattern serialization length X exceeds maximum (65535)'
       # See: https://github.com/NixOS/nix/issues/4119
