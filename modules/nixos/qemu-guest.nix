@@ -52,10 +52,6 @@ in
       default = false;
       type = types.bool;
     };
-    skipLogin = mkOption {
-      default = false;
-      type = types.bool;
-    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -104,13 +100,6 @@ in
           ];
         })
       ]);
-    })
-    (mkIf (cfg.skipLogin) {
-      services.getty = {
-        loginProgram = "${pkgs.coreutils-full}/bin/sleep";
-        loginOptions = "infinity";
-        extraArgs = [ "--skip-login" ];
-      };
     })
     (mkIf (cfg.user != null) {
       services.getty.autologinUser = mkIf cfg.autoLogin cfg.user;
