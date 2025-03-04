@@ -17,4 +17,6 @@
       user = vars.primaryUser;
     };
   };
+
+  nix.enable = false;
 }

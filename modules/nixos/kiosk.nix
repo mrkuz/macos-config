@@ -29,6 +29,11 @@ in {
       program = cfg.program;
     };
 
+    services.displayManager = {
+      defaultSession = "default";
+      autoLogin.user = cfg.user;
+    };
+
     services.xserver = {
       enable = !cfg.wayland;
       displayManager = {
@@ -36,8 +41,6 @@ in {
           enable = !cfg.wayland;
           autoLogin.timeout = 0;
         };
-        defaultSession = "default";
-        autoLogin.user = cfg.user;
         session = [
           {
             manage = "desktop";
