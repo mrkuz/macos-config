@@ -8,6 +8,7 @@
     nix-alien = { url = "github:thiagokokada/nix-alien"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
     nix-darwin = { url = "github:LnL7/nix-darwin/master"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
     nix-homebrew = { url = "github:zhaofengli-wip/nix-homebrew"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
+    nix-snapd = { url = "github:nix-community/nix-snapd"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
     home-manager = { url = "github:nix-community/home-manager"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
     emacs-overlay = { url = "github:nix-community/emacs-overlay"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
     apple-silicon = { url = "github:tpwrules/nixos-apple-silicon"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
@@ -109,6 +110,7 @@
               users.users.root.openssh.authorizedKeys.keyFiles = [ vars.sshKeyFile ];
             })
             inputs.home-manager.nixosModules.home-manager (utils.mkHomeManagerModule { inherit name; })
+            inputs.nix-snapd.nixosModules.default
             configuration
           ] ++ utils.attrsToValues self.nixosModules;
         };
@@ -178,6 +180,7 @@
       nixosConfigurations.gnome = utils.mkVm { name = "gnome"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.firefox = utils.mkVm { name = "firefox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.k3s = utils.mkVm { name = "k3s"; targetSystem = "aarch64-linux"; };
+      nixosConfigurations.snapd = utils.mkVm { name = "snapd"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.playground-qcow2 = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; profile = ./profiles/nixos/qemu-qcow2.nix; };
 
       darwinConfigurations."m3" = utils.mkDarwin { name = "m3"; };
@@ -196,6 +199,7 @@
           gnome-vm = self.nixosConfigurations.gnome.config.system.build.startVm;
           firefox-vm = self.nixosConfigurations.firefox.config.system.build.startVm;
           k3s-vm = self.nixosConfigurations.k3s.config.system.build.startVm;
+          snapd-vm = self.nixosConfigurations.snapd.config.system.build.startVm;
           # QCOW2 images
           playground-qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
             inherit lib;

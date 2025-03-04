@@ -124,6 +124,7 @@ Host expressions represent a physical of virtual machine. Kind of what you would
 | k3s        | nixos (vm, console) | Runs [k3s](https://k3s.io)                                                         |
 | playground | nixos (vm, console) | NixOS playground to fiddle around                                                  |
 | toolbox    | nixos (vm, graphic) | VM with some tools preconfigured                                                   |
+| snapd      | nixos (vm, console) | Runs [snapd](https://snapcraft.io/docs/get-started)                                |
 
 <a id="users"></a>
 
