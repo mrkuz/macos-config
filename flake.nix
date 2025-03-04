@@ -175,7 +175,6 @@
       nixosConfigurations.playground = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.toolbox = utils.mkVm { name = "toolbox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.docker = utils.mkVm { name = "docker"; targetSystem = "aarch64-linux"; };
-      nixosConfigurations.toolbox-ui = utils.mkVm { name = "toolbox-ui"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.gnome = utils.mkVm { name = "gnome"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.firefox = utils.mkVm { name = "firefox"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.k3s = utils.mkVm { name = "k3s"; targetSystem = "aarch64-linux"; };

@@ -123,8 +123,7 @@ Host expressions represent a physical of virtual machine. Kind of what you would
 | gnome      | nixos (vm, graphic) | Latest [GNOME desktop environment](https://www.gnome.org) (without apps)           |
 | k3s        | nixos (vm, console) | Runs [k3s](https://k3s.io)                                                         |
 | playground | nixos (vm, console) | NixOS playground to fiddle around                                                  |
-| toolbox    | nixos (vm, console) | VM with some CLI tools preconfigured                                               |
-| toolbox-ui | nixos (vm, graphic) | VM with some GUI tools preconfigured                                               |
+| toolbox    | nixos (vm, graphic) | VM with some tools preconfigured                                                   |
 
 <a id="users"></a>
 

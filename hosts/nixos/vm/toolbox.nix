@@ -6,35 +6,95 @@
     qemuGuest = {
       autoLogin = true;
       dhcp = true;
+      graphics = true;
+      opengl = true;
       socketVmnet = true;
       user = vars.primaryUser;
     };
   };
 
-  programs.fish.enable = true;
-  users.users."${vars.primaryUser}".shell = pkgs.fish;
+  documentation = {
+    doc.enable = false;
+    info.enable = false;
+    nixos.enable = false;
+  };
+
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    NIXOS_OZONE_WL = "1";
+  };
+
+  environment.systemPackages = with pkgs; [
+    firefox-devedition
+    mesa-demos
+    # Sway
+    sway
+    wlr-randr
+  ];
+
+  fonts.packages = with pkgs; [
+    ubuntu_font_family
+  ];
+
+  # programs.fish.enable = true;
+  security.polkit.enable = true;
+
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        command = "${pkgs.sway}/bin/sway";
+        user = vars.primaryUser;
+      };
+      default_session = initial_session;
+    };
+  };
+
+  users.users."${vars.primaryUser}" = {
+    password = vars.primaryUser;
+  };
 
   home-manager.users."${vars.primaryUser}" = {
-    home.packages = with pkgs; [
-      # General utils
-      bat
-      htop
-      # Cloud utils
-      awscli2
-      kubectl
-      kubernetes-helm
-    ];
+    imports = [ ../../../users/common/markus.nix ];
 
-    programs.fish = {
-      enable = true;
-      interactiveShellInit = ''
-        set -U fish_greeting
-      '';
+    home.pointerCursor = {
+       package = pkgs.yaru-theme;
+       name = "Yaru";
     };
 
-    programs.fzf = {
+    programs.alacritty = {
+      settings = {
+        font = {
+          normal = {
+            family = "Ubuntu Mono";
+            style = "Regular";
+          };
+          size = 12;
+          offset = { x = 0; y = 4; };
+          glyph_offset = { x = 0; y = 2; };
+        };
+      };
+    };
+
+    wayland.windowManager.sway = {
       enable = true;
-      enableFishIntegration = true;
+      config = {
+        defaultWorkspace = "workspace number 1";
+        terminal = "${pkgs.alacritty}/bin/alacritty";
+        fonts = {
+          names = [ "Ubuntu Mono" ];
+          size = 12.0;
+        };
+        bars = [
+          {
+            position = "top";
+            statusCommand = null;
+          }
+        ];
+        startup = [
+          { command = "${pkgs.swaybg}/bin/swaybg -i ${pkgs.sway}/share/backgrounds/sway/Sway_Wallpaper_Blue_2048x1536.png"; }
+        ];
+      };
     };
   };
 }
