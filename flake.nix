@@ -83,7 +83,7 @@
           nixpkgs ? inputs.nixpkgs-unstable,
           hostPkgs ? pkgs,
           profile ? ./profiles/nixos/qemu-vm.nix,
-          configuration ? { imports = [ (./hosts/nixos/vm + "/${name}.nix") ]; }
+          configuration ? { imports = [ (./vms/nixos + "/${name}.nix") ]; }
         } : lib.nixosSystem {
           specialArgs = {
             inherit vars versions nixpkgs;
@@ -119,7 +119,7 @@
           name,
           targetSystem ? vars.currentSystem,
           selfReference ? self,
-          configuration ? { imports = [ (./hosts/nixos/vm + "/${name}.nix") ]; }
+          configuration ? { imports = [ (./vms/nixos + "/${name}.nix") ]; }
         } : lib.nixosSystem {
           specialArgs = {
             inherit vars versions nixpkgs;
