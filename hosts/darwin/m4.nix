@@ -9,6 +9,8 @@
 
   documentation.info.enable = false;
 
+  networking.hostName = "m4";
+
   nix.linux-builder = {
     enable = true;
     ephemeral = true;

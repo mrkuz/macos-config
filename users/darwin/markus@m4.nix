@@ -16,10 +16,7 @@
       macos.qemu
       # GUI utils
       vscode
-      # Android
-      # android-tools
       # Cloud
-      # (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
       # kubectl
       # kubernetes-helm
       # terraform

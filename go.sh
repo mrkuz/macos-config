@@ -104,9 +104,7 @@ function update() {
 
 function rebuild() {
     info "Rebuild and switch"
-    # darwin-rebuild switch --keep-going --option sandbox false -v --flake ".#$1"
-    darwin-rebuild switch --keep-going --option sandbox relaxed -v --flake ".#$1"
-    # darwin-rebuild switch --keep-going  -v --flake ".#$1"
+    darwin-rebuild switch --keep-going -v --flake ".#$1"
     current=$(HOME=/var/root sudo nix-env --profile "/nix/var/nix/profiles/system" --list-generations | awk '/current/{print $1}')
     prev=$((current - 1))
     if [[ -e "/nix/var/nix/profiles/system-$current-link" ]]; then
