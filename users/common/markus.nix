@@ -44,10 +44,10 @@
   programs.fish = {
     enable = true;
     plugins = [
-      {
-        name = "pure";
-        src = pkgs.fishPlugins.pure.src;
-      }
+      # {
+      #   name = "pure";
+      #   src = pkgs.fishPlugins.pure.src;
+      # }
     ];
     shellAbbrs = {
       gau = "git add -u";

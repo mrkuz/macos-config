@@ -21,7 +21,7 @@ in
       settings = {
         terminal.shell = cfg.shell;
         general.import = [
-          "${pkgs.alacritty-theme}/solarized_dark.toml"
+          "${pkgs.alacritty-theme}/share/alacritty-theme/solarized_dark.toml"
         ];
         window = {
           padding = { x = 10; y = 10; };

@@ -5,7 +5,6 @@
     hunspell.enable = true;
     nix.enable = true;
     socketVmnet.enable = true;
-    tuptime.enable = true;
   };
 
   documentation.info.enable = false;

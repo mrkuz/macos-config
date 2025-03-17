@@ -63,15 +63,15 @@
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
-        "branch": "master",
+        "branch": "macos",
         "description": "https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5 VirGL virtual OpenGL renderer",
         "homepage": "",
         "owner": "akihikodaki",
         "repo": "virglrenderer",
-        "rev": "9fbc538ac6441fb305d5963e09c70890fec0216b",
-        "sha256": "07vkyqc56js0a2iwniqcblclsij93rgdpks3rmcdgy311q4910hl",
+        "rev": "4a489584344787ea52226ac50dd9fa86a1f38f90",
+        "sha256": "0qwvvnlmzw75yinhc70rwcn3h4mx7h4dm3v8vaaj71ajnzfqzb4a",
         "type": "tarball",
-        "url": "https://github.com/akihikodaki/virglrenderer/archive/9fbc538ac6441fb305d5963e09c70890fec0216b.tar.gz",
+        "url": "https://github.com/akihikodaki/virglrenderer/archive/4a489584344787ea52226ac50dd9fa86a1f38f90.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "virglrenderer-utm": {
