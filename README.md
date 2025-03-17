@@ -26,24 +26,27 @@ Notes:
 
 # Installation
 
-1. Install Nix
+1. Install Nix using the [Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer?tab=readme-ov-file#determinate-nix-installer)
 
 ```shell
-sh <(curl -L https://nixos.org/nix/install)
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
+
+I use the upstream version of Nix.
 
 2. Clone repo
 
 ```shell
-nix shell --extra-experimental-features 'nix-command flakes' nixpkgs#git
+nix shell nixpkgs#git
 git clone https://github.com/mrkuz/macos-config
+cd macos-config
 ```
 
 3. Install nix-darwin
 
 ```shell
-nix run --extra-experimental-features 'nix-command flakes' nix-darwin -- switch --flake .
-darwin-rebuild switch --flake .
+nix run nix-darwin/master#darwin-rebuild -- switch --flake .#bootstrap
+darwin-rebuild switch --flake .#m3
 ```
 
 # Let's go
@@ -117,6 +120,7 @@ Host expressions represent a physical machine. Kind of what you would put in `da
 
 | Name       | System              | Description                                                                        |
 |------------|---------------------|------------------------------------------------------------------------------------|
+| bootstrap  | darwin              | Minimal configuration including linux-builder                                      |
 | m3         | darwin              | Configuration for my Mac Mini M1                                                   |
     
 <a id="vms"></a>
