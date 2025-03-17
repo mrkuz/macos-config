@@ -185,6 +185,7 @@
 
       darwinConfigurations."bootstrap" = utils.mkDarwin { name = "bootstrap"; };
       darwinConfigurations."m3" = utils.mkDarwin { name = "m3"; };
+      darwinConfigurations."m4" = utils.mkDarwin { name = "m4"; };
 
       packages = {
         aarch64-darwin = {

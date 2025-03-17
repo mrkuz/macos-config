@@ -1,0 +1,15 @@
+tap "alienator88/cask"
+tap "homebrew/bundle"
+tap "homebrew/cask-versions"
+cask "firefox@developer-edition"
+cask "intellij-idea-ce"
+cask "key-codes"
+cask "microsoft-auto-update"
+cask "microsoft-teams"
+cask "porting-kit"
+cask "vorta"
+cask "zoom"
+mas "Developer", id: 640199958
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Xcode", id: 497799835

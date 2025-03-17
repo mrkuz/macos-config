@@ -46,7 +46,7 @@ cd macos-config
 
 ```shell
 nix run nix-darwin/master#darwin-rebuild -- switch --flake .#bootstrap
-darwin-rebuild switch --flake .#m3
+darwin-rebuild switch --flake .#m4
 ```
 
 # Let's go
@@ -90,7 +90,7 @@ You then need to start the builder manually:
 sudo launchctl start org.nixos.linux-builder
 ```
 
-See host configuration '[m3](hosts/darwin/m3.nix)' for a full example.
+See host configuration '[m4](hosts/darwin/m4.nix)' for a full example.
 
 After the builder is up and running, you can launch every VM defined in `hosts/nixos/vm/` with a single command:
 
@@ -121,8 +121,8 @@ Host expressions represent a physical machine. Kind of what you would put in `da
 | Name       | System              | Description                                                                        |
 |------------|---------------------|------------------------------------------------------------------------------------|
 | bootstrap  | darwin              | Minimal configuration including linux-builder                                      |
-| m3         | darwin              | Configuration for my Mac Mini M1                                                   |
-    
+| m4         | darwin              | Configuration for my MacBook Air M4                                                |
+
 <a id="vms"></a>
 
 ## VMs
@@ -143,7 +143,7 @@ VM expressions are like host expressions, but represent a virtual machine.
 
 ## Users
 
-Home Manager configuration per user. Usually imported by one ore more [hosts](#hosts) (e.g. '[m3](hosts/darwin/m3.nix)' host).
+Home Manager configuration per user. Usually imported by one ore more [hosts](#hosts) (e.g. '[m4](hosts/darwin/m4.nix)' host).
 
 | Name   | Description     |
 |--------|-----------------|
