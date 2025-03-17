@@ -29,7 +29,7 @@
         targetSystem = "aarch64-linux";
         configuration = {
           imports = [
-            ../../hosts/nixos/vm/docker.nix
+            ../../vms/nixos/docker.nix
           ];
           virtualisation.diskImage = "/Users/markus/var/docker.qcow2";
         };
