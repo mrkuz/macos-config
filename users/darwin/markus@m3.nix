@@ -55,7 +55,7 @@
 
   programs.fish = {
     shellAliases = {
-      ec = "emacsclient --socket-name /var/folders/tm/s0rmv44130v_l7p3jynpdkm00000gn/T/emacs501/default -n -c";
+      ec = "emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c";
     };
     shellAbbrs = {
       a86 = "arch -x86_64";
