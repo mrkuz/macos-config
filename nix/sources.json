@@ -1,9 +1,15 @@
 {
     "angle": {
         "branch": "main",
-        "repo": "git@github.com:google/angle",
-        "rev": "729b55ba595265b09d14ac2dd2e2577663ca7c28",
-        "type": "git"
+        "description": "A conformant OpenGL ES implementation for Windows, Mac, Linux, iOS and Android.",
+        "homepage": "http://angleproject.org",
+        "owner": "google",
+        "repo": "angle",
+        "rev": "0f7f5c486ca53a7d9fa5337a447f8852a109bd1e",
+        "sha256": "04sh4ypfjln3q218rs85qj24acllpir6lpwiqrwknrpayxn8cvhw",
+        "type": "tarball",
+        "url": "https://github.com/google/angle/archive/0f7f5c486ca53a7d9fa5337a447f8852a109bd1e.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "chromium-aarch64-darwin": {
         "sha256": "1sjriz6rqfdq3d83l2i6c84vxy1sa4hw95pfhazd66v0n0pm9wzg",
@@ -21,9 +27,15 @@
     },
     "libepoxy": {
         "branch": "master",
-        "repo": "git@github.com:anholt/libepoxy",
+        "description": "Epoxy is a library for handling OpenGL function pointer management for you",
+        "homepage": "",
+        "owner": "anholt",
+        "repo": "libepoxy",
         "rev": "e98617e62e74a835d4e403cd270afaf296afe839",
-        "type": "git"
+        "sha256": "0khq2k7g5n3lwmydsaw9h9gzh1w829h87hrjm78iycbdri15cgdp",
+        "type": "tarball",
+        "url": "https://github.com/anholt/libepoxy/archive/e98617e62e74a835d4e403cd270afaf296afe839.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "qemu": {
         "sha256": "156qkc44vd1gcmy6i9i1r7r5mvpcrwmwks5v83837xg1cnyg0ngq",
@@ -34,9 +46,15 @@
     },
     "socket_vmnet": {
         "branch": "master",
-        "repo": "git@github.com:lima-vm/socket_vmnet",
-        "rev": "f246109a414695b07e345d24b6d3dcf2ff2ffe86",
-        "type": "git"
+        "description": "vmnet.framework support for unmodified rootless QEMU (no dependency on VDE)",
+        "homepage": null,
+        "owner": "lima-vm",
+        "repo": "socket_vmnet",
+        "rev": "a4a98be0ebb2cdf948ba7cbc96dfa152d4c101e6",
+        "sha256": "03h57n89z99f18299vah7dw5lb42d53p0m3nx6z1171xv0xwflwm",
+        "type": "tarball",
+        "url": "https://github.com/lima-vm/socket_vmnet/archive/a4a98be0ebb2cdf948ba7cbc96dfa152d4c101e6.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "virglrenderer": {
         "branch": "main",
@@ -45,15 +63,27 @@
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
-        "branch": "macos",
-        "repo": "git@github.com:akihikodaki/virglrenderer",
-        "rev": "4a489584344787ea52226ac50dd9fa86a1f38f90",
-        "type": "git"
+        "branch": "master",
+        "description": "https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5 VirGL virtual OpenGL renderer",
+        "homepage": "",
+        "owner": "akihikodaki",
+        "repo": "virglrenderer",
+        "rev": "9fbc538ac6441fb305d5963e09c70890fec0216b",
+        "sha256": "07vkyqc56js0a2iwniqcblclsij93rgdpks3rmcdgy311q4910hl",
+        "type": "tarball",
+        "url": "https://github.com/akihikodaki/virglrenderer/archive/9fbc538ac6441fb305d5963e09c70890fec0216b.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "virglrenderer-utm": {
         "branch": "macos",
-        "repo": "git@github.com:utmapp/virglrenderer",
+        "description": "https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5 VirGL virtual OpenGL renderer",
+        "homepage": "",
+        "owner": "utmapp",
+        "repo": "virglrenderer",
         "rev": "dc039d9ecd74fc671a85bfbe7c4e4bc552b7b855",
-        "type": "git"
+        "sha256": "1rx6xd38jrvkp78w7y9s0r771452a6npp8gg94bj5k85038d7rdm",
+        "type": "tarball",
+        "url": "https://github.com/utmapp/virglrenderer/archive/dc039d9ecd74fc671a85bfbe7c4e4bc552b7b855.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

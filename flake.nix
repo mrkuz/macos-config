@@ -29,7 +29,7 @@
       };
 
       versions = {
-        darwin.stateVersion = 4;
+        darwin.stateVersion = 5;
         homeManager.stateVersion = "25.05";
         nixos.stateVersion = "25.05";
         nixos.stableVersion = "24.11";
@@ -183,6 +183,7 @@
       nixosConfigurations.snapd = utils.mkVm { name = "snapd"; targetSystem = "aarch64-linux"; };
       nixosConfigurations.playground-qcow2 = utils.mkVm { name = "playground"; targetSystem = "aarch64-linux"; profile = ./profiles/nixos/qemu-qcow2.nix; };
 
+      darwinConfigurations."bootstrap" = utils.mkDarwin { name = "bootstrap"; };
       darwinConfigurations."m3" = utils.mkDarwin { name = "m3"; };
 
       packages = {

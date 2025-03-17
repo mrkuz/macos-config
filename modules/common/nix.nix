@@ -29,19 +29,17 @@ in
       "nix/nixpkgs".source = nixpkgs;
     };
 
-    environment.extraInit = ''
-      export NIX_PATH="nixpkgs=${nixpkgs}"
-    '';
-
     environment.systemPackages = with pkgs; [
       nil
       niv
-      nix-index
-      nix-index-update
+      # nix-index
+      # nix-index-update
       nvd
     ];
 
     nix = {
+      channel.enable = false;
+      nixPath = [ "nixpkgs=${nixpkgs}" ];
       # Use local nixpkgs
       registry = {
         nixpkgs = {
@@ -64,8 +62,14 @@ in
         narinfo-cache-positive-ttl = 604800;
         keep-outputs = true;
         keep-derivations = true;
-        sandbox = true;
+        # sandbox = true;
       };
+    };
+
+    nixpkgs.flake = {
+      # We take care of this on our own
+      setNixPath = false;
+      setFlakeRegistry = false;
     };
   };
 }

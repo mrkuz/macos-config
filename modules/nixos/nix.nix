@@ -38,7 +38,6 @@ in
     ];
 
     nix = {
-      channel.enable = false;
       settings = {
         substituters = [
           # "https://cache.nixos.org/"
@@ -49,12 +48,6 @@ in
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
       };
-    };
-
-    nixpkgs.flake = {
-      # We take care of this on our own (see modules/common/nix.nix)
-      setNixPath = false;
-      setFlakeRegistry = false;
     };
   };
 }
