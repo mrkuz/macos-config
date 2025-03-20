@@ -12,6 +12,10 @@ This document collects manual installation/configuration steps.
 
 `softwareupdate --install-rosetta --agree-to-license`
 
+## Java
+
+`mise use -g java@temurin`
+
 # Emacs configuration
 
 ```shell
@@ -24,8 +28,9 @@ ln -s ~/etc/emacs.d.git ~/.emacs.d
 # Links
 
 ## iCloud documents
+
 `ln -s ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/ ~/iCloud`
 
 ## Applications
-`ln -s /Applications/IntelliJ\ IDEA\ CE.app/Contents/MacOS/idea ~/bin/`
 
+`ln -s /Applications/IntelliJ\ IDEA\ CE.app/Contents/MacOS/idea ~/bin/`
