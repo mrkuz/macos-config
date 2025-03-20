@@ -37,6 +37,19 @@
     };
   };
 
+  home.file.".config/skhd/skhdrc".text = ''
+    # Disable close window
+    cmd - w : true
+    # Hyper keymap
+    :: hyper_mode
+    f19 ; hyper_mode
+    hyper_mode < a : skhd -k "q"; open -n /System/Applications/Launchpad.app
+    hyper_mode < e : skhd -k "q"; emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c
+    hyper_mode < t : skhd -k "q"; alacritty
+    hyper_mode < q ; default
+    hyper_mode < f19 ; default
+  '';
+
   programs.alacritty = {
     settings = {
       font = {
@@ -57,5 +70,11 @@
     shellAbbrs = {
       a86 = "arch -x86_64";
     };
+  };
+
+  programs.ssh = {
+    enable = true;
+    addKeysToAgent = "yes";
+    extraConfig = "UseKeychain = yes";
   };
 }
