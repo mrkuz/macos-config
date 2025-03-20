@@ -25,6 +25,13 @@ git clone https://github.com/mrkuz/emacs.d.git emacs.d.git
 ln -s ~/etc/emacs.d.git ~/.emacs.d
 ```
 
+# SSH
+
+```shell
+ssh-keygen -t ed25519
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+
 # Links
 
 ## iCloud documents
