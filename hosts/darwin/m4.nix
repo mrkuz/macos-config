@@ -62,6 +62,8 @@
   };
 
   services.skhd.enable = true;
+  # Enable firewall
+  system.defaults.alf.globalstate = 1;
 
   users.users.markus = {
     home = "/Users/markus";

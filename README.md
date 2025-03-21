@@ -13,7 +13,6 @@ Features:
 
 Notes:
 
-- I don't use nix-darwin for system settings (yet?)
 - Not everything is installed via nix. I use following guideline:
     1. If it is offical Apple software or there are no other options -> App Store (using [mas](https://github.com/mas-cli/mas))
     2. If it is proprietary software or distributed as DMG -> [Homebrew](https://brew.sh)

@@ -1,10 +1,6 @@
 # System Settings
 
-## Network
-
-- Firewall: on
-
-## Apple Intelligence & Sirei
+## Apple Intelligence & Siri
 
 - Apple Intelligence: on
 - Language: American (Voice 4)
