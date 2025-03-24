@@ -2,7 +2,10 @@
 with lib;
 let
   cfg = config.modules.emacs;
-  emacsPkg = ((pkgs.emacsPackagesFor pkgs.emacs-plus).emacsWithPackages (epkgs: [ epkgs.vterm ]));
+  emacsPkg = ((pkgs.emacsPackagesFor pkgs.emacs-plus).emacsWithPackages (epkgs: with epkgs; [
+    vterm
+    treesit-grammars.with-all-grammars
+  ]));
 in
 {
   options.modules.emacs = {
