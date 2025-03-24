@@ -1,5 +1,9 @@
 # System Settings
 
+## Apple Account
+
+- iCloud -> Saved to iCloud -> See All -> Siri: off
+
 ## Apple Intelligence & Siri
 
 - Apple Intelligence: on
@@ -21,6 +25,10 @@
 
 - Alert volume: 2
 - Play sound on startup: off
+
+## Focus
+
+- Share across devices: off
 
 ## Lock Screen
 
