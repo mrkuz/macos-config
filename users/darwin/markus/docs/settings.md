@@ -1,3 +1,7 @@
+# Notes
+
+Always resume to last Quick Note: off
+
 # IntelliJ IDEA
 
 ## Settings
