@@ -17,6 +17,10 @@
 - Spotlight: Don’t Show in Menu Bar
 - Siri: Don’t Show in Menu Bar
 
+## Desktop & Dock
+
+- Tiled windows have margins: off
+
 ## Spotlight
 
 - Help Apple Improve Search: off
