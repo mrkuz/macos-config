@@ -25,8 +25,8 @@ in
         ];
         window = {
           padding = { x = 10; y = 10; };
-          opacity = 0.9;
-          blur = true;
+          # opacity = 0.9;
+          # blur = true;
         };
       };
     };

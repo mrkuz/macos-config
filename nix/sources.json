@@ -5,10 +5,10 @@
         "homepage": "http://angleproject.org",
         "owner": "google",
         "repo": "angle",
-        "rev": "4b9525b2667f3e2c2655cef164693c2161c7063b",
-        "sha256": "1hsfnd31pxnsxxz8y8jvcj71wwq40ivwxbkmy1zxw8ak36d8f3kl",
+        "rev": "151a9ed2c60c2736ae8bdf570d58a9b6f6c6c4d8",
+        "sha256": "14hc0dza9yx17sjx7m3rlb1vbypd7a5gmi9cilcjs07779fpswpx",
         "type": "tarball",
-        "url": "https://github.com/google/angle/archive/4b9525b2667f3e2c2655cef164693c2161c7063b.tar.gz",
+        "url": "https://github.com/google/angle/archive/151a9ed2c60c2736ae8bdf570d58a9b6f6c6c4d8.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "chromium-aarch64-darwin": {

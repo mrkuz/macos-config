@@ -77,4 +77,13 @@
     addKeysToAgent = "yes";
     extraConfig = "UseKeychain = yes";
   };
+
+  services.ollama = {
+    enable = true;
+    environmentVariables = {
+       OLLAMA_CONTEXT_LENGTH = "8192";
+    };
+  };
+
+  targets.darwin.linkApps.enable = false;
 }
