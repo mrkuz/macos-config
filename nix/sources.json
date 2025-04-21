@@ -5,10 +5,10 @@
         "homepage": "http://angleproject.org",
         "owner": "google",
         "repo": "angle",
-        "rev": "151a9ed2c60c2736ae8bdf570d58a9b6f6c6c4d8",
-        "sha256": "14hc0dza9yx17sjx7m3rlb1vbypd7a5gmi9cilcjs07779fpswpx",
+        "rev": "962e147a59f4a72645e670d154e78dd60b3dfccc",
+        "sha256": "0k2rkzzawp6zhqg5mhibcj4c9p7114qc0w3bs3g2kwajvwh3sf5x",
         "type": "tarball",
-        "url": "https://github.com/google/angle/archive/151a9ed2c60c2736ae8bdf570d58a9b6f6c6c4d8.tar.gz",
+        "url": "https://github.com/google/angle/archive/962e147a59f4a72645e670d154e78dd60b3dfccc.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "chromium-aarch64-darwin": {
@@ -59,7 +59,7 @@
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "d5d2a8f8c23a6ecd78640c1e4c75a014579ae520",
+        "rev": "cae17ceea2cc2438bc81824b6dd55825b00f48de",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {

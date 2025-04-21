@@ -20,6 +20,11 @@
       # kubectl
       # kubernetes-helm
       # terraform
+      # Python
+      # (python3.withPackages (p: [
+      #   p.flake8
+      #] ))
+      uv
       # VMs
       (lib.buildQemuVm {
         name = "docker";
@@ -34,6 +39,7 @@
     ];
     sessionVariables = {
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";
+      OLLAMA_API_BASE="http://127.0.0.1:11434";
     };
   };
 
