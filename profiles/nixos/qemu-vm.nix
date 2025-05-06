@@ -30,7 +30,7 @@ in {
   virtualisation = (mkMerge [
     {
       qemu.package = mkIf hostPkgs.stdenv.isDarwin hostPkgs.macos.qemu;
-      resolution = mkDefault { x = 1920; y = 1200; };
+      resolution = mkDefault { x = 1280; y = 720; };
       diskImage = mkDefault null;
       diskSize = mkDefault (10 * 1024);
       cores = mkDefault 2;

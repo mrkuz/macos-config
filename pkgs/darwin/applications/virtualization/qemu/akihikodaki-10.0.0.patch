@@ -1,17 +1,21 @@
+diff --git a/VERSION b/VERSION
+index a13e7b9c87..54e6ccf854 100644
+--- a/VERSION
++++ b/VERSION
+@@ -1 +1 @@
+-10.0.0
++10.0.50
 diff --git a/audio/audio.c b/audio/audio.c
-index af0ae33fed..f604df4080 100644
+index 41ee11aaad..5571d4c08c 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -1407,12 +1407,21 @@ void audio_run(AudioState *s, const char *msg)
+@@ -1407,12 +1407,18 @@ void audio_run(AudioState *s, const char *msg)
  #endif
  }
  
 +void audio_generic_initialize_buffer_in(HWVoiceIn *hw)
 +{
-+    if (hw->buf_emul) {
-+        g_free(hw->buf_emul);
-+    }
-+
++    g_free(hw->buf_emul);
 +    hw->size_emul = hw->samples * hw->info.bytes_per_frame;
 +    hw->buf_emul = g_malloc(hw->size_emul);
 +    hw->pos_emul = hw->pending_emul = 0;
@@ -27,16 +31,13 @@ index af0ae33fed..f604df4080 100644
      }
  
      while (hw->pending_emul < hw->size_emul) {
-@@ -1446,6 +1455,17 @@ void audio_generic_put_buffer_in(HWVoiceIn *hw, void *buf, size_t size)
+@@ -1446,6 +1452,14 @@ void audio_generic_put_buffer_in(HWVoiceIn *hw, void *buf, size_t size)
      hw->pending_emul -= size;
  }
  
 +void audio_generic_initialize_buffer_out(HWVoiceOut *hw)
 +{
-+    if (hw->buf_emul) {
-+        g_free(hw->buf_emul);
-+    }
-+
++    g_free(hw->buf_emul);
 +    hw->size_emul = hw->samples * hw->info.bytes_per_frame;
 +    hw->buf_emul = g_malloc(hw->size_emul);
 +    hw->pos_emul = hw->pending_emul = 0;
@@ -45,7 +46,7 @@ index af0ae33fed..f604df4080 100644
  size_t audio_generic_buffer_get_free(HWVoiceOut *hw)
  {
      if (hw->buf_emul) {
-@@ -1477,9 +1497,7 @@ void audio_generic_run_buffer_out(HWVoiceOut *hw)
+@@ -1477,9 +1491,7 @@ void audio_generic_run_buffer_out(HWVoiceOut *hw)
  void *audio_generic_get_buffer_out(HWVoiceOut *hw, size_t *size)
  {
      if (unlikely(!hw->buf_emul)) {
@@ -73,86 +74,388 @@ index 2d079d00a2..9ba4a144d5 100644
  size_t audio_generic_buffer_get_free(HWVoiceOut *hw);
  void *audio_generic_get_buffer_out(HWVoiceOut *hw, size_t *size);
 diff --git a/audio/coreaudio.m b/audio/coreaudio.m
-index cadd729d50..72a6df0f75 100644
+index cadd729d50..6ca5c038c9 100644
 --- a/audio/coreaudio.m
 +++ b/audio/coreaudio.m
-@@ -355,7 +355,10 @@ static OSStatus audioDeviceIOProc(
- static OSStatus init_out_device(coreaudioVoiceOut *core)
+@@ -33,37 +33,37 @@
+ #define AUDIO_CAP "coreaudio"
+ #include "audio_int.h"
+ 
+-typedef struct coreaudioVoiceOut {
++typedef struct CoreaudioVoiceOut {
+     HWVoiceOut hw;
+     pthread_mutex_t buf_mutex;
+-    AudioDeviceID outputDeviceID;
+-    int frameSizeSetting;
+-    uint32_t bufferCount;
+-    UInt32 audioDevicePropertyBufferFrameSize;
++    AudioDeviceID device_id;
++    int frame_size_setting;
++    uint32_t buffer_count;
++    UInt32 device_frame_size;
+     AudioDeviceIOProcID ioprocid;
+     bool enabled;
+-} coreaudioVoiceOut;
++} CoreaudioVoiceOut;
+ 
+-static const AudioObjectPropertyAddress voice_addr = {
++static const AudioObjectPropertyAddress voice_out_addr = {
+     kAudioHardwarePropertyDefaultOutputDevice,
+     kAudioObjectPropertyScopeGlobal,
+     kAudioObjectPropertyElementMain
+ };
+ 
+-static OSStatus coreaudio_get_voice(AudioDeviceID *id)
++static OSStatus coreaudio_get_voice_out(AudioDeviceID *id)
+ {
+     UInt32 size = sizeof(*id);
+ 
+     return AudioObjectGetPropertyData(kAudioObjectSystemObject,
+-                                      &voice_addr,
++                                      &voice_out_addr,
+                                       0,
+                                       NULL,
+                                       &size,
+                                       id);
+ }
+ 
+-static OSStatus coreaudio_get_framesizerange(AudioDeviceID id,
+-                                             AudioValueRange *framerange)
++static OSStatus coreaudio_get_out_framesizerange(AudioDeviceID id,
++                                                 AudioValueRange *framerange)
+ {
+     UInt32 size = sizeof(*framerange);
+     AudioObjectPropertyAddress addr = {
+@@ -80,7 +80,7 @@ static OSStatus coreaudio_get_framesizerange(AudioDeviceID id,
+                                       framerange);
+ }
+ 
+-static OSStatus coreaudio_get_framesize(AudioDeviceID id, UInt32 *framesize)
++static OSStatus coreaudio_get_out_framesize(AudioDeviceID id, UInt32 *framesize)
+ {
+     UInt32 size = sizeof(*framesize);
+     AudioObjectPropertyAddress addr = {
+@@ -97,7 +97,7 @@ static OSStatus coreaudio_get_framesize(AudioDeviceID id, UInt32 *framesize)
+                                       framesize);
+ }
+ 
+-static OSStatus coreaudio_set_framesize(AudioDeviceID id, UInt32 *framesize)
++static OSStatus coreaudio_set_out_framesize(AudioDeviceID id, UInt32 *framesize)
+ {
+     UInt32 size = sizeof(*framesize);
+     AudioObjectPropertyAddress addr = {
+@@ -114,8 +114,8 @@ static OSStatus coreaudio_set_framesize(AudioDeviceID id, UInt32 *framesize)
+                                       framesize);
+ }
+ 
+-static OSStatus coreaudio_set_streamformat(AudioDeviceID id,
+-                                           AudioStreamBasicDescription *d)
++static OSStatus coreaudio_set_out_streamformat(AudioDeviceID id,
++                                               AudioStreamBasicDescription *d)
+ {
+     UInt32 size = sizeof(*d);
+     AudioObjectPropertyAddress addr = {
+@@ -132,7 +132,7 @@ static OSStatus coreaudio_set_streamformat(AudioDeviceID id,
+                                       d);
+ }
+ 
+-static OSStatus coreaudio_get_isrunning(AudioDeviceID id, UInt32 *result)
++static OSStatus coreaudio_get_out_isrunning(AudioDeviceID id, UInt32 *result)
+ {
+     UInt32 size = sizeof(*result);
+     AudioObjectPropertyAddress addr = {
+@@ -149,7 +149,7 @@ static OSStatus coreaudio_get_isrunning(AudioDeviceID id, UInt32 *result)
+                                       result);
+ }
+ 
+-static void coreaudio_logstatus (OSStatus status)
++static void coreaudio_logstatus(OSStatus status)
+ {
+     const char *str = "BUG";
+ 
+@@ -199,14 +199,14 @@ static void coreaudio_logstatus (OSStatus status)
+         break;
+ 
+     default:
+-        AUD_log (AUDIO_CAP, "Reason: status code %" PRId32 "\n", (int32_t)status);
++        AUD_log(AUDIO_CAP, "Reason: status code %" PRId32 "\n", (int32_t)status);
+         return;
+     }
+ 
+-    AUD_log (AUDIO_CAP, "Reason: %s\n", str);
++    AUD_log(AUDIO_CAP, "Reason: %s\n", str);
+ }
+ 
+-static void G_GNUC_PRINTF (2, 3) coreaudio_logerr (
++static void G_GNUC_PRINTF(2, 3) coreaudio_logerr(
+     OSStatus status,
+     const char *fmt,
+     ...
+@@ -214,14 +214,14 @@ static void G_GNUC_PRINTF (2, 3) coreaudio_logerr (
+ {
+     va_list ap;
+ 
+-    va_start (ap, fmt);
+-    AUD_log (AUDIO_CAP, fmt, ap);
+-    va_end (ap);
++    va_start(ap, fmt);
++    AUD_log(AUDIO_CAP, fmt, ap);
++    va_end(ap);
+ 
+-    coreaudio_logstatus (status);
++    coreaudio_logstatus(status);
+ }
+ 
+-static void G_GNUC_PRINTF (3, 4) coreaudio_logerr2 (
++static void G_GNUC_PRINTF(3, 4) coreaudio_logerr2(
+     OSStatus status,
+     const char *typ,
+     const char *fmt,
+@@ -230,58 +230,60 @@ static void G_GNUC_PRINTF (3, 4) coreaudio_logerr2 (
+ {
+     va_list ap;
+ 
+-    AUD_log (AUDIO_CAP, "Could not initialize %s\n", typ);
++    AUD_log(AUDIO_CAP, "Could not initialize %s\n", typ);
+ 
+-    va_start (ap, fmt);
+-    AUD_vlog (AUDIO_CAP, fmt, ap);
+-    va_end (ap);
++    va_start(ap, fmt);
++    AUD_vlog(AUDIO_CAP, fmt, ap);
++    va_end(ap);
+ 
+-    coreaudio_logstatus (status);
++    coreaudio_logstatus(status);
+ }
+ 
+ #define coreaudio_playback_logerr(status, ...) \
+     coreaudio_logerr2(status, "playback", __VA_ARGS__)
+ 
+-static int coreaudio_buf_lock (coreaudioVoiceOut *core, const char *fn_name)
++static int coreaudio_voice_out_buf_lock(CoreaudioVoiceOut *core,
++                                        const char *fn_name)
+ {
+     int err;
+ 
+-    err = pthread_mutex_lock (&core->buf_mutex);
++    err = pthread_mutex_lock(&core->buf_mutex);
+     if (err) {
+-        dolog ("Could not lock voice for %s\nReason: %s\n",
+-               fn_name, strerror (err));
++        dolog("Could not lock voice for %s\nReason: %s\n",
++              fn_name, strerror(err));
+         return -1;
+     }
+     return 0;
+ }
+ 
+-static int coreaudio_buf_unlock (coreaudioVoiceOut *core, const char *fn_name)
++static int coreaudio_voice_out_buf_unlock(CoreaudioVoiceOut *core,
++                                          const char *fn_name)
+ {
+     int err;
+ 
+-    err = pthread_mutex_unlock (&core->buf_mutex);
++    err = pthread_mutex_unlock(&core->buf_mutex);
+     if (err) {
+-        dolog ("Could not unlock voice for %s\nReason: %s\n",
+-               fn_name, strerror (err));
++        dolog("Could not unlock voice for %s\nReason: %s\n",
++               fn_name, strerror(err));
+         return -1;
+     }
+     return 0;
+ }
+ 
+-#define COREAUDIO_WRAPPER_FUNC(name, ret_type, args_decl, args) \
+-    static ret_type glue(coreaudio_, name)args_decl             \
+-    {                                                           \
+-        coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;     \
+-        ret_type ret;                                           \
+-                                                                \
+-        if (coreaudio_buf_lock(core, "coreaudio_" #name)) {         \
+-            return 0;                                           \
+-        }                                                       \
+-                                                                \
+-        ret = glue(audio_generic_, name)args;                   \
+-                                                                \
+-        coreaudio_buf_unlock(core, "coreaudio_" #name);             \
+-        return ret;                                             \
++#define COREAUDIO_WRAPPER_FUNC(name, ret_type, args_decl, args)       \
++    static ret_type glue(coreaudio_, name)args_decl                   \
++    {                                                                 \
++        CoreaudioVoiceOut *core = (CoreaudioVoiceOut *)hw;            \
++        ret_type ret;                                                 \
++                                                                      \
++        if (coreaudio_voice_out_buf_lock(core, "coreaudio_" #name)) { \
++            return 0;                                                 \
++        }                                                             \
++                                                                      \
++        ret = glue(audio_generic_, name)args;                         \
++                                                                      \
++        coreaudio_voice_out_buf_unlock(core, "coreaudio_" #name);     \
++        return ret;                                                   \
+     }
+ COREAUDIO_WRAPPER_FUNC(buffer_get_free, size_t, (HWVoiceOut *hw), (hw))
+ COREAUDIO_WRAPPER_FUNC(get_buffer_out, void *, (HWVoiceOut *hw, size_t *size),
+@@ -297,7 +299,7 @@ static ret_type glue(coreaudio_, name)args_decl             \
+  * callback to feed audiooutput buffer. called without BQL.
+  * allowed to lock "buf_mutex", but disallowed to have any other locks.
+  */
+-static OSStatus audioDeviceIOProc(
++static OSStatus out_device_ioproc(
+     AudioDeviceID inDevice,
+     const AudioTimeStamp *inNow,
+     const AudioBufferList *inInputData,
+@@ -306,33 +308,33 @@ static OSStatus audioDeviceIOProc(
+     const AudioTimeStamp *inOutputTime,
+     void *hwptr)
+ {
+-    UInt32 frameCount, pending_frames;
++    UInt32 frame_size, pending_frames;
+     void *out = outOutputData->mBuffers[0].mData;
+     HWVoiceOut *hw = hwptr;
+-    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hwptr;
++    CoreaudioVoiceOut *core = hwptr;
+     size_t len;
+ 
+-    if (coreaudio_buf_lock (core, "audioDeviceIOProc")) {
++    if (coreaudio_voice_out_buf_lock(core, "out_device_ioproc")) {
+         inInputTime = 0;
+         return 0;
+     }
+ 
+-    if (inDevice != core->outputDeviceID) {
+-        coreaudio_buf_unlock (core, "audioDeviceIOProc(old device)");
++    if (inDevice != core->device_id) {
++        coreaudio_voice_out_buf_unlock(core, "out_device_ioproc(old device)");
+         return 0;
+     }
+ 
+-    frameCount = core->audioDevicePropertyBufferFrameSize;
++    frame_size = core->device_frame_size;
+     pending_frames = hw->pending_emul / hw->info.bytes_per_frame;
+ 
+     /* if there are not enough samples, set signal and return */
+-    if (pending_frames < frameCount) {
++    if (pending_frames < frame_size) {
+         inInputTime = 0;
+-        coreaudio_buf_unlock (core, "audioDeviceIOProc(empty)");
++        coreaudio_voice_out_buf_unlock(core, "out_device_ioproc(empty)");
+         return 0;
+     }
+ 
+-    len = frameCount * hw->info.bytes_per_frame;
++    len = frame_size * hw->info.bytes_per_frame;
+     while (len) {
+         size_t write_len, start;
+ 
+@@ -348,16 +350,19 @@ static OSStatus audioDeviceIOProc(
+         out += write_len;
+     }
+ 
+-    coreaudio_buf_unlock (core, "audioDeviceIOProc");
++    coreaudio_voice_out_buf_unlock(core, "out_device_ioproc");
+     return 0;
+ }
+ 
+-static OSStatus init_out_device(coreaudioVoiceOut *core)
++static OSStatus init_out_device(CoreaudioVoiceOut *core)
  {
      OSStatus status;
-+    AudioDeviceID deviceID;
-     AudioValueRange frameRange;
-+    UInt32 audioDevicePropertyBufferFrameSize;
+-    AudioValueRange frameRange;
++    AudioDeviceID device_id;
++    AudioValueRange framerange;
++    UInt32 device_frame_size;
 +    AudioDeviceIOProcID ioprocid;
  
-     AudioStreamBasicDescription streamBasicDescription = {
+-    AudioStreamBasicDescription streamBasicDescription = {
++    AudioStreamBasicDescription stream_basic_description = {
          .mBitsPerChannel = core->hw.info.bits,
-@@ -368,20 +371,19 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+         .mBytesPerFrame = core->hw.info.bytes_per_frame,
+         .mBytesPerPacket = core->hw.info.bytes_per_frame,
+@@ -368,76 +373,71 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
          .mSampleRate = core->hw.info.freq
      };
  
 -    status = coreaudio_get_voice(&core->outputDeviceID);
-+    status = coreaudio_get_voice(&deviceID);
++    status = coreaudio_get_voice_out(&device_id);
      if (status != kAudioHardwareNoError) {
-         coreaudio_playback_logerr (status,
-                                    "Could not get default output Device\n");
+-        coreaudio_playback_logerr (status,
+-                                   "Could not get default output Device\n");
++        coreaudio_playback_logerr(status,
++                                  "Could not get default output Device\n");
          return status;
      }
 -    if (core->outputDeviceID == kAudioDeviceUnknown) {
-+    if (deviceID == kAudioDeviceUnknown) {
-         dolog ("Could not initialize playback - Unknown Audiodevice\n");
+-        dolog ("Could not initialize playback - Unknown Audiodevice\n");
++    if (device_id == kAudioDeviceUnknown) {
++        dolog("Could not initialize playback - Unknown Audiodevice\n");
          return status;
      }
  
      /* get minimum and maximum buffer frame sizes */
 -    status = coreaudio_get_framesizerange(core->outputDeviceID,
 -                                          &frameRange);
-+    status = coreaudio_get_framesizerange(deviceID, &frameRange);
++    status = coreaudio_get_out_framesizerange(device_id, &framerange);
      if (status == kAudioHardwareBadObjectError) {
          return 0;
      }
-@@ -392,31 +394,31 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+     if (status != kAudioHardwareNoError) {
+-        coreaudio_playback_logerr (status,
+-                                    "Could not get device buffer frame range\n");
++        coreaudio_playback_logerr(status,
++                                  "Could not get device buffer frame range\n");
+         return status;
      }
  
-     if (frameRange.mMinimum > core->frameSizeSetting) {
+-    if (frameRange.mMinimum > core->frameSizeSetting) {
 -        core->audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMinimum;
-+        audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMinimum;
-         dolog ("warning: Upsizing Buffer Frames to %f\n", frameRange.mMinimum);
-     } else if (frameRange.mMaximum < core->frameSizeSetting) {
+-        dolog ("warning: Upsizing Buffer Frames to %f\n", frameRange.mMinimum);
+-    } else if (frameRange.mMaximum < core->frameSizeSetting) {
 -        core->audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMaximum;
-+        audioDevicePropertyBufferFrameSize = (UInt32) frameRange.mMaximum;
-         dolog ("warning: Downsizing Buffer Frames to %f\n", frameRange.mMaximum);
+-        dolog ("warning: Downsizing Buffer Frames to %f\n", frameRange.mMaximum);
++    if (framerange.mMinimum > core->frame_size_setting) {
++        device_frame_size = framerange.mMinimum;
++        dolog("warning: Upsizing Buffer Frames to %f\n", framerange.mMinimum);
++    } else if (framerange.mMaximum < core->frame_size_setting) {
++        device_frame_size = framerange.mMaximum;
++        dolog("warning: Downsizing Buffer Frames to %f\n", framerange.mMaximum);
      } else {
 -        core->audioDevicePropertyBufferFrameSize = core->frameSizeSetting;
-+        audioDevicePropertyBufferFrameSize = core->frameSizeSetting;
++        device_frame_size = core->frame_size_setting;
      }
  
      /* set Buffer Frame Size */
 -    status = coreaudio_set_framesize(core->outputDeviceID,
 -                                     &core->audioDevicePropertyBufferFrameSize);
-+    status = coreaudio_set_framesize(deviceID,
-+                                     &audioDevicePropertyBufferFrameSize);
++    status = coreaudio_set_out_framesize(device_id, &device_frame_size);
      if (status == kAudioHardwareBadObjectError) {
          return 0;
      }
      if (status != kAudioHardwareNoError) {
-         coreaudio_playback_logerr (status,
-                                     "Could not set device buffer frame size %" PRIu32 "\n",
+-        coreaudio_playback_logerr (status,
+-                                    "Could not set device buffer frame size %" PRIu32 "\n",
 -                                    (uint32_t)core->audioDevicePropertyBufferFrameSize);
-+                                    (uint32_t)audioDevicePropertyBufferFrameSize);
++        coreaudio_playback_logerr(status,
++                                  "Could not set device buffer frame size %" PRIu32 "\n",
++                                  (uint32_t)device_frame_size);
          return status;
      }
  
      /* get Buffer Frame Size */
 -    status = coreaudio_get_framesize(core->outputDeviceID,
 -                                     &core->audioDevicePropertyBufferFrameSize);
-+    status = coreaudio_get_framesize(deviceID,
-+                                     &audioDevicePropertyBufferFrameSize);
++    status = coreaudio_get_out_framesize(device_id, &device_frame_size);
      if (status == kAudioHardwareBadObjectError) {
          return 0;
      }
-@@ -425,11 +427,9 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
-                                     "Could not get device buffer frame size\n");
+     if (status != kAudioHardwareNoError) {
+-        coreaudio_playback_logerr (status,
+-                                    "Could not get device buffer frame size\n");
++        coreaudio_playback_logerr(status,
++                                  "Could not get device buffer frame size\n");
          return status;
      }
 -    core->hw.samples = core->bufferCount * core->audioDevicePropertyBufferFrameSize;
@@ -160,27 +463,32 @@ index cadd729d50..72a6df0f75 100644
      /* set Samplerate */
 -    status = coreaudio_set_streamformat(core->outputDeviceID,
 -                                        &streamBasicDescription);
-+    status = coreaudio_set_streamformat(deviceID, &streamBasicDescription);
++    status = coreaudio_set_out_streamformat(device_id,
++                                            &stream_basic_description);
      if (status == kAudioHardwareBadObjectError) {
          return 0;
      }
-@@ -437,7 +437,6 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
-         coreaudio_playback_logerr (status,
-                                    "Could not set samplerate %lf\n",
-                                    streamBasicDescription.mSampleRate);
+     if (status != kAudioHardwareNoError) {
+-        coreaudio_playback_logerr (status,
+-                                   "Could not set samplerate %lf\n",
+-                                   streamBasicDescription.mSampleRate);
 -        core->outputDeviceID = kAudioDeviceUnknown;
++        coreaudio_playback_logerr(status,
++                                  "Could not set samplerate %lf\n",
++                                  stream_basic_description.mSampleRate);
          return status;
      }
  
-@@ -451,20 +450,25 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
+@@ -451,30 +451,35 @@ static OSStatus init_out_device(coreaudioVoiceOut *core)
       * Therefore, the specified callback must be designed to avoid a deadlock
       * with the callers of AudioObjectGetPropertyData.
       */
 -    core->ioprocid = NULL;
 -    status = AudioDeviceCreateIOProcID(core->outputDeviceID,
+-                                       audioDeviceIOProc,
 +    ioprocid = NULL;
-+    status = AudioDeviceCreateIOProcID(deviceID,
-                                        audioDeviceIOProc,
++    status = AudioDeviceCreateIOProcID(device_id,
++                                       out_device_ioproc,
                                         &core->hw,
 -                                       &core->ioprocid);
 +                                       &ioprocid);
@@ -188,101 +496,228 @@ index cadd729d50..72a6df0f75 100644
          return 0;
      }
 -    if (status != kAudioHardwareNoError || core->ioprocid == NULL) {
-+    if (status != kAudioHardwareNoError || ioprocid == NULL) {
-         coreaudio_playback_logerr (status, "Could not set IOProc\n");
+-        coreaudio_playback_logerr (status, "Could not set IOProc\n");
 -        core->outputDeviceID = kAudioDeviceUnknown;
++    if (status != kAudioHardwareNoError || ioprocid == NULL) {
++        coreaudio_playback_logerr(status, "Could not set IOProc\n");
          return status;
      }
  
-+    core->outputDeviceID = deviceID;
-+    core->audioDevicePropertyBufferFrameSize = audioDevicePropertyBufferFrameSize;
-+    core->hw.samples = core->bufferCount * core->audioDevicePropertyBufferFrameSize;
++    core->device_id = device_id;
++    core->device_frame_size = device_frame_size;
++    core->hw.samples = core->buffer_count * core->device_frame_size;
 +    audio_generic_initialize_buffer_out(&core->hw);
 +    core->ioprocid = ioprocid;
 +
      return 0;
  }
  
-@@ -548,7 +552,9 @@ static OSStatus handle_voice_change(
+-static void fini_out_device(coreaudioVoiceOut *core)
++static void fini_out_device(CoreaudioVoiceOut *core)
+ {
+     OSStatus status;
+     UInt32 isrunning;
+ 
+     /* stop playback */
+-    status = coreaudio_get_isrunning(core->outputDeviceID, &isrunning);
++    status = coreaudio_get_out_isrunning(core->device_id, &isrunning);
+     if (status != kAudioHardwareBadObjectError) {
+         if (status != kAudioHardwareNoError) {
+             coreaudio_logerr(status,
+@@ -482,7 +487,7 @@ static void fini_out_device(coreaudioVoiceOut *core)
+         }
+ 
+         if (isrunning) {
+-            status = AudioDeviceStop(core->outputDeviceID, core->ioprocid);
++            status = AudioDeviceStop(core->device_id, core->ioprocid);
+             if (status != kAudioHardwareBadDeviceError && status != kAudioHardwareNoError) {
+                 coreaudio_logerr(status, "Could not stop playback\n");
+             }
+@@ -490,20 +495,20 @@ static void fini_out_device(coreaudioVoiceOut *core)
+     }
+ 
+     /* remove callback */
+-    status = AudioDeviceDestroyIOProcID(core->outputDeviceID,
++    status = AudioDeviceDestroyIOProcID(core->device_id,
+                                         core->ioprocid);
+     if (status != kAudioHardwareBadDeviceError && status != kAudioHardwareNoError) {
+         coreaudio_logerr(status, "Could not remove IOProc\n");
+     }
+-    core->outputDeviceID = kAudioDeviceUnknown;
++    core->device_id = kAudioDeviceUnknown;
+ }
+ 
+-static void update_device_playback_state(coreaudioVoiceOut *core)
++static void update_out_device_playback_state(CoreaudioVoiceOut *core)
+ {
+     OSStatus status;
+     UInt32 isrunning;
+ 
+-    status = coreaudio_get_isrunning(core->outputDeviceID, &isrunning);
++    status = coreaudio_get_out_isrunning(core->device_id, &isrunning);
+     if (status != kAudioHardwareNoError) {
+         if (status != kAudioHardwareBadObjectError) {
+             coreaudio_logerr(status,
+@@ -516,15 +521,15 @@ static void update_device_playback_state(coreaudioVoiceOut *core)
+     if (core->enabled) {
+         /* start playback */
+         if (!isrunning) {
+-            status = AudioDeviceStart(core->outputDeviceID, core->ioprocid);
++            status = AudioDeviceStart(core->device_id, core->ioprocid);
+             if (status != kAudioHardwareBadDeviceError && status != kAudioHardwareNoError) {
+-                coreaudio_logerr (status, "Could not resume playback\n");
++                coreaudio_logerr(status, "Could not resume playback\n");
+             }
+         }
+     } else {
+         /* stop playback */
+         if (isrunning) {
+-            status = AudioDeviceStop(core->outputDeviceID,
++            status = AudioDeviceStop(core->device_id,
+                                      core->ioprocid);
+             if (status != kAudioHardwareBadDeviceError && status != kAudioHardwareNoError) {
+                 coreaudio_logerr(status, "Could not pause playback\n");
+@@ -534,22 +539,24 @@ static void update_device_playback_state(coreaudioVoiceOut *core)
+ }
+ 
+ /* called without BQL. */
+-static OSStatus handle_voice_change(
++static OSStatus handle_voice_out_change(
+     AudioObjectID in_object_id,
+     UInt32 in_number_addresses,
+     const AudioObjectPropertyAddress *in_addresses,
+     void *in_client_data)
+ {
+-    coreaudioVoiceOut *core = in_client_data;
++    CoreaudioVoiceOut *core = in_client_data;
+ 
+     bql_lock();
+ 
+-    if (core->outputDeviceID) {
++    if (core->device_id) {
          fini_out_device(core);
      }
  
 -    if (!init_out_device(core)) {
+-        update_device_playback_state(core);
 +    init_out_device(core);
 +
-+    if (core->outputDeviceID) {
-         update_device_playback_state(core);
++    if (core->device_id) {
++        update_out_device_playback_state(core);
      }
  
-diff --git a/block/file-posix.c b/block/file-posix.c
-index ff928b5e85..66a7107452 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -134,6 +134,14 @@
- #define RAW_LOCK_PERM_BASE             100
- #define RAW_LOCK_SHARED_BASE           200
- 
-+/*
-+ * qemu_lock_fd_test always returns 0 when fd is not open for writing and
-+ * exclusive is true on macOS 11.3.1.
-+ */
-+#ifdef __APPLE__
-+#define RAW_LOCK_WRITES
-+#endif
-+
- typedef struct BDRVRawState {
-     int fd;
-     bool use_lock;
-@@ -685,7 +693,11 @@ static int raw_open_common(BlockDriverState *bs, QDict *options,
-                                                false);
- 
-     s->open_flags = open_flags;
-+#ifdef RAW_LOCK_WRITES
-+    raw_parse_flags(bdrv_flags, &s->open_flags, s->use_lock);
-+#else
-     raw_parse_flags(bdrv_flags, &s->open_flags, false);
-+#endif
- 
-     s->fd = -1;
-     fd = qemu_open(filename, s->open_flags, errp);
-@@ -1051,6 +1063,11 @@ static int raw_reconfigure_getfd(BlockDriverState *bs, int flags,
-     bool has_writers = perm &
-         (BLK_PERM_WRITE | BLK_PERM_WRITE_UNCHANGED | BLK_PERM_RESIZE);
-     int fcntl_flags = O_APPEND | O_NONBLOCK;
-+#ifdef RAW_LOCK_WRITES
-+    if (s->use_lock) {
-+        has_writers = true;
-+    }
-+#endif
- #ifdef O_NOATIME
-     fcntl_flags |= O_NOATIME;
- #endif
-diff --git a/contrib/vhost-user-gpu/virgl.c b/contrib/vhost-user-gpu/virgl.c
-index 51da0e3667..e334a5b223 100644
---- a/contrib/vhost-user-gpu/virgl.c
-+++ b/contrib/vhost-user-gpu/virgl.c
-@@ -354,7 +354,7 @@ virgl_cmd_set_scanout(VuGpu *g,
-                       struct virtio_gpu_ctrl_command *cmd)
+     bql_unlock();
+@@ -560,7 +567,7 @@ static int coreaudio_init_out(HWVoiceOut *hw, struct audsettings *as,
+                               void *drv_opaque)
  {
-     struct virtio_gpu_set_scanout ss;
--    struct virgl_renderer_resource_info info;
-+    struct virgl_renderer_texture_info info;
-     int ret;
+     OSStatus status;
+-    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
++    CoreaudioVoiceOut *core = (CoreaudioVoiceOut *)hw;
+     int err;
+     Audiodev *dev = drv_opaque;
+     AudiodevCoreaudioPerDirectionOptions *cpdo = dev->u.coreaudio.out;
+@@ -569,33 +576,34 @@ static int coreaudio_init_out(HWVoiceOut *hw, struct audsettings *as,
+     /* create mutex */
+     err = pthread_mutex_init(&core->buf_mutex, NULL);
+     if (err) {
+-        dolog("Could not create mutex\nReason: %s\n", strerror (err));
++        dolog("Could not create mutex\nReason: %s\n", strerror(err));
+         return -1;
+     }
  
-     VUGPU_FILL_CMD(ss);
-@@ -373,6 +373,7 @@ virgl_cmd_set_scanout(VuGpu *g,
-         ret = virgl_get_resource_info_modifiers(ss.resource_id, &info,
-                                                 &modifiers);
-         if (ret) {
-+        if (ret == -1) {
-             g_critical("%s: illegal resource specified %d\n",
-                        __func__, ss.resource_id);
-             cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
+     obt_as = *as;
+     as = &obt_as;
+     as->fmt = AUDIO_FORMAT_F32;
+-    audio_pcm_init_info (&hw->info, as);
++    audio_pcm_init_info(&hw->info, as);
+ 
+-    core->frameSizeSetting = audio_buffer_frames(
++    core->frame_size_setting = audio_buffer_frames(
+         qapi_AudiodevCoreaudioPerDirectionOptions_base(cpdo), as, 11610);
+ 
+-    core->bufferCount = cpdo->has_buffer_count ? cpdo->buffer_count : 4;
++    core->buffer_count = cpdo->has_buffer_count ? cpdo->buffer_count : 4;
+ 
+     status = AudioObjectAddPropertyListener(kAudioObjectSystemObject,
+-                                            &voice_addr, handle_voice_change,
++                                            &voice_out_addr,
++                                            handle_voice_out_change,
+                                             core);
+     if (status != kAudioHardwareNoError) {
+-        coreaudio_playback_logerr (status,
+-                                   "Could not listen to voice property change\n");
++        coreaudio_playback_logerr(status,
++                                  "Could not listen to voice property change\n");
+         return -1;
+     }
+ 
+     if (init_out_device(core)) {
+         status = AudioObjectRemovePropertyListener(kAudioObjectSystemObject,
+-                                                   &voice_addr,
+-                                                   handle_voice_change,
++                                                   &voice_out_addr,
++                                                   handle_voice_out_change,
+                                                    core);
+         if (status != kAudioHardwareNoError) {
+             coreaudio_playback_logerr(status,
+@@ -612,11 +620,11 @@ static void coreaudio_fini_out (HWVoiceOut *hw)
+ {
+     OSStatus status;
+     int err;
+-    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
++    CoreaudioVoiceOut *core = (CoreaudioVoiceOut *)hw;
+ 
+     status = AudioObjectRemovePropertyListener(kAudioObjectSystemObject,
+-                                               &voice_addr,
+-                                               handle_voice_change,
++                                               &voice_out_addr,
++                                               handle_voice_out_change,
+                                                core);
+     if (status != kAudioHardwareNoError) {
+         coreaudio_logerr(status, "Could not remove voice property change listener\n");
+@@ -627,16 +635,16 @@ static void coreaudio_fini_out (HWVoiceOut *hw)
+     /* destroy mutex */
+     err = pthread_mutex_destroy(&core->buf_mutex);
+     if (err) {
+-        dolog("Could not destroy mutex\nReason: %s\n", strerror (err));
++        dolog("Could not destroy mutex\nReason: %s\n", strerror(err));
+     }
+ }
+ 
+ static void coreaudio_enable_out(HWVoiceOut *hw, bool enable)
+ {
+-    coreaudioVoiceOut *core = (coreaudioVoiceOut *) hw;
++    CoreaudioVoiceOut *core = (CoreaudioVoiceOut *)hw;
+ 
+     core->enabled = enable;
+-    update_device_playback_state(core);
++    update_out_device_playback_state(core);
+ }
+ 
+ static void *coreaudio_audio_init(Audiodev *dev, Error **errp)
+@@ -644,7 +652,7 @@ static void coreaudio_enable_out(HWVoiceOut *hw, bool enable)
+     return dev;
+ }
+ 
+-static void coreaudio_audio_fini (void *opaque)
++static void coreaudio_audio_fini(void *opaque)
+ {
+ }
+ 
+@@ -670,7 +678,7 @@ static void coreaudio_audio_fini (void *opaque)
+     .pcm_ops        = &coreaudio_pcm_ops,
+     .max_voices_out = 1,
+     .max_voices_in  = 0,
+-    .voice_size_out = sizeof (coreaudioVoiceOut),
++    .voice_size_out = sizeof(CoreaudioVoiceOut),
+     .voice_size_in  = 0
+ };
+ 
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 9f34d0e661..632792cd3e 100644
+index 145a0b3879..4d59bcfe27 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -149,11 +149,42 @@ static void virgl_cmd_resource_flush(VirtIOGPU *g,
+@@ -396,11 +396,42 @@ static void virgl_cmd_resource_flush(VirtIOGPU *g,
      }
  }
  
@@ -292,7 +727,7 @@ index 9f34d0e661..632792cd3e 100644
 +    struct virgl_renderer_resource_info info;
 +    int ret;
 +
-+#ifdef HAVE_VIRGL_D3D_INFO_EXT
++#if VIRGL_VERSION_MAJOR >= 1
 +    struct virgl_renderer_resource_info_ext ext;
 +    memset(&ext, 0, sizeof(ext));
 +#ifdef HAVE_VIRGL_RENDERER_BORROW_TEXTURE_FOR_SCANOUT
@@ -326,14 +761,14 @@ index 9f34d0e661..632792cd3e 100644
  
      VIRTIO_GPU_FILL_CMD(ss);
      trace_virtio_gpu_cmd_set_scanout(ss.scanout_id, ss.resource_id,
-@@ -168,35 +199,13 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
+@@ -415,35 +446,13 @@ static void virgl_cmd_set_scanout(VirtIOGPU *g,
      g->parent_obj.enable = 1;
  
      if (ss.resource_id && ss.r.width && ss.r.height) {
 -        struct virgl_renderer_resource_info info;
 -        void *d3d_tex2d = NULL;
 -
--#ifdef HAVE_VIRGL_D3D_INFO_EXT
+-#if VIRGL_VERSION_MAJOR >= 1
 -        struct virgl_renderer_resource_info_ext ext;
 -        memset(&ext, 0, sizeof(ext));
 -        ret = virgl_renderer_resource_get_info_ext(ss.resource_id, &ext);
@@ -366,10 +801,10 @@ index 9f34d0e661..632792cd3e 100644
          dpy_gfx_replace_surface(
              g->parent_obj.scanout[ss.scanout_id].con, NULL);
 diff --git a/include/ui/console.h b/include/ui/console.h
-index fa986ab97e..471d364beb 100644
+index 46b3128185..74b36cd41d 100644
 --- a/include/ui/console.h
 +++ b/include/ui/console.h
-@@ -133,16 +133,23 @@ struct QemuConsoleClass {
+@@ -131,16 +131,23 @@ struct QemuConsoleClass {
      ObjectClass parent_class;
  };
  
@@ -397,7 +832,7 @@ index fa986ab97e..471d364beb 100644
  } ScanoutTexture;
  
  typedef struct QemuUIInfo {
-@@ -243,12 +250,9 @@ typedef struct DisplayChangeListenerOps {
+@@ -240,12 +247,9 @@ typedef struct DisplayChangeListenerOps {
      /* required if GL */
      void (*dpy_gl_scanout_texture)(DisplayChangeListener *dcl,
                                     uint32_t backing_id,
@@ -412,7 +847,7 @@ index fa986ab97e..471d364beb 100644
      /* optional (default to true if has dpy_gl_scanout_dmabuf) */
      bool (*dpy_has_dmabuf)(DisplayChangeListener *dcl);
      /* optional */
-@@ -328,11 +332,9 @@ bool dpy_gfx_check_format(QemuConsole *con,
+@@ -325,11 +329,9 @@ bool dpy_gfx_check_format(QemuConsole *con,
                            pixman_format_code_t format);
  
  void dpy_gl_scanout_disable(QemuConsole *con);
@@ -495,7 +930,7 @@ index aa3d637029..94e9a69a24 100644
  void gd_gl_area_scanout_flush(DisplayChangeListener *dcl,
                                uint32_t x, uint32_t y, uint32_t w, uint32_t h);
 diff --git a/include/ui/sdl2.h b/include/ui/sdl2.h
-index e3acc7c82a..96af2f6826 100644
+index dbe6e3d973..6afa2f523c 100644
 --- a/include/ui/sdl2.h
 +++ b/include/ui/sdl2.h
 @@ -22,7 +22,7 @@
@@ -507,8 +942,8 @@ index e3acc7c82a..96af2f6826 100644
  # include "ui/egl-helpers.h"
  #endif
  
-@@ -44,7 +44,7 @@ struct sdl2_console {
-     int ignore_hotkeys;
+@@ -45,7 +45,7 @@ struct sdl2_console {
+     bool gui_keysym;
      SDL_GLContext winctx;
      QKbdState *kbd;
 -#ifdef CONFIG_OPENGL
@@ -516,7 +951,7 @@ index e3acc7c82a..96af2f6826 100644
      QemuGLShader *gls;
      egl_fb guest_fb;
      egl_fb win_fb;
-@@ -86,12 +86,9 @@ int sdl2_gl_make_context_current(DisplayGLCtx *dgc,
+@@ -88,12 +88,9 @@ int sdl2_gl_make_context_current(DisplayGLCtx *dgc,
  void sdl2_gl_scanout_disable(DisplayChangeListener *dcl);
  void sdl2_gl_scanout_texture(DisplayChangeListener *dcl,
                               uint32_t backing_id,
@@ -545,10 +980,10 @@ index e1a9b36185..ff0378f655 100644
  #  include "ui/egl-helpers.h"
  #  include "ui/egl-context.h"
 diff --git a/meson.build b/meson.build
-index a11018b3ad..17e1d290db 100644
+index 41f68d3806..6b31aa521c 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -1094,7 +1094,7 @@ if get_option('attr').allowed()
+@@ -1192,7 +1192,7 @@ if get_option('attr').allowed()
  endif
  
  cocoa = dependency('appleframeworks',
@@ -557,7 +992,7 @@ index a11018b3ad..17e1d290db 100644
                     required: get_option('cocoa'))
  
  vmnet = dependency('appleframeworks', modules: 'vmnet', required: get_option('vmnet'))
-@@ -1651,14 +1651,13 @@ if not get_option('coreaudio').auto() or (host_os == 'darwin' and have_system)
+@@ -1757,14 +1757,13 @@ if not get_option('coreaudio').auto() or (host_os == 'darwin' and have_system)
                           required: get_option('coreaudio'))
  endif
  
@@ -576,7 +1011,39 @@ index a11018b3ad..17e1d290db 100644
    endif
  endif
  gbm = not_found
-@@ -2354,6 +2353,7 @@ if numa.found()
+@@ -2185,19 +2184,23 @@ if not has_malloc_trim and get_option('malloc_trim').enabled()
+   endif
+ endif
+ 
+-gnu_source_prefix = '''
++osdep_prefix = '''
+   #ifndef _GNU_SOURCE
+   #define _GNU_SOURCE
+   #endif
+-'''
+-
+-# Check whether the glibc provides STATX_BASIC_STATS
+-
+-has_statx = cc.has_header_symbol('sys/stat.h', 'STATX_BASIC_STATS', prefix: gnu_source_prefix)
+ 
+-# Check whether statx() provides mount ID information
++  #include <stddef.h>
++  #include <sys/types.h>
+ 
+-has_statx_mnt_id = cc.has_header_symbol('sys/stat.h', 'STATX_MNT_ID', prefix: gnu_source_prefix)
++  #include <string.h>
++  #include <limits.h>
++  /* Put unistd.h before time.h as that triggers localtime_r/gmtime_r
++   * function availability on recentish Mingw-w64 platforms. */
++  #include <unistd.h>
++  #include <time.h>
++  #include <errno.h>
++  #include <fcntl.h>
++'''
+ 
+ have_vhost_user_blk_server = get_option('vhost_user_blk_server') \
+   .require(host_os == 'linux',
+@@ -2503,6 +2506,7 @@ if numa.found()
                         cc.has_function('numa_has_preferred_many',
                                         dependencies: numa))
  endif
@@ -584,7 +1051,7 @@ index a11018b3ad..17e1d290db 100644
  config_host_data.set('CONFIG_OPENGL', opengl.found())
  config_host_data.set('CONFIG_PLUGIN', get_option('plugins'))
  config_host_data.set('CONFIG_RBD', rbd.found())
-@@ -2394,6 +2394,10 @@ config_host_data.set('CONFIG_VNC', vnc.found())
+@@ -2543,6 +2547,10 @@ config_host_data.set('CONFIG_VNC', vnc.found())
  config_host_data.set('CONFIG_VNC_JPEG', jpeg.found())
  config_host_data.set('CONFIG_VNC_SASL', sasl.found())
  if virgl.found()
@@ -592,14 +1059,220 @@ index a11018b3ad..17e1d290db 100644
 +                       cc.has_function('virgl_renderer_borrow_texture_for_scanout',
 +                                       prefix: '#include <virglrenderer.h>',
 +                                       dependencies: virgl))
-   config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT',
-                        cc.has_member('struct virgl_renderer_resource_info_ext', 'd3d_tex2d',
-                                      prefix: '#include <virglrenderer.h>',
+   config_host_data.set('VIRGL_VERSION_MAJOR', virgl.version().split('.')[0])
+ endif
+ config_host_data.set('CONFIG_VIRTFS', have_virtfs)
+@@ -2560,8 +2568,6 @@ config_host_data.set('CONFIG_CRYPTO_SM3', crypto_sm3.found())
+ config_host_data.set('CONFIG_HOGWEED', hogweed.found())
+ config_host_data.set('CONFIG_QEMU_PRIVATE_XTS', xts == 'private')
+ config_host_data.set('CONFIG_MALLOC_TRIM', has_malloc_trim)
+-config_host_data.set('CONFIG_STATX', has_statx)
+-config_host_data.set('CONFIG_STATX_MNT_ID', has_statx_mnt_id)
+ config_host_data.set('CONFIG_ZSTD', zstd.found())
+ config_host_data.set('CONFIG_QPL', qpl.found())
+ config_host_data.set('CONFIG_UADK', uadk.found())
+@@ -2635,7 +2641,6 @@ config_host_data.set('CONFIG_CLOCK_ADJTIME', cc.has_function('clock_adjtime'))
+ config_host_data.set('CONFIG_DUP3', cc.has_function('dup3'))
+ config_host_data.set('CONFIG_FALLOCATE', cc.has_function('fallocate'))
+ config_host_data.set('CONFIG_POSIX_FALLOCATE', cc.has_function('posix_fallocate'))
+-config_host_data.set('CONFIG_GETCPU', cc.has_function('getcpu', prefix: gnu_source_prefix))
+ config_host_data.set('CONFIG_SCHED_GETCPU', cc.has_function('sched_getcpu', prefix: '#include <sched.h>'))
+ # Note that we need to specify prefix: here to avoid incorrectly
+ # thinking that Windows has posix_memalign()
+@@ -2657,7 +2662,7 @@ config_host_data.set('HAVE_GETIFADDRS', cc.has_function('getifaddrs'))
+ config_host_data.set('HAVE_GLIB_WITH_SLICE_ALLOCATOR', glib_has_gslice)
+ config_host_data.set('HAVE_GLIB_WITH_ALIGNED_ALLOC', glib_has_aligned_alloc)
+ config_host_data.set('HAVE_OPENPTY', cc.has_function('openpty', dependencies: util))
+-config_host_data.set('HAVE_STRCHRNUL', cc.has_function('strchrnul'))
++config_host_data.set('HAVE_STRCHRNUL', cc.has_function('strchrnul', prefix: osdep_prefix))
+ config_host_data.set('HAVE_SYSTEM_FUNCTION', cc.has_function('system', prefix: '#include <stdlib.h>'))
+ if rbd.found()
+   config_host_data.set('HAVE_RBD_NAMESPACE_EXISTS',
+@@ -2713,6 +2718,8 @@ config_host_data.set('CONFIG_FALLOCATE_ZERO_RANGE',
+ config_host_data.set('CONFIG_FIEMAP',
+                      cc.has_header('linux/fiemap.h') and
+                      cc.has_header_symbol('linux/fs.h', 'FS_IOC_FIEMAP'))
++config_host_data.set('CONFIG_GETCPU',
++                     cc.has_header_symbol('sched.h', 'getcpu', prefix: osdep_prefix))
+ config_host_data.set('CONFIG_GETRANDOM',
+                      cc.has_function('getrandom') and
+                      cc.has_header_symbol('sys/random.h', 'GRND_NONBLOCK'))
+@@ -2757,8 +2764,7 @@ config_host_data.set('HAVE_UTMPX',
+ config_host_data.set('CONFIG_EVENTFD', cc.links('''
+   #include <sys/eventfd.h>
+   int main(void) { return eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC); }'''))
+-config_host_data.set('CONFIG_FDATASYNC', cc.links(gnu_source_prefix + '''
+-  #include <unistd.h>
++config_host_data.set('CONFIG_FDATASYNC', cc.links(osdep_prefix + '''
+   int main(void) {
+   #if defined(_POSIX_SYNCHRONIZED_IO) && _POSIX_SYNCHRONIZED_IO > 0
+   return fdatasync(0);
+@@ -2767,10 +2773,8 @@ config_host_data.set('CONFIG_FDATASYNC', cc.links(gnu_source_prefix + '''
+   #endif
+   }'''))
+ 
+-has_madvise = cc.links(gnu_source_prefix + '''
+-  #include <sys/types.h>
++has_madvise = cc.links(osdep_prefix + '''
+   #include <sys/mman.h>
+-  #include <stddef.h>
+   int main(void) { return madvise(NULL, 0, MADV_DONTNEED); }''')
+ missing_madvise_proto = false
+ if has_madvise
+@@ -2780,21 +2784,18 @@ if has_madvise
+   # missing-prototype case, we try again with a definitely-bogus prototype.
+   # This will only compile if the system headers don't provide the prototype;
+   # otherwise the conflicting prototypes will cause a compiler error.
+-  missing_madvise_proto = cc.links(gnu_source_prefix + '''
+-    #include <sys/types.h>
++  missing_madvise_proto = cc.links(osdep_prefix + '''>
+     #include <sys/mman.h>
+-    #include <stddef.h>
+     extern int madvise(int);
+     int main(void) { return madvise(0); }''')
+ endif
+ config_host_data.set('CONFIG_MADVISE', has_madvise)
+ config_host_data.set('HAVE_MADVISE_WITHOUT_PROTOTYPE', missing_madvise_proto)
+ 
+-config_host_data.set('CONFIG_MEMFD', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_MEMFD', cc.links(osdep_prefix + '''
+   #include <sys/mman.h>
+   int main(void) { return memfd_create("foo", MFD_ALLOW_SEALING); }'''))
+-config_host_data.set('CONFIG_OPEN_BY_HANDLE', cc.links(gnu_source_prefix + '''
+-  #include <fcntl.h>
++config_host_data.set('CONFIG_OPEN_BY_HANDLE', cc.links(osdep_prefix + '''
+   #if !defined(AT_EMPTY_PATH)
+   # error missing definition
+   #else
+@@ -2805,13 +2806,12 @@ config_host_data.set('CONFIG_OPEN_BY_HANDLE', cc.links(gnu_source_prefix + '''
+ # i.e. errno is set and -1 is returned. That's not really how POSIX defines the
+ # function. On the flip side, it has madvise() which is preferred anyways.
+ if host_os != 'darwin'
+-  config_host_data.set('CONFIG_POSIX_MADVISE', cc.links(gnu_source_prefix + '''
++  config_host_data.set('CONFIG_POSIX_MADVISE', cc.links(osdep_prefix + '''
+     #include <sys/mman.h>
+-    #include <stddef.h>
+     int main(void) { return posix_madvise(NULL, 0, POSIX_MADV_DONTNEED); }'''))
+ endif
+ 
+-config_host_data.set('CONFIG_PTHREAD_SETNAME_NP_W_TID', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_PTHREAD_SETNAME_NP_W_TID', cc.links(osdep_prefix + '''
+   #include <pthread.h>
+ 
+   static void *f(void *p) { return NULL; }
+@@ -2822,7 +2822,7 @@ config_host_data.set('CONFIG_PTHREAD_SETNAME_NP_W_TID', cc.links(gnu_source_pref
+     pthread_setname_np(thread, "QEMU");
+     return 0;
+   }''', dependencies: threads))
+-config_host_data.set('CONFIG_PTHREAD_SETNAME_NP_WO_TID', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_PTHREAD_SETNAME_NP_WO_TID', cc.links(osdep_prefix + '''
+   #include <pthread.h>
+ 
+   static void *f(void *p) { pthread_setname_np("QEMU"); return NULL; }
+@@ -2832,7 +2832,7 @@ config_host_data.set('CONFIG_PTHREAD_SETNAME_NP_WO_TID', cc.links(gnu_source_pre
+     pthread_create(&thread, 0, f, 0);
+     return 0;
+   }''', dependencies: threads))
+-config_host_data.set('CONFIG_PTHREAD_SET_NAME_NP', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_PTHREAD_SET_NAME_NP', cc.links(osdep_prefix + '''
+   #include <pthread.h>
+   #include <pthread_np.h>
+ 
+@@ -2844,9 +2844,8 @@ config_host_data.set('CONFIG_PTHREAD_SET_NAME_NP', cc.links(gnu_source_prefix +
+     pthread_set_name_np(thread, "QEMU");
+     return 0;
+   }''', dependencies: threads))
+-config_host_data.set('CONFIG_PTHREAD_CONDATTR_SETCLOCK', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_PTHREAD_CONDATTR_SETCLOCK', cc.links(osdep_prefix + '''
+   #include <pthread.h>
+-  #include <time.h>
+ 
+   int main(void)
+   {
+@@ -2855,7 +2854,7 @@ config_host_data.set('CONFIG_PTHREAD_CONDATTR_SETCLOCK', cc.links(gnu_source_pre
+     pthread_condattr_setclock(&attr, CLOCK_MONOTONIC);
+     return 0;
+   }''', dependencies: threads))
+-config_host_data.set('CONFIG_PTHREAD_AFFINITY_NP', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_PTHREAD_AFFINITY_NP', cc.links(osdep_prefix + '''
+   #include <pthread.h>
+ 
+   static void *f(void *p) { return NULL; }
+@@ -2872,15 +2871,10 @@ config_host_data.set('CONFIG_PTHREAD_AFFINITY_NP', cc.links(gnu_source_prefix +
+     CPU_FREE(cpuset);
+     return 0;
+   }''', dependencies: threads))
+-config_host_data.set('CONFIG_SIGNALFD', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_SIGNALFD', cc.links(osdep_prefix + '''
+   #include <sys/signalfd.h>
+-  #include <stddef.h>
+   int main(void) { return signalfd(-1, NULL, SFD_CLOEXEC); }'''))
+-config_host_data.set('CONFIG_SPLICE', cc.links(gnu_source_prefix + '''
+-  #include <unistd.h>
+-  #include <fcntl.h>
+-  #include <limits.h>
+-
++config_host_data.set('CONFIG_SPLICE', cc.links(osdep_prefix + '''
+   int main(void)
+   {
+     int len, fd = 0;
+@@ -2889,13 +2883,13 @@ config_host_data.set('CONFIG_SPLICE', cc.links(gnu_source_prefix + '''
+     return 0;
+   }'''))
+ 
+-config_host_data.set('HAVE_MLOCKALL', cc.links(gnu_source_prefix + '''
++config_host_data.set('HAVE_MLOCKALL', cc.links(osdep_prefix + '''
+   #include <sys/mman.h>
+   int main(void) {
+     return mlockall(MCL_FUTURE);
+   }'''))
+ 
+-config_host_data.set('HAVE_MLOCK_ONFAULT', cc.links(gnu_source_prefix + '''
++config_host_data.set('HAVE_MLOCK_ONFAULT', cc.links(osdep_prefix + '''
+   #include <sys/mman.h>
+   int main(void) {
+       return mlockall(MCL_FUTURE | MCL_ONFAULT);
+@@ -2904,7 +2898,7 @@ config_host_data.set('HAVE_MLOCK_ONFAULT', cc.links(gnu_source_prefix + '''
+ have_l2tpv3 = false
+ if get_option('l2tpv3').allowed() and have_system
+   have_l2tpv3 = cc.has_type('struct mmsghdr',
+-    prefix: gnu_source_prefix + '''
++    prefix: osdep_prefix + '''
+       #include <sys/socket.h>
+       #include <linux/ip.h>''')
+ endif
+@@ -3020,13 +3014,13 @@ if has_int128_type
+   endif
+ endif
+ 
+-config_host_data.set('CONFIG_GETAUXVAL', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_GETAUXVAL', cc.links(osdep_prefix + '''
+   #include <sys/auxv.h>
+   int main(void) {
+     return getauxval(AT_HWCAP) == 0;
+   }'''))
+ 
+-config_host_data.set('CONFIG_ELF_AUX_INFO', cc.links(gnu_source_prefix + '''
++config_host_data.set('CONFIG_ELF_AUX_INFO', cc.links(osdep_prefix + '''
+   #include <sys/auxv.h>
+   int main(void) {
+     unsigned long hwcap = 0;
+@@ -3139,9 +3133,7 @@ config_host_data.set('CONFIG_MEMBARRIER', get_option('membarrier') \
+   .allowed())
+ 
+ have_afalg = get_option('crypto_afalg') \
+-  .require(cc.compiles(gnu_source_prefix + '''
+-    #include <errno.h>
+-    #include <sys/types.h>
++  .require(cc.compiles(osdep_prefix + '''
+     #include <sys/socket.h>
+     #include <linux/if_alg.h>
+     int main(void) {
 diff --git a/qapi/ui.json b/qapi/ui.json
-index 8c8464faac..f31a334c8d 100644
+index c536d4e524..ae84def68b 100644
 --- a/qapi/ui.json
 +++ b/qapi/ui.json
-@@ -1512,7 +1512,8 @@
+@@ -1513,7 +1513,8 @@
      { 'name': 'none' },
      { 'name': 'gtk', 'if': 'CONFIG_GTK' },
      { 'name': 'sdl', 'if': 'CONFIG_SDL' },
@@ -609,7 +1282,7 @@ index 8c8464faac..f31a334c8d 100644
      { 'name': 'curses', 'if': 'CONFIG_CURSES' },
      { 'name': 'cocoa', 'if': 'CONFIG_COCOA' },
      { 'name': 'spice-app', 'if': 'CONFIG_SPICE' },
-@@ -1552,7 +1553,7 @@
+@@ -1553,7 +1554,7 @@
        'cocoa': { 'type': 'DisplayCocoa', 'if': 'CONFIG_COCOA' },
        'curses': { 'type': 'DisplayCurses', 'if': 'CONFIG_CURSES' },
        'egl-headless': { 'type': 'DisplayEGLHeadless',
@@ -619,7 +1292,7 @@ index 8c8464faac..f31a334c8d 100644
        'sdl': { 'type': 'DisplaySDL', 'if': 'CONFIG_SDL' }
    }
 diff --git a/qemu-options.hx b/qemu-options.hx
-index d94e2cbbae..598c45db82 100644
+index dc694a99a3..49a4889f34 100644
 --- a/qemu-options.hx
 +++ b/qemu-options.hx
 @@ -2111,7 +2111,7 @@ DEF("display", HAS_ARG, QEMU_OPTION_display,
@@ -631,31 +1304,8 @@ index d94e2cbbae..598c45db82 100644
      "-display egl-headless[,rendernode=<file>]\n"
  #endif
  #if defined(CONFIG_DBUS_DISPLAY)
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 19191c2391..c1955a82fb 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -1741,6 +1741,10 @@ void arm_cpu_post_init(Object *obj)
- 
-     if (!arm_feature(&cpu->env, ARM_FEATURE_M)) {
-         qdev_property_add_static(DEVICE(obj), &arm_cpu_reset_hivecs_property);
-+
-+        if (arm_feature(&cpu->env, ARM_FEATURE_V7)) {
-+            object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
-+        }
-     }
- 
-     if (arm_feature(&cpu->env, ARM_FEATURE_V8)) {
-@@ -1770,7 +1774,6 @@ void arm_cpu_post_init(Object *obj)
- 
-     if (arm_feature(&cpu->env, ARM_FEATURE_PMU)) {
-         cpu->has_pmu = true;
--        object_property_add_bool(obj, "pmu", arm_get_pmu, arm_set_pmu);
-     }
- 
-     /*
 diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 4c2dd33532..77fa21118b 100644
+index 23b7a736d7..23179520c0 100644
 --- a/ui/cocoa.m
 +++ b/ui/cocoa.m
 @@ -22,6 +22,8 @@
@@ -678,9 +1328,9 @@ index 4c2dd33532..77fa21118b 100644
  #ifndef MAC_OS_VERSION_14_0
  #define MAC_OS_VERSION_14_0 140000
  #endif
-@@ -73,33 +79,14 @@
-     int height;
- } QEMUScreen;
+@@ -75,33 +81,14 @@
+ 
+ @class QemuCocoaPasteboardTypeOwner;
  
 -static void cocoa_update(DisplayChangeListener *dcl,
 -                         int x, int y, int w, int h);
@@ -715,9 +1365,9 @@ index 4c2dd33532..77fa21118b 100644
  static NSTextField *pauseLabel;
  
  static bool allow_events;
-@@ -108,6 +95,97 @@ static void cocoa_switch(DisplayChangeListener *dcl,
- static QemuClipboardInfo *cbinfo;
+@@ -111,6 +98,97 @@ static void cocoa_switch(DisplayChangeListener *dcl,
  static QemuEvent cbevent;
+ static QemuCocoaPasteboardTypeOwner *cbowner;
  
 +#ifdef CONFIG_OPENGL
 +
@@ -813,7 +1463,7 @@ index 4c2dd33532..77fa21118b 100644
  // Utility functions to run specified code block with the BQL held
  typedef void (^CodeBlock)(void);
  typedef bool (^BoolCodeBlock)(void);
-@@ -139,138 +217,13 @@ static bool bool_with_bql(BoolCodeBlock block)
+@@ -142,138 +220,13 @@ static bool bool_with_bql(BoolCodeBlock block)
      return val;
  }
  
@@ -954,7 +1604,7 @@ index 4c2dd33532..77fa21118b 100644
  }
  
  /* Displays an alert dialog box with the specified message */
-@@ -300,7 +253,6 @@ static void handleAnyDeviceErrors(Error * err)
+@@ -303,7 +256,6 @@ static void handleAnyDeviceErrors(Error * err)
  @interface QemuCocoaView : NSView
  {
      QEMUScreen screen;
@@ -962,7 +1612,7 @@ index 4c2dd33532..77fa21118b 100644
      /* The state surrounding mouse grabbing is potentially confusing.
       * isAbsoluteEnabled tracks qemu_input_is_absolute() [ie "is the emulated
       *   pointing device an absolute-position one?"], but is only updated on
-@@ -319,7 +271,6 @@ @interface QemuCocoaView : NSView
+@@ -322,7 +274,6 @@ @interface QemuCocoaView : NSView
      int mouseY;
      bool mouseOn;
  }
@@ -970,7 +1620,7 @@ index 4c2dd33532..77fa21118b 100644
  - (void) grabMouse;
  - (void) ungrabMouse;
  - (void) setFullGrab:(id)sender;
-@@ -328,7 +279,6 @@ - (bool) handleEvent:(NSEvent *)event;
+@@ -331,7 +282,6 @@ - (bool) handleEvent:(NSEvent *)event;
  - (bool) handleEventLocked:(NSEvent *)event;
  - (void) notifyMouseModeChange;
  - (BOOL) isMouseGrabbed;
@@ -978,7 +1628,7 @@ index 4c2dd33532..77fa21118b 100644
  - (void) raiseAllKeys;
  @end
  
-@@ -349,6 +299,9 @@ static CGEventRef handleTapEvent(CGEventTapProxy proxy, CGEventType type, CGEven
+@@ -352,6 +302,9 @@ static CGEventRef handleTapEvent(CGEventTapProxy proxy, CGEventType type, CGEven
  
  @implementation QemuCocoaView
  - (id)initWithFrame:(NSRect)frameRect
@@ -988,7 +1638,7 @@ index 4c2dd33532..77fa21118b 100644
  {
      COCOA_DEBUG("QemuCocoaView: initWithFrame\n");
  
-@@ -375,10 +328,14 @@ - (id)initWithFrame:(NSRect)frameRect
+@@ -378,10 +331,14 @@ - (id)initWithFrame:(NSRect)frameRect
          [self setClipsToBounds:YES];
  #endif
          [self setWantsLayer:YES];
@@ -1005,7 +1655,7 @@ index 4c2dd33532..77fa21118b 100644
          [[self layer] addSublayer:cursorLayer];
  
      }
-@@ -389,10 +346,6 @@ - (void) dealloc
+@@ -392,10 +349,6 @@ - (void) dealloc
  {
      COCOA_DEBUG("QemuCocoaView: dealloc\n");
  
@@ -1016,7 +1666,7 @@ index 4c2dd33532..77fa21118b 100644
      if (eventsTap) {
          CFRelease(eventsTap);
      }
-@@ -408,6 +361,13 @@ - (BOOL) isOpaque
+@@ -411,6 +364,13 @@ - (BOOL) isOpaque
      return YES;
  }
  
@@ -1030,7 +1680,7 @@ index 4c2dd33532..77fa21118b 100644
  - (void) viewDidMoveToWindow
  {
      [self resizeWindow];
-@@ -444,29 +404,43 @@ - (void) unhideCursor
+@@ -447,29 +407,43 @@ - (void) unhideCursor
      [NSCursor unhide];
  }
  
@@ -1085,7 +1735,7 @@ index 4c2dd33532..77fa21118b 100644
  
      cursor_unref(cursor);
      cursor = given_cursor;
-@@ -477,9 +451,6 @@ - (void)setCursor:(QEMUCursor *)given_cursor
+@@ -480,9 +454,6 @@ - (void)setCursor:(QEMUCursor *)given_cursor
  
      cursor_ref(cursor);
  
@@ -1095,7 +1745,7 @@ index 4c2dd33532..77fa21118b 100644
      provider = CGDataProviderCreateWithData(
          NULL,
          cursor->data,
-@@ -504,8 +475,8 @@ - (void)setCursor:(QEMUCursor *)given_cursor
+@@ -507,8 +478,8 @@ - (void)setCursor:(QEMUCursor *)given_cursor
      CGDataProviderRelease(provider);
      [CATransaction begin];
      [CATransaction setDisableActions:YES];
@@ -1105,7 +1755,7 @@ index 4c2dd33532..77fa21118b 100644
      [CATransaction commit];
      CGImageRelease(image);
  }
-@@ -516,61 +487,58 @@ - (void) drawRect:(NSRect) rect
+@@ -519,61 +490,58 @@ - (void) drawRect:(NSRect) rect
  
      // get CoreGraphic context
      CGContextRef viewContextRef = [[NSGraphicsContext currentContext] CGContext];
@@ -1215,7 +1865,7 @@ index 4c2dd33532..77fa21118b 100644
  }
  
  - (NSSize)fixAspectRatio:(NSSize)max
-@@ -624,7 +592,10 @@ - (void) resizeWindow
+@@ -627,7 +595,10 @@ - (void) resizeWindow
      [[self window] setContentAspectRatio:NSMakeSize(screen.width, screen.height)];
  
      if (!([[self window] styleMask] & NSWindowStyleMaskResizable)) {
@@ -1227,7 +1877,7 @@ index 4c2dd33532..77fa21118b 100644
          [[self window] center];
      } else if ([[self window] styleMask] & NSWindowStyleMaskFullScreen) {
          [[self window] setContentSize:[self fixAspectRatio:[self screenSafeAreaSize]]];
-@@ -634,9 +605,15 @@ - (void) resizeWindow
+@@ -637,9 +608,15 @@ - (void) resizeWindow
      }
  }
  
@@ -1244,8 +1894,8 @@ index 4c2dd33532..77fa21118b 100644
 +    [self updateCursorLayout];
  }
  
- - (void) updateUIInfoLocked
-@@ -679,8 +656,8 @@ - (void) updateUIInfoLocked
+ #pragma clang diagnostic push
+@@ -685,8 +662,8 @@ - (void) updateUIInfoLocked
  
      info.xoff = 0;
      info.yoff = 0;
@@ -1256,7 +1906,7 @@ index 4c2dd33532..77fa21118b 100644
  
      dpy_set_ui_info(dcl.con, &info, TRUE);
  }
-@@ -704,28 +681,17 @@ - (void) updateUIInfo
+@@ -712,28 +689,17 @@ - (void) updateUIInfo
      });
  }
  
@@ -1289,7 +1939,7 @@ index 4c2dd33532..77fa21118b 100644
  }
  
  - (void) setFullGrab:(id)sender
-@@ -1216,7 +1182,6 @@ - (void) notifyMouseModeChange {
+@@ -1224,7 +1190,6 @@ - (void) notifyMouseModeChange {
      }
  }
  - (BOOL) isMouseGrabbed {return isMouseGrabbed;}
@@ -1297,7 +1947,7 @@ index 4c2dd33532..77fa21118b 100644
  
  /*
   * Makes the target think all down keys are being released.
-@@ -1270,7 +1235,11 @@ - (void)adjustSpeed:(id)sender;
+@@ -1278,7 +1243,11 @@ - (void)adjustSpeed:(id)sender;
  @end
  
  @implementation QemuCocoaAppController
@@ -1309,7 +1959,7 @@ index 4c2dd33532..77fa21118b 100644
  {
      NSWindow *window;
  
-@@ -1278,16 +1247,21 @@ - (id) init
+@@ -1286,16 +1255,21 @@ - (id) init
  
      self = [super init];
      if (self) {
@@ -1333,7 +1983,7 @@ index 4c2dd33532..77fa21118b 100644
              styleMask:NSWindowStyleMaskTitled|NSWindowStyleMaskMiniaturizable|NSWindowStyleMaskClosable
              backing:NSBackingStoreBuffered defer:NO];
          if(!window) {
-@@ -1379,7 +1353,7 @@ - (void)windowDidExitFullScreen:(NSNotification *)notification
+@@ -1389,7 +1363,7 @@ - (void)windowDidExitFullScreen:(NSNotification *)notification
  
  - (void)windowDidResize:(NSNotification *)notification
  {
@@ -1342,7 +1992,7 @@ index 4c2dd33532..77fa21118b 100644
      [cocoaView updateUIInfo];
  }
  
-@@ -1479,13 +1453,9 @@ - (void)zoomToFit:(id) sender
+@@ -1489,13 +1463,9 @@ - (void)zoomToFit:(id) sender
  
  - (void)toggleZoomInterpolation:(id) sender
  {
@@ -1359,7 +2009,7 @@ index 4c2dd33532..77fa21118b 100644
  }
  
  /* Displays the console on the screen */
-@@ -1753,7 +1723,7 @@ static void create_initial_menus(void)
+@@ -1763,7 +1733,7 @@ static void create_initial_menus(void)
      [menuItem setState: [[cocoaView window] styleMask] & NSWindowStyleMaskResizable ? NSControlStateValueOn : NSControlStateValueOff];
      [menu addItem: menuItem];
      menuItem = [[[NSMenuItem alloc] initWithTitle:@"Zoom Interpolation" action:@selector(toggleZoomInterpolation:) keyEquivalent:@""] autorelease];
@@ -1368,20 +2018,7 @@ index 4c2dd33532..77fa21118b 100644
      [menu addItem: menuItem];
      menuItem = [[[NSMenuItem alloc] initWithTitle:@"View" action:nil keyEquivalent:@""] autorelease];
      [menuItem setSubmenu:menu];
-@@ -2024,6 +1994,12 @@ static void cocoa_clipboard_request(QemuClipboardInfo *info,
-     status = qemu_default_main();
-     bql_unlock();
-     COCOA_DEBUG("Second thread: qemu_default_main() returned, exiting\n");
-+#ifdef CONFIG_OPENGL
-+    qemu_gl_fini_shader(dgc.gls);
-+    if (gl_view_ctx) {
-+        cocoa_gl_destroy_context(&dgc, gl_view_ctx);
-+    }
-+#endif
-     [cbowner release];
-     exit(status);
- }
-@@ -2052,29 +2028,28 @@ static int cocoa_main(void)
+@@ -2025,29 +1995,28 @@ static int cocoa_main(void)
  static void cocoa_update(DisplayChangeListener *dcl,
                           int x, int y, int w, int h)
  {
@@ -1420,7 +2057,7 @@ index 4c2dd33532..77fa21118b 100644
      });
  }
  
-@@ -2114,9 +2089,224 @@ static void cocoa_cursor_define(DisplayChangeListener *dcl, QEMUCursor *cursor)
+@@ -2087,9 +2056,224 @@ static void cocoa_cursor_define(DisplayChangeListener *dcl, QEMUCursor *cursor)
      });
  }
  
@@ -1645,7 +2282,7 @@ index 4c2dd33532..77fa21118b 100644
  
      COCOA_DEBUG("qemu_cocoa: cocoa_display_init\n");
  
-@@ -2129,10 +2319,69 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+@@ -2100,10 +2284,69 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
  
      [QemuApplication sharedApplication];
  
@@ -1657,7 +2294,7 @@ index 4c2dd33532..77fa21118b 100644
 -    QemuCocoaAppController *controller = [[QemuCocoaAppController alloc] init];
 +#ifdef CONFIG_OPENGL
 +    controller = [[QemuCocoaAppController alloc] initWithCGL:display_opengl &&
-+                                                             opts->gl != DISPLAYGL_MODE_ES];
++                                                             opts->gl != DISPLAY_GL_MODE_ES];
 +#else
 +    controller = [[QemuCocoaAppController alloc] init];
 +#endif
@@ -1665,9 +2302,9 @@ index 4c2dd33532..77fa21118b 100644
  
 +    if (display_opengl) {
 +#ifdef CONFIG_OPENGL
-+        if (opts->gl == DISPLAYGL_MODE_ES) {
++        if (opts->gl == DISPLAY_GL_MODE_ES) {
 +#ifdef CONFIG_EGL
-+            if (qemu_egl_init_dpy_cocoa(DISPLAYGL_MODE_ES)) {
++            if (qemu_egl_init_dpy_cocoa(DISPLAY_GL_MODE_ES)) {
 +                exit(1);
 +            }
 +            gl_view_ctx = qemu_egl_init_ctx();
@@ -1716,7 +2353,7 @@ index 4c2dd33532..77fa21118b 100644
      /* if fullscreen mode is to be used */
      if (opts->has_full_screen && opts->full_screen) {
          [[cocoaView window] toggleFullScreen: nil];
-@@ -2156,9 +2405,8 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+@@ -2127,9 +2370,8 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
          [cocoaView window].styleMask |= NSWindowStyleMaskResizable;
      }
  
@@ -1728,7 +2365,7 @@ index 4c2dd33532..77fa21118b 100644
  
      create_initial_menus();
      /*
-@@ -2171,9 +2419,6 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+@@ -2142,9 +2384,6 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
      add_console_menu_entries();
      addRemovableDevicesMenuItems();
  
@@ -1738,7 +2375,7 @@ index 4c2dd33532..77fa21118b 100644
      // register vga output callbacks
      register_displaychangelistener(&dcl);
      qemu_add_mouse_mode_change_notifier(&mouse_mode_change_notifier);
-@@ -2189,6 +2434,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+@@ -2166,6 +2405,7 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
  
  static QemuDisplay qemu_display_cocoa = {
      .type       = DISPLAY_TYPE_COCOA,
@@ -1746,7 +2383,7 @@ index 4c2dd33532..77fa21118b 100644
      .init       = cocoa_display_init,
  };
  
-@@ -2198,3 +2444,7 @@ static void register_cocoa(void)
+@@ -2175,3 +2415,7 @@ static void register_cocoa(void)
  }
  
  type_init(register_cocoa);
@@ -1755,10 +2392,10 @@ index 4c2dd33532..77fa21118b 100644
 +module_dep("ui-opengl");
 +#endif
 diff --git a/ui/console.c b/ui/console.c
-index 8f416ff0b9..88ab450c22 100644
+index 6456e8dd90..4a0d205d73 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -287,14 +287,11 @@ static void displaychangelistener_display_console(DisplayChangeListener *dcl,
+@@ -288,14 +288,11 @@ static void displaychangelistener_display_console(DisplayChangeListener *dcl,
                 dcl->ops->dpy_gl_scanout_texture) {
          dcl->ops->dpy_gl_scanout_texture(dcl,
                                           con->scanout.texture.backing_id,
@@ -1775,7 +2412,7 @@ index 8f416ff0b9..88ab450c22 100644
      }
  }
  
-@@ -1020,31 +1017,25 @@ void dpy_gl_scanout_disable(QemuConsole *con)
+@@ -1018,31 +1015,25 @@ void dpy_gl_scanout_disable(QemuConsole *con)
  
  void dpy_gl_scanout_texture(QemuConsole *con,
                              uint32_t backing_id,
@@ -1813,7 +2450,7 @@ index 8f416ff0b9..88ab450c22 100644
          }
      }
  }
-@@ -1491,12 +1482,7 @@ void qemu_console_resize(QemuConsole *s, int width, int height)
+@@ -1487,12 +1478,7 @@ void qemu_console_resize(QemuConsole *s, int width, int height)
  
  DisplaySurface *qemu_console_surface(QemuConsole *console)
  {
@@ -1828,7 +2465,7 @@ index 8f416ff0b9..88ab450c22 100644
  
  PixelFormat qemu_default_pixelformat(int bpp)
 diff --git a/ui/dbus-console.c b/ui/dbus-console.c
-index 578b67f62b..0fee3e721a 100644
+index 85e215ef23..9352286c03 100644
 --- a/ui/dbus-console.c
 +++ b/ui/dbus-console.c
 @@ -93,13 +93,10 @@ dbus_gl_scanout_disable(DisplayChangeListener *dcl)
@@ -1849,10 +2486,10 @@ index 578b67f62b..0fee3e721a 100644
      DBusDisplayConsole *ddc = container_of(dcl, DBusDisplayConsole, dcl);
  
 diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index c69afc05a8..fd1499b1e1 100644
+index 51244c9240..6eaefbe4a7 100644
 --- a/ui/dbus-listener.c
 +++ b/ui/dbus-listener.c
-@@ -433,14 +433,14 @@ dbus_scanout_share_d3d_texture(
+@@ -491,14 +491,14 @@ static bool dbus_scanout_map(DBusDisplayListener *ddl)
  #endif /* WIN32 */
  
  #ifdef CONFIG_OPENGL
@@ -1875,7 +2512,7 @@ index c69afc05a8..fd1499b1e1 100644
  {
      trace_dbus_scanout_texture(tex_id, backing_y_0_top,
                                 backing_width, backing_height, x, y, w, h);
-@@ -482,6 +482,19 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
+@@ -540,6 +540,19 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
  #endif
  }
  
@@ -1895,7 +2532,7 @@ index c69afc05a8..fd1499b1e1 100644
  #ifdef CONFIG_GBM
  static void dbus_cursor_dmabuf(DisplayChangeListener *dcl,
                                 QemuDmaBuf *dmabuf, bool have_hot,
-@@ -713,8 +726,9 @@ static void dbus_gl_gfx_switch(DisplayChangeListener *dcl,
+@@ -779,8 +792,9 @@ static void dbus_gl_gfx_switch(DisplayChangeListener *dcl,
          int height = surface_height(ddl->ds);
  
          /* TODO: lazy send dmabuf (there are unnecessary sent otherwise) */
@@ -1908,7 +2545,7 @@ index c69afc05a8..fd1499b1e1 100644
  }
  #endif
 diff --git a/ui/egl-headless.c b/ui/egl-headless.c
-index 6187249c73..59ba274700 100644
+index 1f6b845500..6a20c6ae88 100644
 --- a/ui/egl-headless.c
 +++ b/ui/egl-headless.c
 @@ -55,14 +55,11 @@ static void egl_scanout_disable(DisplayChangeListener *dcl)
@@ -1972,7 +2609,7 @@ index 6187249c73..59ba274700 100644
  
  static void egl_cursor_dmabuf(DisplayChangeListener *dcl,
 diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-index 99b2ebbe23..ca281a7e84 100644
+index d591159480..a811f60f33 100644
 --- a/ui/egl-helpers.c
 +++ b/ui/egl-helpers.c
 @@ -405,7 +405,7 @@ void egl_dmabuf_create_fence(QemuDmaBuf *dmabuf)
@@ -2011,7 +2648,7 @@ index 99b2ebbe23..ca281a7e84 100644
 +    EGLint major, minor;
 +    EGLBoolean b;
 +    EGLint n;
-+    bool gles = (mode == DISPLAYGL_MODE_ES);
++    bool gles = (mode == DISPLAY_GL_MODE_ES);
 +
 +    qemu_egl_display = dpy;
 +
@@ -2037,7 +2674,7 @@ index 99b2ebbe23..ca281a7e84 100644
 +        return -1;
 +    }
 +
-+    qemu_egl_mode = gles ? DISPLAYGL_MODE_ES : DISPLAYGL_MODE_CORE;
++    qemu_egl_mode = gles ? DISPLAY_GL_MODE_ES : DISPLAY_GL_MODE_CORE;
 +    return 0;
 +}
 +
@@ -2099,7 +2736,7 @@ index 99b2ebbe23..ca281a7e84 100644
 -    EGLint major, minor;
 -    EGLBoolean b;
 -    EGLint n;
--    bool gles = (mode == DISPLAYGL_MODE_ES);
+-    bool gles = (mode == DISPLAY_GL_MODE_ES);
 -
 -    qemu_egl_display = qemu_egl_get_display(dpy, platform);
 -    if (qemu_egl_display == EGL_NO_DISPLAY) {
@@ -2131,7 +2768,7 @@ index 99b2ebbe23..ca281a7e84 100644
          return -1;
      }
  
--    qemu_egl_mode = gles ? DISPLAYGL_MODE_ES : DISPLAYGL_MODE_CORE;
+-    qemu_egl_mode = gles ? DISPLAY_GL_MODE_ES : DISPLAY_GL_MODE_CORE;
 -    return 0;
 +    return qemu_egl_init_dpy(dpy, mode);
  }
@@ -2161,7 +2798,7 @@ index 99b2ebbe23..ca281a7e84 100644
  }
  #endif
 diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index 9831c10e1b..34826f3c83 100644
+index f7a428c86a..9e04b71f76 100644
 --- a/ui/gtk-egl.c
 +++ b/ui/gtk-egl.c
 @@ -57,7 +57,7 @@ void gd_egl_init(VirtualConsole *vc)
@@ -2233,7 +2870,7 @@ index 9831c10e1b..34826f3c83 100644
      if (qemu_dmabuf_get_allow_fences(dmabuf)) {
          vc->gfx.guest_fb.dmabuf = dmabuf;
 diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index b628b35451..1f4971afb8 100644
+index 2c9a0db425..16e16d91e8 100644
 --- a/ui/gtk-gl-area.c
 +++ b/ui/gtk-gl-area.c
 @@ -248,17 +248,14 @@ void gd_gl_area_destroy_context(DisplayGLCtx *dgc, QEMUGLContext ctx)
@@ -2304,10 +2941,10 @@ index b628b35451..1f4971afb8 100644
      if (qemu_dmabuf_get_allow_fences(dmabuf)) {
          vc->gfx.guest_fb.dmabuf = dmabuf;
 diff --git a/ui/gtk.c b/ui/gtk.c
-index 8e14c2ac81..647a0e29f1 100644
+index 59bda83da6..f2226aeaba 100644
 --- a/ui/gtk.c
 +++ b/ui/gtk.c
-@@ -344,7 +344,7 @@ static void gd_update_full_redraw(VirtualConsole *vc)
+@@ -345,7 +345,7 @@ static void gd_update_full_redraw(VirtualConsole *vc)
      int ww, wh;
      ww = gdk_window_get_width(gtk_widget_get_window(area));
      wh = gdk_window_get_height(gtk_widget_get_window(area));
@@ -2316,7 +2953,7 @@ index 8e14c2ac81..647a0e29f1 100644
      if (vc->gfx.gls && gtk_use_gl_area) {
          gtk_gl_area_queue_render(GTK_GL_AREA(vc->gfx.drawing_area));
          return;
-@@ -564,7 +564,7 @@ static const DisplayChangeListenerOps dcl_ops = {
+@@ -565,7 +565,7 @@ static const DisplayChangeListenerOps dcl_ops = {
  };
  
  
@@ -2325,7 +2962,7 @@ index 8e14c2ac81..647a0e29f1 100644
  
  static bool gd_has_dmabuf(DisplayChangeListener *dcl)
  {
-@@ -675,7 +675,7 @@ static const DisplayGLCtxOps egl_ctx_ops = {
+@@ -676,7 +676,7 @@ static const DisplayGLCtxOps egl_ctx_ops = {
  };
  #endif
  
@@ -2334,7 +2971,7 @@ index 8e14c2ac81..647a0e29f1 100644
  
  /** QEMU Events **/
  
-@@ -753,7 +753,7 @@ static void gd_set_ui_size(VirtualConsole *vc, gint width, gint height)
+@@ -754,7 +754,7 @@ static void gd_set_ui_size(VirtualConsole *vc, gint width, gint height)
      dpy_set_ui_info(vc->gfx.dcl.con, &info, true);
  }
  
@@ -2343,7 +2980,7 @@ index 8e14c2ac81..647a0e29f1 100644
  
  static gboolean gd_render_event(GtkGLArea *area, GdkGLContext *context,
                                  void *opaque)
-@@ -807,7 +807,7 @@ static gboolean gd_draw_event(GtkWidget *widget, cairo_t *cr, void *opaque)
+@@ -808,7 +808,7 @@ static gboolean gd_draw_event(GtkWidget *widget, cairo_t *cr, void *opaque)
      int ww, wh;
      int fbw, fbh;
  
@@ -2352,7 +2989,7 @@ index 8e14c2ac81..647a0e29f1 100644
      if (vc->gfx.gls) {
          if (gtk_use_gl_area) {
              /* invoke render callback please */
-@@ -1370,7 +1370,7 @@ static gboolean gd_tab_window_close(GtkWidget *widget, GdkEvent *event,
+@@ -1371,7 +1371,7 @@ static gboolean gd_tab_window_close(GtkWidget *widget, GdkEvent *event,
                                      vc->tab_item, vc->label);
      gtk_widget_destroy(vc->window);
      vc->window = NULL;
@@ -2361,7 +2998,7 @@ index 8e14c2ac81..647a0e29f1 100644
      if (vc->gfx.esurface) {
          eglDestroySurface(qemu_egl_display, vc->gfx.esurface);
          vc->gfx.esurface = NULL;
-@@ -1409,7 +1409,7 @@ static void gd_menu_untabify(GtkMenuItem *item, void *opaque)
+@@ -1410,7 +1410,7 @@ static void gd_menu_untabify(GtkMenuItem *item, void *opaque)
      if (!vc->window) {
          gtk_widget_set_sensitive(vc->menu_item, false);
          vc->window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -2397,16 +3034,16 @@ index 8e14c2ac81..647a0e29f1 100644
      if (display_opengl) {
          if (gtk_use_gl_area) {
              vc->gfx.drawing_area = gtk_gl_area_new();
-@@ -2515,7 +2515,7 @@ static void early_gtk_display_init(DisplayOptions *opts)
+@@ -2518,7 +2518,7 @@ static void early_gtk_display_init(DisplayOptions *opts)
  
      assert(opts->type == DISPLAY_TYPE_GTK);
-     if (opts->has_gl && opts->gl != DISPLAYGL_MODE_OFF) {
+     if (opts->has_gl && opts->gl != DISPLAY_GL_MODE_OFF) {
 -#if defined(CONFIG_OPENGL)
 +#if defined(CONFIG_OPENGL) && defined(CONFIG_EGL)
  #if defined(GDK_WINDOWING_WAYLAND)
          if (GDK_IS_WAYLAND_DISPLAY(gdk_display_get_default())) {
              gtk_use_gl_area = true;
-@@ -2558,6 +2558,6 @@ static void register_gtk(void)
+@@ -2561,6 +2561,6 @@ static void register_gtk(void)
  
  type_init(register_gtk);
  
@@ -2415,7 +3052,7 @@ index 8e14c2ac81..647a0e29f1 100644
  module_dep("ui-opengl");
  #endif
 diff --git a/ui/meson.build b/ui/meson.build
-index 28c7381dd1..957500e5f4 100644
+index 35fb04cadf..f316853ad8 100644
 --- a/ui/meson.build
 +++ b/ui/meson.build
 @@ -62,14 +62,16 @@ if opengl.found()
@@ -2449,7 +3086,7 @@ index 28c7381dd1..957500e5f4 100644
    ui_modules += {'gtk' : gtk_ss}
  endif
  
-@@ -130,7 +132,7 @@ if sdl.found()
+@@ -126,7 +128,7 @@ if sdl.found()
      'sdl2-input.c',
      'sdl2.c',
    ))
@@ -2459,7 +3096,7 @@ index 28c7381dd1..957500e5f4 100644
    ui_modules += {'sdl' : sdl_ss}
  endif
 diff --git a/ui/sdl2-gl.c b/ui/sdl2-gl.c
-index 91b7ee2419..edee5ad41e 100644
+index e01d9ab0c7..f652840d3e 100644
 --- a/ui/sdl2-gl.c
 +++ b/ui/sdl2-gl.c
 @@ -201,27 +201,25 @@ void sdl2_gl_scanout_disable(DisplayChangeListener *dcl)
@@ -2497,7 +3134,7 @@ index 91b7ee2419..edee5ad41e 100644
  
  void sdl2_gl_scanout_flush(DisplayChangeListener *dcl,
 diff --git a/ui/sdl2.c b/ui/sdl2.c
-index 51299f3645..84679007fd 100644
+index cda4293a53..0c17972cc3 100644
 --- a/ui/sdl2.c
 +++ b/ui/sdl2.c
 @@ -93,7 +93,7 @@ void sdl2_window_create(struct sdl2_console *scon)
@@ -2518,7 +3155,7 @@ index 51299f3645..84679007fd 100644
          sdl2_gl_redraw(scon);
  #endif
      } else {
-@@ -805,7 +805,7 @@ static const DisplayChangeListenerOps dcl_2d_ops = {
+@@ -785,7 +785,7 @@ static const DisplayChangeListenerOps dcl_2d_ops = {
      .dpy_cursor_define    = sdl_mouse_define,
  };
  
@@ -2527,7 +3164,7 @@ index 51299f3645..84679007fd 100644
  static const DisplayChangeListenerOps dcl_gl_ops = {
      .dpy_name                = "sdl2-gl",
      .dpy_gfx_update          = sdl2_gl_update,
-@@ -839,7 +839,7 @@ static void sdl2_display_early_init(DisplayOptions *o)
+@@ -819,7 +819,7 @@ static void sdl2_display_early_init(DisplayOptions *o)
  {
      assert(o->type == DISPLAY_TYPE_SDL);
      if (o->has_gl && o->gl) {
@@ -2536,7 +3173,7 @@ index 51299f3645..84679007fd 100644
          display_opengl = 1;
  #endif
      }
-@@ -909,7 +909,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
+@@ -886,7 +886,7 @@ static void sdl2_display_init(DisplayState *ds, DisplayOptions *o)
          }
          sdl2_console[i].idx = i;
          sdl2_console[i].opts = o;
@@ -2545,7 +3182,7 @@ index 51299f3645..84679007fd 100644
          sdl2_console[i].opengl = display_opengl;
          sdl2_console[i].dcl.ops = display_opengl ? &dcl_gl_ops : &dcl_2d_ops;
          sdl2_console[i].dgc.ops = display_opengl ? &gl_ctx_ops : NULL;
-@@ -978,6 +978,6 @@ static void register_sdl1(void)
+@@ -958,6 +958,6 @@ static void register_sdl1(void)
  
  type_init(register_sdl1);
  
