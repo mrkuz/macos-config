@@ -5,10 +5,10 @@
         "homepage": "http://angleproject.org",
         "owner": "google",
         "repo": "angle",
-        "rev": "962e147a59f4a72645e670d154e78dd60b3dfccc",
-        "sha256": "0k2rkzzawp6zhqg5mhibcj4c9p7114qc0w3bs3g2kwajvwh3sf5x",
+        "rev": "c60d98cef6586de56a90d0a992bc21e910255d6c",
+        "sha256": "0ank2vimwaxsqvwkr5qrhc5f518xlmfxiw1p2hasiarwyzy6s53i",
         "type": "tarball",
-        "url": "https://github.com/google/angle/archive/962e147a59f4a72645e670d154e78dd60b3dfccc.tar.gz",
+        "url": "https://github.com/google/angle/archive/c60d98cef6586de56a90d0a992bc21e910255d6c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "chromium-aarch64-darwin": {
@@ -31,10 +31,10 @@
         "homepage": "",
         "owner": "anholt",
         "repo": "libepoxy",
-        "rev": "e98617e62e74a835d4e403cd270afaf296afe839",
-        "sha256": "0khq2k7g5n3lwmydsaw9h9gzh1w829h87hrjm78iycbdri15cgdp",
+        "rev": "bb7ddbc7bd1ee879ec50aa281dcb10cfaefb784c",
+        "sha256": "01yb183j7bvnvq2vrgxmplmn1nhqwivkqx2kr56pmqnypvfcwr5j",
         "type": "tarball",
-        "url": "https://github.com/anholt/libepoxy/archive/e98617e62e74a835d4e403cd270afaf296afe839.tar.gz",
+        "url": "https://github.com/anholt/libepoxy/archive/bb7ddbc7bd1ee879ec50aa281dcb10cfaefb784c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "qemu": {
@@ -50,16 +50,16 @@
         "homepage": null,
         "owner": "lima-vm",
         "repo": "socket_vmnet",
-        "rev": "9e26edd322ecb1daf2d65e63ad9fde2590896578",
-        "sha256": "1v9n8w9ifi1wqxka194c3ig5jwj6b96ymyl9j7zilk6g6dvs7xg2",
+        "rev": "b1d6d46b624bfaaa77d0858f4eaf163abae00150",
+        "sha256": "1c1jc2sac1m04pg8zbj8vwj9zg0yqfjzp08cnz25isylk9lnjsx3",
         "type": "tarball",
-        "url": "https://github.com/lima-vm/socket_vmnet/archive/9e26edd322ecb1daf2d65e63ad9fde2590896578.tar.gz",
+        "url": "https://github.com/lima-vm/socket_vmnet/archive/b1d6d46b624bfaaa77d0858f4eaf163abae00150.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "cae17ceea2cc2438bc81824b6dd55825b00f48de",
+        "rev": "d9f41b89fc44e034a11a0596be5a89bb50bdcf65",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
