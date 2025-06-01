@@ -8,6 +8,7 @@ mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Xcode", id: 497799835
+vscode "bierner.docs-view"
 vscode "continue.continue"
 vscode "lfs.vscode-emacs-friendly"
 vscode "ms-vscode-remote.remote-containers"

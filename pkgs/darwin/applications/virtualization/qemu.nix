@@ -12,8 +12,6 @@ in stdenv.mkDerivation rec {
     glib
     libslirp
     pixman
-    darwin.stubs.rez
-    darwin.stubs.setfile
     darwin.sigtool
     darwinSDK
     macos.angle
@@ -31,7 +29,10 @@ in stdenv.mkDerivation rec {
   '';
 
   # See: https://gist.github.com/akihikodaki/87df4149e7ca87f18dc56807ec5a1bc5
-  patches = [ ./qemu/akihikodaki-10.0.0.patch ];
+  patches = [
+    ./qemu/akihikodaki-10.0.0.patch
+    ./qemu/skip-macos-icon.patch
+  ];
   # patches = [ ./qemu/utm-9.1.0.patch ];
 
   configureFlags = [

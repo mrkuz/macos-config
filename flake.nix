@@ -3,7 +3,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
     # nixpkgs-master.url = "github:nixos/nixpkgs/master";
-    nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixos-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     nix-alien = { url = "github:thiagokokada/nix-alien"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
     nix-darwin = { url = "github:LnL7/nix-darwin/master"; inputs.nixpkgs.follows = "nixpkgs-unstable"; };
@@ -29,10 +29,10 @@
       };
 
       versions = {
-        darwin.stateVersion = 5;
-        homeManager.stateVersion = "25.05";
-        nixos.stateVersion = "25.05";
-        nixos.stableVersion = "24.11";
+        darwin.stateVersion = 6;
+        homeManager.stateVersion = "25.11";
+        nixos.stateVersion = "25.11";
+        nixos.stableVersion = "25.11";
         rev = self.rev or self.dirtyRev or "dirty";
       };
 

@@ -65,6 +65,7 @@
   # Enable firewall
   system.defaults.alf.globalstate = 1;
 
+  system.primaryUser = "markus";
   users.users.markus = {
     home = "/Users/markus";
   };

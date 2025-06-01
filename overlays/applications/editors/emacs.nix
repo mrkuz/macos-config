@@ -1,6 +1,6 @@
 self: super:
 {
-  emacs-plus = super.emacs-unstable.overrideAttrs (old: {
+  emacs-plus = (super.emacs-unstable.overrideAttrs (old: {
     patches = old.patches ++ [
       (super.fetchpatch {
         url = "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
@@ -15,5 +15,9 @@ self: super:
         sha256 = "3QLq91AQ6E921/W9nfDjdOUWR8YVsqBAT/W9c1woqAw=";
       })
     ];
-  });
+    doCheck = false;
+    doInstallCheck = false;
+  })).override {
+    withNativeCompilation = true;
+  };
 }

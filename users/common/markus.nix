@@ -18,9 +18,11 @@
       bat
       cloc
       colordiff
+      entr
       eza
       fd
       file
+      httpie
       htop
       iftop
       inetutils
@@ -34,6 +36,7 @@
       rsync
       ripgrep
       socat
+      tldr
       tree
       watch
       wdiff
