@@ -46,3 +46,10 @@
 
 - Point & Click -> Click: Light
 - More Gestures -> App Expose: Swipe Down with Three Fingers
+
+## Mouse
+
+- Tracking Speed: 4
+- Natural scrolling: On
+- Secondary click: Click Right Side
+- Smart zoom: On
