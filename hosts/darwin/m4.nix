@@ -11,6 +11,12 @@
 
   networking.hostName = "m4";
 
+  # Enable firewall
+  networking.applicationFirewall = {
+    enable = true;
+    blockAllIncoming = true;
+  };
+
   nix.linux-builder = {
     enable = true;
     ephemeral = true;
@@ -62,8 +68,6 @@
   };
 
   services.skhd.enable = true;
-  # Enable firewall
-  system.defaults.alf.globalstate = 1;
 
   system.primaryUser = "markus";
   users.users.markus = {

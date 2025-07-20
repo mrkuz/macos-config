@@ -6,7 +6,7 @@ in stdenv.mkDerivation rec {
   src = source;
 
   nativeBuildInputs = with pkgs; [ meson ninja python3 pkg-config ];
-  buildInputs = with pkgs; [ darwin.apple_sdk.frameworks.Carbon macos.angle ];
+  buildInputs = with pkgs; [ macos.angle ];
 
   patches = [
     # See: https://github.com/NixOS/nixpkgs/blob/79baff8812a0d68e24a836df0a364c678089e2c7/pkgs/development/libraries/libepoxy/default.nix#L27
