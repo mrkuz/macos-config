@@ -25,7 +25,7 @@
       vars = {
         currentSystem = "aarch64-darwin";
         primaryUser = "markus";
-        sshKeyFile = ./users/darwin/markus/files/id_rsa.pub;
+        sshKeyFile = ./users/darwin/markus/files/id_ed25519.pub;
       };
 
       versions = {

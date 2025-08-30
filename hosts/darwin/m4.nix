@@ -56,6 +56,9 @@
     ];
   };
 
+  # Show path bar in Finder
+  system.defaults.finder.ShowPathbar = true;
+
   system.defaults.CustomUserPreferences = {
     "com.apple.symbolichotkeys" = {
       AppleSymbolicHotKeys = {
@@ -67,7 +70,10 @@
     };
   };
 
-  services.skhd.enable = true;
+  services.skhd = {
+    enable = true;
+    # package = skhd_zig;
+  };
 
   system.primaryUser = "markus";
   users.users.markus = {
