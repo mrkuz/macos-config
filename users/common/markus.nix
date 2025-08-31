@@ -133,6 +133,8 @@ in {
       }
     ];
     initContent = ''
+      bindkey "^[[3~" delete-char
+
       autoload -U promptinit; promptinit
       zstyle :prompt:pure:git:stash show yes
       prompt pure
