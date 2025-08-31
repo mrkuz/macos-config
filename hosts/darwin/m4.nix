@@ -37,7 +37,7 @@
   nix.settings.trusted-users = [ "root" "markus" ];
 
   programs = {
-    # fish.enable = true;
+    fish.enable = true;
     zsh.enable = true;
   };
 

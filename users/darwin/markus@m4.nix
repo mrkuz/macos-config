@@ -7,6 +7,19 @@
     tmux = {
       enable = true;
       copyCommand = "pbcopy";
+      shell = "${pkgs.fish}/bin/fish";
+    };
+    fish = {
+      enable = true;
+      extraInit = ''
+        ${pkgs.mise}/bin/mise activate fish | source
+      '';
+    };
+    zsh = {
+      enable = false;
+      extraInit = ''
+        eval "$(${pkgs.mise}/bin/mise activate zsh)"
+      '';
     };
   };
 
@@ -20,14 +33,7 @@
       macos.qemu
       # GUI utils
       vscode
-      # Cloud
-      # kubectl
-      # kubernetes-helm
-      # terraform
-      # Python
-      # (python3.withPackages (p: [
-      #   p.flake8
-      #] ))
+      # CLI utils
       uv
       # VMs
       (lib.buildQemuVm {
@@ -42,6 +48,7 @@
       })
     ];
     sessionVariables = {
+      CLICOLOR = "1";
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";
       OLLAMA_API_BASE="http://127.0.0.1:11434";
     };
@@ -61,17 +68,15 @@
     hyper_mode < f19 ; default
   '';
 
+  home.shellAliases = {
+    ec = "emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c";
+  };
+
   programs.ssh = {
     enable = true;
     extraConfig = "UseKeychain = yes";
     matchBlocks."*" = {
       addKeysToAgent = "yes";
-    };
-  };
-
-  programs.zsh = {
-    shellAliases = {
-      ec = "emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c";
     };
   };
 
