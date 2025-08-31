@@ -27,6 +27,7 @@ in {
       iftop
       inetutils
       jq
+      mise
       ncdu
       # pdftk
       pstree
@@ -94,8 +95,6 @@ in {
     };
   };
 
-  programs.mise.enable = true;
-
   programs.zsh = {
     enable = true;
     autocd = true;
@@ -137,6 +136,8 @@ in {
       autoload -U promptinit; promptinit
       zstyle :prompt:pure:git:stash show yes
       prompt pure
+
+      eval "$(${pkgs.mise}/bin/mise activate zsh)"
     '';
   };
 }

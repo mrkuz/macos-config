@@ -28,7 +28,7 @@ in
       serviceConfig = {
         ProgramArguments = [
           "/bin/sh" "-c"
-          "/bin/wait4path ${pkgs.macos.socket_vmnet} &amp;&amp; ${pkgs.macos.socket_vmnet}/bin/socket_vmnet --vmnet-gateway=${cfg.gateway} --vmnet-dhcp-end=${cfg.dhcpEnd} /var/run/socket_vmnet"
+          "/bin/wait4path ${pkgs.macos.socket_vmnet} && ${pkgs.macos.socket_vmnet}/bin/socket_vmnet --vmnet-gateway=${cfg.gateway} --vmnet-dhcp-end=${cfg.dhcpEnd} /var/run/socket_vmnet"
         ];
         RunAtLoad = true;
         StandardOutPath = "/var/log/socket-vmnet/stdout";
