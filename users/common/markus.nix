@@ -119,7 +119,7 @@ in {
     };
     sessionVariables = {
       "CLICOLOR" = "1";
-      "PURE_PROMPT_SYMBOL" = ">";
+      "PURE_PROMPT_SYMBOL" = " >";
     };
     setOptions = [
       "INC_APPEND_HISTORY"
@@ -137,8 +137,14 @@ in {
 
       autoload -U promptinit; promptinit
       zstyle :prompt:pure:git:stash show yes
-      prompt pure
 
+      # Single-line prompt
+      prompt_newline='%666v'
+      print() {
+        [ 0 -eq $# -a "prompt_pure_precmd" = "''${funcstack[-1]}" ] || builtin print "$@";
+      }
+
+      prompt pure
       eval "$(${pkgs.mise}/bin/mise activate zsh)"
     '';
   };
