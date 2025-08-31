@@ -63,8 +63,10 @@
 
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
     extraConfig = "UseKeychain = yes";
+    matchBlocks."*" = {
+      addKeysToAgent = "yes";
+    };
   };
 
   programs.zsh = {

@@ -17,6 +17,7 @@ in stdenv.mkDerivation rec {
     macos.angle
     macos.libepoxy
     macos.virglrenderer
+    python313Packages.distlib
   ];
 
   dontUseMesonConfigure = true;
