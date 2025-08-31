@@ -13,6 +13,10 @@ in
       default = "${pkgs.zsh}/bin/zsh";
       type = types.str;
     };
+    copyCommand = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -61,6 +65,10 @@ in
         bind R command-prompt -p "Rename window:" "rename-window '%%'"
         bind C-k confirm -p "Kill pane? [y/n]" kill-pane
         bind C-s setw -g synchronize-panes
+
+        ${lib.optionalString (cfg.copyCommand != null) ''
+          set -g copy-command "${cfg.copyCommand}"
+        ''}
       '';
     };
   };

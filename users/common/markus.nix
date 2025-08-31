@@ -1,16 +1,16 @@
 { config, lib, pkgs, systemName, ... }:
-{
-  modules = {
-    alacritty = {
-      enable = true;
-      shell = "${pkgs.tmux}/bin/tmux";
-    };
-    tmux = {
-      enable = true;
-      shell = "${pkgs.fish}/bin/fish";
-    };
+let
+  shellAbbrs = {
+    gau = "git add -u";
+    gc = "git commit";
+    gcm = "git commit -m";
+    gcmm = "git checkout --";
+    gd = "git diff";
+    gdc = "git diff --cached";
+    gs = "git status";
+    nb = "nix build --log-format bar-with-logs";
   };
-
+in {
   home = {
     packages = with pkgs; [
       # CLI utils
@@ -27,7 +27,6 @@
       iftop
       inetutils
       jq
-      mise
       ncdu
       # pdftk
       pstree
@@ -44,24 +43,20 @@
     ];
   };
 
+  home.shell = {
+    # enableFishIntegration = true;
+    enableZshIntegration = true;
+  };
+
   programs.fish = {
-    enable = true;
+    enable = false;
     plugins = [
       {
         name = "pure";
         src = pkgs.fishPlugins.pure.src;
       }
     ];
-    shellAbbrs = {
-      gau = "git add -u";
-      gc = "git commit";
-      gcm = "git commit -m";
-      gcmm = "git checkout --";
-      gd = "git diff";
-      gdc = "git diff --cached";
-      gs = "git status";
-      nb = "nix build --log-format bar-with-logs";
-    };
+    shellAbbrs = shellAbbrs;
     interactiveShellInit = ''
       set -U fish_greeting
       set -U pure_symbol_prompt ">"
@@ -75,10 +70,7 @@
     '';
   };
 
-  programs.fzf = {
-    enable = true;
-    enableFishIntegration = true;
-  };
+  programs.fzf.enable = true;
 
   programs.git = {
     enable = true;
@@ -100,5 +92,51 @@
       signByDefault = false;
       format = "openpgp";
     };
+  };
+
+  programs.mise.enable = true;
+
+  programs.zsh = {
+    enable = true;
+    autocd = true;
+    autosuggestion.enable = true;
+    defaultKeymap = "emacs";
+    enableCompletion = true;
+    history = {
+      save = 10000;
+      size = 10000;
+      share = true;
+      ignoreDups = true;
+      ignoreAllDups = true;
+      saveNoDups = true;
+      findNoDups = true;
+      expireDuplicatesFirst = true;
+      ignoreSpace = true;
+    };
+    syntaxHighlighting.enable = true;
+    zsh-abbr = {
+      enable = true;
+      abbreviations = shellAbbrs;
+    };
+    sessionVariables = {
+      "CLICOLOR" = "1";
+      "PURE_PROMPT_SYMBOL" = ">";
+    };
+    setOptions = [
+      "INC_APPEND_HISTORY"
+      "HIST_REDUCE_BLANKS"
+    ];
+    plugins = [
+      {
+        name = "pure";
+        src = pkgs.pure-prompt;
+        completions = [ "share/zsh/site-functions" ];
+      }
+    ];
+    initContent = ''
+      autoload -U promptinit; promptinit
+      zstyle :prompt:pure:git:stash show yes
+      prompt pure
+    '';
   };
 }

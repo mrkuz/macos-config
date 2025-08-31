@@ -9,6 +9,9 @@
 
   documentation.info.enable = false;
 
+  # zsh completions
+  environment.pathsToLink = [ "/share/zsh" ];
+
   networking.hostName = "m4";
 
   # Enable firewall

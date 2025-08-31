@@ -4,6 +4,10 @@
 
   modules = {
     emacs.enable = true;
+    tmux = {
+      enable = true;
+      copyCommand = "pbcopy";
+    };
   };
 
   home = {
@@ -52,37 +56,21 @@
     hyper_mode < a : skhd -k "q"; open -n /System/Applications/Launchpad.app
     hyper_mode < e : skhd -k "q"; emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c
     hyper_mode < j : skhd -k "q"; emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c -F '((name . "org-protocol-capture"))' 'org-protocol://capture?template=j'
-    hyper_mode < t : skhd -k "q"; alacritty
+    hyper_mode < t : skhd -k "q"; open -n /System/Applications/Utilities/Terminal.app
     hyper_mode < q ; default
     hyper_mode < f19 ; default
   '';
-
-  programs.alacritty = {
-    settings = {
-      font = {
-        normal = {
-          family = "Ubuntu Mono";
-          style = "Regular";
-        };
-        offset = { x = 0; y = 2; };
-        size = 18;
-      };
-    };
-  };
-
-  programs.fish = {
-    shellAliases = {
-      ec = "emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c";
-    };
-    shellAbbrs = {
-      a86 = "arch -x86_64";
-    };
-  };
 
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
     extraConfig = "UseKeychain = yes";
+  };
+
+  programs.zsh = {
+    shellAliases = {
+      ec = "emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c";
+    };
   };
 
   services.ollama = {
