@@ -3,6 +3,7 @@
 ## Apple Account
 
 - iCloud -> Saved to iCloud -> See All -> Siri: off
+- iCloud -> Private Relay: on
 
 ## Apple Intelligence & Siri
 
@@ -28,6 +29,13 @@
 ## Desktop & Dock
 
 - Tiled windows have margins: off
+
+### Hot Corners
+
+- Top left: Mission Control
+- Top right: Notification Center
+- Bottom left: -
+- Bottom right: Desktop
 
 ## Spotlight
 

@@ -62,17 +62,6 @@
   # Show path bar in Finder
   system.defaults.finder.ShowPathbar = true;
 
-  system.defaults.CustomUserPreferences = {
-    "com.apple.symbolichotkeys" = {
-      AppleSymbolicHotKeys = {
-        # Disable input source switching with 'Control + Space'
-        "60" = {
-           enabled = false;
-        };
-      };
-    };
-  };
-
   services.skhd = {
     enable = true;
     # package = skhd_zig;

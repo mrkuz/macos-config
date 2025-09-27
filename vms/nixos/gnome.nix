@@ -13,13 +13,10 @@
   };
 
   programs.gnome-terminal.enable = true;
-  services.gnome.core-utilities.enable = false;
 
-  services.xserver = {
-    enable = true;
-    desktopManager.gnome.enable = true;
-    displayManager.gdm.enable = true;
-  };
+  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.gnome.core-apps.enable = false;
 
   users.users."${vars.primaryUser}" = {
     password = vars.primaryUser;

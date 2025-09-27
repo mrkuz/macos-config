@@ -1,6 +1,8 @@
 # Finder
 
 - View -> Show path bar: on
+- Settings -> General -> New Finder window show: markus
+- Settings -> Advanced -> Show all filename extensions: on
 
 # Notes
 
