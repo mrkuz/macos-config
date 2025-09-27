@@ -2,7 +2,6 @@ tap "homebrew/bundle"
 cask "betterdisplay"
 cask "intellij-idea-ce"
 cask "key-codes"
-cask "linearmouse"
 cask "porting-kit"
 cask "vorta"
 mas "Keynote", id: 409183694

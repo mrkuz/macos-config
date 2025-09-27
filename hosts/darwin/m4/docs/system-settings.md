@@ -10,12 +10,20 @@
 - Language: American (Voice 4)
 - ChatGPT -> UseChatGPT: on
 
-## Control centre
+## Network
 
-- Sound: Always Show In Menu Bar
-- Music Recognition: Show in Control Center
-- Spotlight: Don’t Show in Menu Bar
-- Siri: Don’t Show in Menu Bar
+- Firewall: On
+- Firewall -> Options -> Block all incomming connections: On
+
+## General
+
+- Sharing -> Local hostname: m4.local
+
+## Menu Bar
+
+- Siri: Off
+- Spotlight: Off
+- Sound: Always Show
 
 ## Desktop & Dock
 
@@ -42,14 +50,22 @@
 
 - Access iCloud Data on the Web: off
 
+## Keyboard
+
+### Keyboard Shortcuts
+
+- Input Sources -> Select the previous input source: Off
+- Mission Contorl: On
+
+## Mouse
+
+- Tracking Speed: 6
+- Natural scrolling: On
+- Secondary click: Click Right Side
+- Smart zoom: On
+
 ## Trackpad
 
 - Point & Click -> Click: Light
 - More Gestures -> App Expose: Swipe Down with Three Fingers
 
-## Mouse
-
-- Tracking Speed: 4
-- Natural scrolling: On
-- Secondary click: Click Right Side
-- Smart zoom: On

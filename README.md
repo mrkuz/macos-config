@@ -99,7 +99,7 @@ nix run .#playground-vm
 
 In case you run into [issues](https://github.com/NixOS/nix/issues/4119) with [sandboxed](https://nixos.org/manual/nix/stable/command-ref/conf-file.html#conf-sandbox) builds, you can disable the sandbox temporary with `--option sandbox false`.
 
-Use cases: Run docker, isolate applications, ... see [hosts](#hosts) section.
+Use cases: Run docker, isolate applications, ... see [VMs](#vms) section.
 
 To learn how to add additional VMs, check out [flake.nix](flake.nix) (look for `mkVm`).
 

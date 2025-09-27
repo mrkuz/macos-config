@@ -1,12 +1,14 @@
+# Finder
+
+- View -> Show path bar: on
+
 # Notes
 
-Always resume to last Quick Note: off
+- Settings -> Always resume to last Quick Note: off
 
 # IntelliJ IDEA
 
 ## Settings
-
-Menu: IntelliJ IDEA -> Settings
 
 ### Keymap
 
@@ -28,3 +30,4 @@ Settings -> Plugins
 
 - Kotest
 - Lombok
+

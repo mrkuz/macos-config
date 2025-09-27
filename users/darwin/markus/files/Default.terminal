@@ -168,7 +168,7 @@
 	<key>BlinkText</key>
 	<false/>
 	<key>CommandString</key>
-	<string>/etc/profiles/per-user/markus/bin/tmux</string>
+	<string>exec /etc/profiles/per-user/markus/bin/tmux</string>
 	<key>CursorBlink</key>
 	<false/>
 	<key>CursorColor</key>
@@ -198,7 +198,7 @@
 	<key>ProfileCurrentVersion</key>
 	<real>2.0699999999999998</real>
 	<key>RunCommandAsShell</key>
-	<true/>
+	<false/>
 	<key>SelectionColor</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
@@ -258,6 +258,8 @@
 	<false/>
 	<key>columnCount</key>
 	<integer>100</integer>
+	<key>deleteSendsBackspace</key>
+	<false/>
 	<key>name</key>
 	<string>Default</string>
 	<key>rowCount</key>
