@@ -1,7 +1,6 @@
 { stdenv, darwinMinVersionHook, lib, pkgs, sources, ... }:
 let
   source = sources.qemu;
-  darwinSDK = [ pkgs.apple-sdk_13 (darwinMinVersionHook "13") ];
 in stdenv.mkDerivation rec {
   name = "qemu";
   src = source;
@@ -13,7 +12,6 @@ in stdenv.mkDerivation rec {
     libslirp
     pixman
     darwin.sigtool
-    darwinSDK
     macos.angle
     macos.libepoxy
     macos.virglrenderer

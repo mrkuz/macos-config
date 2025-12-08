@@ -30,9 +30,9 @@
 
       versions = {
         darwin.stateVersion = 6;
-        homeManager.stateVersion = "25.11";
-        nixos.stateVersion = "25.11";
-        nixos.stableVersion = "25.05";
+        homeManager.stateVersion = "26.05";
+        nixos.stateVersion = "26.05";
+        nixos.stableVersion = "25.11";
         rev = self.rev or self.dirtyRev or "dirty";
       };
 

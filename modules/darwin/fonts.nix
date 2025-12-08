@@ -19,7 +19,7 @@ in
         hack-font
         inconsolata
         source-code-pro
-        ubuntu_font_family
+        ubuntu-classic
       ];
     };
   };

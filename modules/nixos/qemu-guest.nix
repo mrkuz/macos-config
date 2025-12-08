@@ -161,6 +161,8 @@ in
         Type 'Ctrl-a c' to switch to the QEMU console
       '';
 
+      # system.nixos-init.enable = true;
+
       # Disable virtual console
       systemd.services."autovt@".enable = false;
       systemd.services."getty@".enable = false;

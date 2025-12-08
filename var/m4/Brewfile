@@ -1,15 +1,20 @@
 tap "homebrew/bundle"
 cask "betterdisplay"
+cask "datagrip"
+cask "firefox"
 cask "intellij-idea-ce"
 cask "key-codes"
 cask "porting-kit"
+cask "sony-ps-remote-play"
 cask "vorta"
 mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Xcode", id: 497799835
 vscode "bierner.docs-view"
-vscode "continue.continue"
+vscode "github.copilot"
+vscode "github.copilot-chat"
 vscode "lfs.vscode-emacs-friendly"
+vscode "ms-azuretools.vscode-containers"
 vscode "ms-vscode-remote.remote-containers"
 vscode "vscode-icons-team.vscode-icons"

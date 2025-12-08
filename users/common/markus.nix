@@ -35,12 +35,18 @@
 
   programs.fzf.enable = true;
 
+  programs.diff-so-fancy = {
+    enable = true;
+    enableGitIntegration = true;
+  };
+
   programs.git = {
     enable = true;
-    userName = "mrkuz";
-    userEmail = "markus@bitsandbobs.net";
-    diff-so-fancy.enable = true;
-    extraConfig = {
+    settings = {
+      user = {
+        name = "mrkuz";
+        email = "markus@bitsandbobs.net";
+      };
       init = {
         defaultBranch = "main";
       };
