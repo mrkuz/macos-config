@@ -28,6 +28,7 @@
 
 ## Desktop & Dock
 
+- Click wallpaper to show desktop: Only in Stage Manager
 - Tiled windows have margins: off
 
 ### Hot Corners
@@ -53,6 +54,10 @@
 ## Lock Screen
 
 - Start Screen Saver when inactive: Never
+
+## Touch ID & Password
+
+- Use Apple Watch to unlock your applications and your Mac: off
 
 ## iCloud
 
