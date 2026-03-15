@@ -128,14 +128,14 @@ Host expressions represent a physical machine. Kind of what you would put in `da
 
 VM expressions are like host expressions, but represent a virtual machine.
 
-| Name       | System          | Description                                                                        |
-|------------|-----------------|------------------------------------------------------------------------------------|
-| docker     | nixos (console) | Runs [Docker Engine](https://docs.docker.com/engine/)                              |
-| firefox    | nixos (graphic) | Runs [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/) |
-| gnome      | nixos (graphic) | Latest [GNOME desktop environment](https://www.gnome.org) (without apps)           |
-| k3s        | nixos (console) | Runs [k3s](https://k3s.io)                                                         |
-| playground | nixos (console) | NixOS playground to fiddle around                                                  |
-| toolbox    | nixos (graphic) | VM with some tools preconfigured                                                   |
+| Name           | System          | Description                                                                        |
+|----------------|-----------------|------------------------------------------------------------------------------------|
+| docker         | nixos (console) | Runs [Docker Engine](https://docs.docker.com/engine/)                              |
+| firefox        | nixos (graphic) | Runs [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/) |
+| gnome          | nixos (graphic) | Latest [GNOME desktop environment](https://www.gnome.org) (without apps)           |
+| k3s            | nixos (console) | Runs [k3s](https://k3s.io)                                                         |
+| playground     | nixos (console) | NixOS playground to fiddle around                                                  |
+| playground-ui  | nixos (graphic) | Playground with graphical UI                                                       |
 
 <a id="users"></a>
 

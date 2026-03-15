@@ -246,8 +246,8 @@
         name = "playground";
         targetSystem = "aarch64-linux";
       };
-      nixosConfigurations.toolbox = utils.mkVm {
-        name = "toolbox";
+      nixosConfigurations.playground-ui = utils.mkVm {
+        name = "playground-ui";
         targetSystem = "aarch64-linux";
       };
       nixosConfigurations.docker = utils.mkVm {
@@ -282,9 +282,8 @@
             .config.system.build.manual.optionsJSON;
           # VMs
           playground-vm = self.nixosConfigurations.playground.config.system.build.startVm;
-          toolbox-vm = self.nixosConfigurations.toolbox.config.system.build.startVm;
+          playground-ui-vm = self.nixosConfigurations.playground-ui.config.system.build.startVm;
           docker-vm = self.nixosConfigurations.docker.config.system.build.startVm;
-          toolbox-ui-vm = self.nixosConfigurations.toolbox-ui.config.system.build.startVm;
           gnome-vm = self.nixosConfigurations.gnome.config.system.build.startVm;
           firefox-vm = self.nixosConfigurations.firefox.config.system.build.startVm;
           k3s-vm = self.nixosConfigurations.k3s.config.system.build.startVm;
