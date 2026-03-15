@@ -5,10 +5,10 @@
         "homepage": "http://angleproject.org",
         "owner": "google",
         "repo": "angle",
-        "rev": "723cdfa02ba946385f66d903e84b0ab6a147f652",
-        "sha256": "0i969k86dk278kch502nrhqm8wjyibv6lfzgchk0lxbbqj48r7a8",
+        "rev": "ccf2fb54215117f79b4e5dbe321b2b52c0675ce7",
+        "sha256": "1h9vxm7iniqbjj55r606ngc5w4vjhazpybwrcrl5hkxp7rq8hmzd",
         "type": "tarball",
-        "url": "https://github.com/google/angle/archive/723cdfa02ba946385f66d903e84b0ab6a147f652.tar.gz",
+        "url": "https://github.com/google/angle/archive/ccf2fb54215117f79b4e5dbe321b2b52c0675ce7.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "chromium-aarch64-darwin": {
@@ -50,16 +50,16 @@
         "homepage": null,
         "owner": "lima-vm",
         "repo": "socket_vmnet",
-        "rev": "921ee47d43d0d20fde178dd98191db9130a27d6d",
-        "sha256": "0mz445zh2y499rz2jcpv3dkw27yfcww945i0w64d1nv58syphd6p",
+        "rev": "908eb87dc93f647539ef9ed3a671eb491723fac8",
+        "sha256": "1674p96vf4c1n0a1n02ddqzwqpi48zk81fsp0vkvaq3vhcklxy2g",
         "type": "tarball",
-        "url": "https://github.com/lima-vm/socket_vmnet/archive/921ee47d43d0d20fde178dd98191db9130a27d6d.tar.gz",
+        "url": "https://github.com/lima-vm/socket_vmnet/archive/908eb87dc93f647539ef9ed3a671eb491723fac8.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "21420b7a4201aff6316ee361d75d445c12bf76c3",
+        "rev": "6edfc8b6b5e48bc20bf51ea1f851c58513ffc45c",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
@@ -80,10 +80,10 @@
         "homepage": "",
         "owner": "utmapp",
         "repo": "virglrenderer",
-        "rev": "3eb654b9d38de19af5e1125142e0c2789796c418",
-        "sha256": "1lvbw1hl06k8kpjlg9v14vwfqq8vfr3l4sdk0bhxv6n580flj9av",
+        "rev": "852acf98e435ba40de4cd8b6881c33630a2244fb",
+        "sha256": "072qz2bp8z0r433grxfsy5pkpjgrxsq46c98ff4xw5z8d7dl20qg",
         "type": "tarball",
-        "url": "https://github.com/utmapp/virglrenderer/archive/3eb654b9d38de19af5e1125142e0c2789796c418.tar.gz",
+        "url": "https://github.com/utmapp/virglrenderer/archive/852acf98e435ba40de4cd8b6881c33630a2244fb.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

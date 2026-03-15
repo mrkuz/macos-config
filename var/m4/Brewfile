@@ -6,7 +6,6 @@ cask "gimp"
 cask "intellij-idea-ce"
 cask "key-codes"
 cask "porting-kit"
-cask "sony-ps-remote-play"
 cask "vorta"
 mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
