@@ -32,7 +32,6 @@ in stdenv.mkDerivation rec {
     ./qemu/akihikodaki-10.0.0.patch
     ./qemu/skip-macos-icon.patch
   ];
-  # patches = [ ./qemu/utm-9.1.0.patch ];
 
   configureFlags = [
     "--disable-strip"
