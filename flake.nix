@@ -5,20 +5,12 @@
     # nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixos-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
-    nix-alien = {
-      url = "github:thiagokokada/nix-alien";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     nix-darwin = {
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nix-homebrew = {
       url = "github:zhaofengli-wip/nix-homebrew";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-    nix-snapd = {
-      url = "github:nix-community/nix-snapd";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     home-manager = {
@@ -89,7 +81,6 @@
             overlays = [
               inputs.emacs-overlay.overlay
               inputs.apple-silicon.overlays.apple-silicon-overlay
-              inputs.nix-alien.overlays.default
               (_: super: self.packages."${system}")
             ]
             ++ utils.attrsToValues self.overlays;
@@ -166,7 +157,6 @@
               )
               inputs.home-manager.nixosModules.home-manager
               (utils.mkHomeManagerModule { inherit name; })
-              inputs.nix-snapd.nixosModules.default
               configuration
             ]
             ++ utils.attrsToValues self.nixosModules;
@@ -276,10 +266,6 @@
         name = "k3s";
         targetSystem = "aarch64-linux";
       };
-      nixosConfigurations.snapd = utils.mkVm {
-        name = "snapd";
-        targetSystem = "aarch64-linux";
-      };
 
       darwinConfigurations."bootstrap" = utils.mkDarwin { name = "bootstrap"; };
       darwinConfigurations."m4" = utils.mkDarwin { name = "m4"; };
@@ -302,7 +288,6 @@
           gnome-vm = self.nixosConfigurations.gnome.config.system.build.startVm;
           firefox-vm = self.nixosConfigurations.firefox.config.system.build.startVm;
           k3s-vm = self.nixosConfigurations.k3s.config.system.build.startVm;
-          snapd-vm = self.nixosConfigurations.snapd.config.system.build.startVm;
           # Docker images
           playground-docker =
             (utils.mkDocker {

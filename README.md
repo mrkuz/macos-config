@@ -136,7 +136,6 @@ VM expressions are like host expressions, but represent a virtual machine.
 | k3s        | nixos (console) | Runs [k3s](https://k3s.io)                                                         |
 | playground | nixos (console) | NixOS playground to fiddle around                                                  |
 | toolbox    | nixos (graphic) | VM with some tools preconfigured                                                   |
-| snapd      | nixos (console) | Runs [snapd](https://snapcraft.io/docs/get-started)                                |
 
 <a id="users"></a>
 
