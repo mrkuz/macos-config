@@ -21,7 +21,6 @@ Notes:
 - [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle) keeps track of software installed via App Store or Homebrew
 - Not handled by Home Manger:
     - [Emacs](https://www.gnu.org/software/emacs/) configuration (see [here](https://github.com/mrkuz/emacs.d))
-    -  ... and my [Hammerspoon](https://www.hammerspoon.org) configuration (see [here](https://github.com/mrkuz/hammerspoon))
 
 # Installation
 
