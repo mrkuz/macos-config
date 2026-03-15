@@ -280,11 +280,6 @@
         name = "snapd";
         targetSystem = "aarch64-linux";
       };
-      nixosConfigurations.playground-qcow2 = utils.mkVm {
-        name = "playground";
-        targetSystem = "aarch64-linux";
-        profile = ./profiles/nixos/qemu-qcow2.nix;
-      };
 
       darwinConfigurations."bootstrap" = utils.mkDarwin { name = "bootstrap"; };
       darwinConfigurations."m4" = utils.mkDarwin { name = "m4"; };
@@ -308,22 +303,6 @@
           firefox-vm = self.nixosConfigurations.firefox.config.system.build.startVm;
           k3s-vm = self.nixosConfigurations.k3s.config.system.build.startVm;
           snapd-vm = self.nixosConfigurations.snapd.config.system.build.startVm;
-          # QCOW2 images
-          playground-qcow2 = import "${nixpkgs}/nixos/lib/make-disk-image.nix" {
-            inherit lib;
-            config = self.nixosConfigurations.playground-qcow2.config;
-            pkgs = pkgsLinux;
-            diskSize = "auto";
-            format = "qcow2";
-            partitionTableType = "efi";
-            # Defaults
-            installBootLoader = true;
-            onlyNixStore = false;
-            label = "nixos";
-            additionalSpace = "512M";
-            # Custom
-            copyChannel = false;
-          };
           # Docker images
           playground-docker =
             (utils.mkDocker {
