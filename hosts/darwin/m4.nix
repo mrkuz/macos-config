@@ -1,4 +1,10 @@
-{ config, lib, pkgs, nixpkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs,
+  ...
+}:
 {
   modules = {
     fonts.enable = true;
@@ -34,7 +40,10 @@
     RunAtLoad = lib.mkForce false;
   };
 
-  nix.settings.trusted-users = [ "root" "markus" ];
+  nix.settings.trusted-users = [
+    "root"
+    "markus"
+  ];
 
   programs = {
     fish.enable = true;
@@ -58,9 +67,6 @@
       }
     ];
   };
-
-  # Show path bar in Finder
-  system.defaults.finder.ShowPathbar = true;
 
   services.skhd = {
     enable = true;

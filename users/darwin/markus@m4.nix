@@ -1,6 +1,12 @@
-{ config, lib, pkgs, systemName, ... }:
 {
-  imports = [ ../common/markus.nix  ];
+  config,
+  lib,
+  pkgs,
+  systemName,
+  ...
+}:
+{
+  imports = [ ../common/markus.nix ];
 
   modules = {
     emacs.enable = true;
@@ -25,15 +31,20 @@
 
   home = {
     packages = with pkgs; [
-      docker
       # MacOS
       mas
-      # Virtualisation
-      # lima
+      # AI
+      github-copilot-cli
+      # Virtualization & containers
+      # colima
+      docker
+      lima
+      krunkit
       macos.qemu
       # GUI utils
       vscode
       # CLI utils
+      devpod
       uv
       # VMs
       (lib.buildQemuVm {
@@ -50,7 +61,7 @@
     sessionVariables = {
       CLICOLOR = "1";
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";
-      OLLAMA_API_BASE="http://127.0.0.1:11434";
+      OLLAMA_API_BASE = "http://127.0.0.1:11434";
     };
   };
 
@@ -84,7 +95,7 @@
   services.ollama = {
     enable = true;
     environmentVariables = {
-       OLLAMA_CONTEXT_LENGTH = "8192";
+      OLLAMA_CONTEXT_LENGTH = "8192";
     };
   };
 

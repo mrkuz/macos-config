@@ -1,4 +1,12 @@
-{ config, lib, pkgs, nixpkgs, self, versions, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs,
+  self,
+  versions,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.nix;
@@ -32,8 +40,7 @@ in
     environment.systemPackages = with pkgs; [
       nil
       niv
-      # nix-index
-      # nix-index-update
+      nixfmt
       nvd
     ];
 
