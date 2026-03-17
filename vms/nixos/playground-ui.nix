@@ -1,4 +1,11 @@
-{ config, lib, pkgs, nixpkgs, vars, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs,
+  vars,
+  ...
+}:
 {
   modules = {
     nix.enable = true;
@@ -10,6 +17,7 @@
       opengl = true;
       socketVmnet = true;
       user = vars.primaryUser;
+      sshd = true;
     };
   };
 
@@ -27,8 +35,8 @@
   environment.systemPackages = with pkgs; [
     firefox-devedition
     mesa-demos
-    # Sway
     sway
+    waypipe
     wlr-randr
   ];
 
@@ -52,14 +60,15 @@
 
   users.users."${vars.primaryUser}" = {
     password = vars.primaryUser;
+    openssh.authorizedKeys.keyFiles = [ vars.sshKeyFile ];
   };
 
   home-manager.users."${vars.primaryUser}" = {
-    imports = [ ../../../users/common/markus.nix ];
+    imports = [ ../../users/common/markus.nix ];
 
     home.pointerCursor = {
-       package = pkgs.yaru-theme;
-       name = "Yaru";
+      package = pkgs.yaru-theme;
+      name = "Yaru";
     };
 
     programs.alacritty = {
@@ -70,8 +79,14 @@
             style = "Regular";
           };
           size = 12;
-          offset = { x = 0; y = 4; };
-          glyph_offset = { x = 0; y = 2; };
+          offset = {
+            x = 0;
+            y = 4;
+          };
+          glyph_offset = {
+            x = 0;
+            y = 2;
+          };
         };
       };
     };
@@ -92,7 +107,9 @@
           }
         ];
         startup = [
-          { command = "${pkgs.swaybg}/bin/swaybg -i ${pkgs.sway}/share/backgrounds/sway/Sway_Wallpaper_Blue_2048x1536.png"; }
+          {
+            command = "${pkgs.swaybg}/bin/swaybg -i ${pkgs.sway}/share/backgrounds/sway/Sway_Wallpaper_Blue_2048x1536.png";
+          }
         ];
       };
     };

@@ -300,6 +300,8 @@
             libepoxy = (utils.callPkg ./pkgs/darwin/development/libraries/libepoxy.nix);
             virglrenderer = (utils.callPkg ./pkgs/darwin/development/libraries/virglrenderer.nix);
             qemu = (utils.callPkg ./pkgs/darwin/applications/virtualization/qemu.nix);
+            waypipe = (utils.callPkg ./pkgs/darwin/by-name/wa/waypipe-darwin.nix);
+            cocoa-way = (utils.callPkg ./pkgs/darwin/by-name/co/cocoa-way.nix);
           };
         };
         aarch64-linux = {

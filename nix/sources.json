@@ -18,6 +18,18 @@
         "url_template": "https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac_Arm%2F<version>%2Fchrome-mac.zip?alt=media",
         "version": "1379013"
     },
+    "cocoa-way": {
+        "branch": "main",
+        "description": "Native macOS Wayland Compositor written in Rust using Smithay. Experience seamless Linux app streaming on macOS without XQuartz.",
+        "homepage": "",
+        "owner": "j-x-z",
+        "repo": "cocoa-way",
+        "rev": "5dd723362c34c899fdf6073e9ba0916de3986cc5",
+        "sha256": "08jwgca84n4a2llaqpwvrjyc3js93pa5jfm2r0zxz1zw5gas8m14",
+        "type": "tarball",
+        "url": "https://github.com/j-x-z/cocoa-way/archive/5dd723362c34c899fdf6073e9ba0916de3986cc5.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "k3s-aarch64-linux": {
         "sha256": "11n5fv9146kgx2mq30g7ykw282jbzbgv7cjc8xp7rg2k0pwnmkk2",
         "type": "file",
@@ -84,6 +96,18 @@
         "sha256": "072qz2bp8z0r433grxfsy5pkpjgrxsq46c98ff4xw5z8d7dl20qg",
         "type": "tarball",
         "url": "https://github.com/utmapp/virglrenderer/archive/852acf98e435ba40de4cd8b6881c33630a2244fb.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "waypipe-darwin": {
+        "branch": "main",
+        "description": "Specialized fork of Waypipe optimized for macOS (Darwin). Features patched Shared Memory (SHM) and socket handling for native compatibility.",
+        "homepage": "",
+        "owner": "j-x-z",
+        "repo": "waypipe-darwin",
+        "rev": "345181a81ce5b886316cfcaeed77d6dff56a463b",
+        "sha256": "1jfzp3grhs1rlyzvy25bwajsv7bffgsv85rmpx4xqlgillxfnv2x",
+        "type": "tarball",
+        "url": "https://github.com/j-x-z/waypipe-darwin/archive/345181a81ce5b886316cfcaeed77d6dff56a463b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
