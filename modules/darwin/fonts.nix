@@ -1,4 +1,10 @@
-{ config, lib, pkgs, nixpkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nixpkgs,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.fonts;
@@ -18,6 +24,7 @@ in
         fira-code
         hack-font
         inconsolata
+        sf-mono
         source-code-pro
         ubuntu-classic
       ];

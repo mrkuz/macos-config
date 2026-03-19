@@ -15,17 +15,12 @@
       copyCommand = "pbcopy";
       shell = "${pkgs.fish}/bin/fish";
     };
+    alacritty = {
+      enable = true;
+      shell = "${pkgs.tmux}/bin/tmux";
+    };
     fish = {
       enable = true;
-      extraInit = ''
-        ${pkgs.mise}/bin/mise activate fish | source
-      '';
-    };
-    zsh = {
-      enable = false;
-      extraInit = ''
-        eval "$(${pkgs.mise}/bin/mise activate zsh)"
-      '';
     };
   };
 
@@ -34,7 +29,7 @@
       # MacOS
       mas
       # AI
-      github-copilot-cli
+      opencode
       # Virtualization & containers
       # colima
       docker
@@ -73,7 +68,7 @@
     f19 ; hyper_mode
     hyper_mode < e : skhd -k "q"; emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c
     hyper_mode < j : skhd -k "q"; emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c -F '((name . "org-protocol-capture"))' 'org-protocol://capture?template=j'
-    hyper_mode < t : skhd -k "q"; osascript -e 'tell application "Terminal" to do script "" activate'
+    hyper_mode < t : skhd -k "q"; alacritty
     hyper_mode < q ; default
     hyper_mode < f19 ; default
   '';
@@ -88,6 +83,13 @@
     extraConfig = "UseKeychain = yes";
     matchBlocks."*" = {
       addKeysToAgent = "yes";
+    };
+  };
+
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = false;
     };
   };
 

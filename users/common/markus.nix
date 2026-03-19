@@ -1,4 +1,10 @@
-{ config, lib, pkgs, systemName, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  systemName,
+  ...
+}:
 {
   home = {
     packages = with pkgs; [
@@ -16,7 +22,6 @@
       iftop
       inetutils
       jq
-      mise
       ncdu
       # pdftk
       pstree
@@ -32,8 +37,6 @@
       wget
     ];
   };
-
-  programs.fzf.enable = true;
 
   programs.diff-so-fancy = {
     enable = true;
@@ -62,4 +65,7 @@
       format = "openpgp";
     };
   };
+
+  programs.mise.enable = true;
+  programs.skim.enable = true;
 }

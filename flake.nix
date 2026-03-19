@@ -25,6 +25,10 @@
       url = "github:tpwrules/nixos-apple-silicon";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    apple-fonts = {
+      url = "github:Lyndeno/apple-fonts.nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
@@ -303,6 +307,8 @@
             waypipe = (utils.callPkg ./pkgs/darwin/by-name/wa/waypipe-darwin.nix);
             cocoa-way = (utils.callPkg ./pkgs/darwin/by-name/co/cocoa-way.nix);
           };
+          # Fonts
+          sf-mono = inputs.apple-fonts.packages.${pkgs.system}.sf-mono;
         };
         aarch64-linux = {
           k3s-bin = (pkgsLinux.callPackage ./pkgs/nixos/networking/cluster/k3s-bin.nix { inherit sources; });
@@ -317,6 +323,7 @@
       };
 
       homeManagerModules = {
+        alacritty = import ./modules/home-manager/alacritty.nix;
         emacs = import ./modules/home-manager/emacs.nix;
         fish = import ./modules/home-manager/fish.nix;
         tmux = import ./modules/home-manager/tmux.nix;

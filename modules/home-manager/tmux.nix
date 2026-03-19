@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.tmux;
@@ -20,6 +25,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      fzf
+    ];
+
     programs.tmux = {
       enable = true;
       baseIndex = 1;
@@ -30,6 +39,8 @@ in
       plugins = [ pkgs.tmuxPlugins.extrakto ];
       extraConfig = ''
         set -g default-command "${cfg.shell}"
+
+        set -g focus-events on
 
         set -g status-left " #S:#I.#P | "
         set -g status-right "%Y/%m/%d %H:%M "
@@ -43,7 +54,12 @@ in
         # Show activity notification for other windows
         setw -g monitor-activity on
         set -g activity-action other
-        set -g visual-activity on
+        set -g visual-activity off
+
+        # Show silenece notification for other windows
+        setw -g monitor-silence 30
+        set -g silence-action other
+        set -g visual-silence off
 
         # Show bell notification for all windows
         setw -g monitor-bell on

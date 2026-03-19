@@ -163,6 +163,7 @@ Check out any [host](hosts) or [user](users) expression for example usage.
 | fonts        | darwin        | Adds a bunch of fonts                                                                                              |
 | hunspell     | darwin        | Adds [Hunspell](http://hunspell.github.io) spell checker and a couple of dictionaries                              |
 | socket-vmnet | darwin        | Adds and configures [socket_vmnet](https://github.com/lima-vm/socket_vmnet)                                        |
+| alacritty    | home-manager  | Adds and configures [alacritty](https://alacritty.org/) terminal emulator                                          |
 | emacs        | home-manager  | Adds [Emacs](https://www.gnu.org/software/emacs/) including some dependencies and runs daemon at log in            |
 | tmux         | home-manager  | Adds and configure [tmux](https://github.com/tmux/tmux/wiki) terminal multiplexer                                  |
 | kiosk        | nixos         | Runs a single application in fullscreen mode                                                                       |
