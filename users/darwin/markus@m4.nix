@@ -32,6 +32,7 @@
       opencode
       # ramalama
       # Virtualization & containers
+      docker
       krunkit
       macos.qemu
       # Develpment tools
