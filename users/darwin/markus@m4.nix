@@ -104,7 +104,7 @@
           provider = "libkrun";
         };
         engine = {
-          compose_providers = [ "${pkgs.docker-compose}/bin/docker-compose" ];
+          compose_providers = [ "${pkgs.docker}/bin/docker compose" ];
         };
       };
     };

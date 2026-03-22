@@ -43,6 +43,10 @@
     enableGitIntegration = true;
   };
 
+  programs.fzf = {
+    enable = true;
+  };
+
   programs.git = {
     enable = true;
     settings = {
@@ -67,5 +71,4 @@
   };
 
   programs.mise.enable = true;
-  programs.skim.enable = true;
 }

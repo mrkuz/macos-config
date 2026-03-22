@@ -25,9 +25,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      fzf
-    ];
 
     programs.tmux = {
       enable = true;
@@ -35,12 +32,16 @@ in
       clock24 = true;
       mouse = true;
       shell = cfg.shell;
-      terminal = "screen-256color";
       plugins = [ pkgs.tmuxPlugins.extrakto ];
       extraConfig = ''
         set -g default-command "${cfg.shell}"
 
+        # See https://github.com/folke/tokyonight.nvim#fix-undercurls-in-tmux
+        set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
+        set -as terminal-overrides ',*:Setulc=\E[58::2::::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
+
         set -g focus-events on
+        setw -g automatic-rename off
 
         set -g status-left " #S:#I.#P | "
         set -g status-right "%Y/%m/%d %H:%M "

@@ -25,9 +25,6 @@ in
     programs.alacritty = {
       enable = true;
       settings = {
-        env = {
-          TERM = "screen-256color";
-        };
         terminal.shell = cfg.shell;
         general.import = [
           "${pkgs.alacritty-theme}/share/alacritty-theme/solarized_dark.toml"
