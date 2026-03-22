@@ -5,6 +5,11 @@
   systemName,
   ...
 }:
+let
+  docker-compat = pkgs.writeScriptBin "docker" ''
+    exec ${pkgs.podman}/bin/podman "$@"
+  '';
+in
 {
   imports = [ ../common/markus.nix ];
 
@@ -33,6 +38,8 @@
       # ramalama
       # Virtualization & containers
       docker
+      # docker-compat
+      docker-compose
       krunkit
       macos.qemu
       # Develpment tools
@@ -100,11 +107,11 @@
     enable = true;
     settings = {
       containers = {
-        machine = {
-          provider = "libkrun";
-        };
+        # machine = {
+        #  provider = "libkrun";
+        # };
         engine = {
-          compose_providers = [ "${pkgs.docker}/bin/docker compose" ];
+          compose_providers = [ "${pkgs.docker-compose}/bin/docker-compose" ];
         };
       };
     };
