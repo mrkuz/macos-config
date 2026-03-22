@@ -30,33 +30,19 @@
       mas
       # AI
       opencode
+      # ramalama
       # Virtualization & containers
-      # colima
-      docker
-      lima
       krunkit
       macos.qemu
-      # GUI utils
-      vscode
-      # CLI utils
-      devpod
+      # Develpment tools
       uv
-      # VMs
-      (lib.buildQemuVm {
-        name = "docker";
-        targetSystem = "aarch64-linux";
-        configuration = {
-          imports = [
-            ../../vms/nixos/docker.nix
-          ];
-          virtualisation.diskImage = "/Users/markus/var/docker.qcow2";
-        };
-      })
+      vscode
     ];
     sessionVariables = {
       CLICOLOR = "1";
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";
       OLLAMA_API_BASE = "http://127.0.0.1:11434";
+      PODMAN_COMPOSE_WARNING_LOGS = "false";
     };
   };
 
@@ -75,6 +61,7 @@
 
   home.shellAliases = {
     ec = "emacsclient --socket-name /var/folders/39/fty64sbs0h14_3bh2rqq7q9m0000gn/T/emacs501/default -n -c";
+    pm = "podman";
   };
 
   programs.ssh = {
@@ -104,6 +91,20 @@
     enable = true;
     environmentVariables = {
       OLLAMA_CONTEXT_LENGTH = "8192";
+    };
+  };
+
+  services.podman = {
+    enable = true;
+    settings = {
+      containers = {
+        machine = {
+          provider = "libkrun";
+        };
+        engine = {
+          compose_providers = [ "${pkgs.docker-compose}/bin/docker-compose" ];
+        };
+      };
     };
   };
 
