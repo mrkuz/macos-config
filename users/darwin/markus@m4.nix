@@ -36,6 +36,7 @@
       krunkit
       macos.qemu
       # Develpment tools
+      devcontainer
       uv
       vscode
     ];
