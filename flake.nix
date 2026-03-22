@@ -309,6 +309,7 @@
           };
           # Fonts
           sf-mono = inputs.apple-fonts.packages.${pkgs.system}.sf-mono;
+          sf-mono-nerd = inputs.apple-fonts.packages.${pkgs.system}.sf-mono-nerd;
         };
         aarch64-linux = {
           k3s-bin = (pkgsLinux.callPackage ./pkgs/nixos/networking/cluster/k3s-bin.nix { inherit sources; });

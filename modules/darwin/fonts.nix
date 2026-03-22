@@ -25,6 +25,7 @@ in
         hack-font
         inconsolata
         sf-mono
+        sf-mono-nerd
         source-code-pro
         ubuntu-classic
       ];

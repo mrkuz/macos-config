@@ -34,11 +34,11 @@ in
         ];
         font = {
           normal = {
-            family = "SF Mono";
+            family = "SFMono Nerd Font";
             style = "Light";
           };
           bold = {
-            family = "SF Mono";
+            family = "SFMono Nerd Font";
             style = "Regular";
           };
           size = 14.0;

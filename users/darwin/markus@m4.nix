@@ -87,9 +87,16 @@
   };
 
   programs.starship = {
-    enable = true;
+    enable = false;
     settings = {
       add_newline = false;
+      package.disabled = true;
+      directory.truncate_to_repo = false;
+      git_commit.only_detached = false;
+      status = {
+        disabled = false;
+        symbol = "";
+      };
     };
   };
 
