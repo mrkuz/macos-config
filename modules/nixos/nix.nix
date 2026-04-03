@@ -33,10 +33,6 @@ in
       '';
     };
 
-    environment.systemPackages = with pkgs; [
-      nixos-option
-    ];
-
     nix = {
       settings = {
         substituters = [

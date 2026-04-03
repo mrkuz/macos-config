@@ -123,7 +123,7 @@
             profile ? ./profiles/nixos/qemu-vm.nix,
             configuration ? {
               imports = [ (./vms/nixos + "/${name}.nix") ];
-            },
+            }
           }:
           lib.nixosSystem {
             specialArgs = {
@@ -173,7 +173,7 @@
             selfReference ? self,
             configuration ? {
               imports = [ (./vms/nixos + "/${name}.nix") ];
-            },
+            }
           }:
           lib.nixosSystem {
             specialArgs = {
@@ -276,14 +276,6 @@
 
       packages = {
         aarch64-darwin = {
-          # options.json
-          home-manager-options-json = inputs.home-manager.packages.aarch64-darwin.docs-json;
-          nixos-options-json =
-            (lib.nixosSystem { modules = [ { nixpkgs.pkgs = pkgs; } ]; })
-            .config.system.build.manual.optionsJSON;
-          darwin-options-json =
-            (inputs.nix-darwin.lib.darwinSystem { modules = [ { nixpkgs.pkgs = pkgs; } ]; })
-            .config.system.build.manual.optionsJSON;
           # VMs
           playground-vm = self.nixosConfigurations.playground.config.system.build.startVm;
           playground-ui-vm = self.nixosConfigurations.playground-ui.config.system.build.startVm;
@@ -339,7 +331,6 @@
       };
 
       overlays = {
-        nixos-option = import ./overlays/tools/nix/nixos-option.nix;
         emacs = import ./overlays/applications/editors/emacs.nix;
         lib = self: super: {
           lib = utils.extendLib super.lib;

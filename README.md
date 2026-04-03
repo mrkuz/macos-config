@@ -183,7 +183,7 @@ Also:
 
 *NixOS-specific*
 
-- Creates a compatibility layer in `/etc/nixos/compat` which can be used with tools that do not support flakes (e.g. nixos-option). Powered by [flake-compat](https://github.com/edolstra/flake-compat).
+- Creates a compatibility layer in `/etc/nixos/compat` which can be used with tools that do not support flakes. Powered by [flake-compat](https://github.com/edolstra/flake-compat).
 
 ### socket-vmnet
 
@@ -277,5 +277,4 @@ Overlays are used to extend or modify [nixpkgs](https://github.com/NixOS/nixpkgs
 
 | Name         | System | Description                                                                               |
 |--------------|--------|-------------------------------------------------------------------------------------------|
-| nixos-option | nixos  | Wraps nixos-option to work with flake-based systems (requires `module.nix.enable = true`) |
 | emacs        | darwin | Adds [emacs-plus](https://github.com/d12frosted/homebrew-emacs-plus/) patches             |
