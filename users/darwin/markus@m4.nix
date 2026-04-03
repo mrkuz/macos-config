@@ -50,7 +50,6 @@ in
     sessionVariables = {
       CLICOLOR = "1";
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";
-      OLLAMA_API_BASE = "http://127.0.0.1:11434";
       PODMAN_COMPOSE_WARNING_LOGS = "false";
     };
   };
@@ -93,13 +92,6 @@ in
         disabled = false;
         symbol = "";
       };
-    };
-  };
-
-  services.ollama = {
-    enable = true;
-    environmentVariables = {
-      OLLAMA_CONTEXT_LENGTH = "8192";
     };
   };
 
