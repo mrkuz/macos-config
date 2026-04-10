@@ -10,27 +10,20 @@
     packages = with pkgs; [
       # CLI utils
       age
-      bat
       cloc
       colordiff
+      curl
       entr
-      eza
-      fd
       file
       httpie
-      htop
       iftop
       inetutils
-      jq
       ncdu
       # pdftk
       pstree
       pwgen
-      rclone
       rsync
-      ripgrep
       socat
-      tldr
       tree
       watch
       wdiff
@@ -38,13 +31,19 @@
     ];
   };
 
+  programs = {
+    bat.enable = true;
+    fd.enable = true;
+    fzf.enable = true;
+    htop.enable = true;
+    jq.enable = true;
+    ripgrep.enable = true;
+    rclone.enable = true;
+  };
+
   programs.diff-so-fancy = {
     enable = true;
     enableGitIntegration = true;
-  };
-
-  programs.fzf = {
-    enable = true;
   };
 
   programs.git = {

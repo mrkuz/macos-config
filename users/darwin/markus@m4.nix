@@ -34,7 +34,6 @@ in
       # MacOS
       mas
       # AI
-      opencode
       # ramalama
       # Virtualization & containers
       docker
@@ -42,16 +41,23 @@ in
       docker-compose
       krunkit
       macos.qemu
-      # Develpment tools
-      devcontainer
-      uv
-      vscode
     ];
     sessionVariables = {
       CLICOLOR = "1";
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";
       PODMAN_COMPOSE_WARNING_LOGS = "false";
     };
+  };
+
+  programs = {
+    # docker-cli.enable = true;
+    uv.enable = true;
+    vscode.enable = true;
+  };
+
+  programs.claude-code = {
+    enable = true;
+    package = pkgs.claude-code-bun;
   };
 
   home.file.".config/skhd/skhdrc".text = ''
@@ -78,20 +84,6 @@ in
     extraConfig = "UseKeychain = yes";
     matchBlocks."*" = {
       addKeysToAgent = "yes";
-    };
-  };
-
-  programs.starship = {
-    enable = false;
-    settings = {
-      add_newline = false;
-      package.disabled = true;
-      directory.truncate_to_repo = false;
-      git_commit.only_detached = false;
-      status = {
-        disabled = false;
-        symbol = "";
-      };
     };
   };
 

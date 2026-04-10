@@ -59,7 +59,7 @@ in
 
         # Show silenece notification for other windows
         setw -g monitor-silence 30
-        set -g silence-action other
+        set -g silence-action none
         set -g visual-silence off
 
         # Show bell notification for all windows

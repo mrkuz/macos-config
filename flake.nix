@@ -21,12 +21,12 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    apple-silicon = {
-      url = "github:tpwrules/nixos-apple-silicon";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     apple-fonts = {
       url = "github:Lyndeno/apple-fonts.nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
@@ -84,7 +84,7 @@
             config.allowUnfree = true;
             overlays = [
               inputs.emacs-overlay.overlay
-              inputs.apple-silicon.overlays.apple-silicon-overlay
+              inputs.claude-code.overlays.default
               (_: super: self.packages."${system}")
             ]
             ++ utils.attrsToValues self.overlays;

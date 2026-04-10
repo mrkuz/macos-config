@@ -5,10 +5,10 @@
         "homepage": "http://angleproject.org",
         "owner": "google",
         "repo": "angle",
-        "rev": "ccf2fb54215117f79b4e5dbe321b2b52c0675ce7",
-        "sha256": "1h9vxm7iniqbjj55r606ngc5w4vjhazpybwrcrl5hkxp7rq8hmzd",
+        "rev": "1433dd4e8a59659f8e16a96f62c9ccedd3ce2e92",
+        "sha256": "0h2fw7yrwilgp4zsbdi96bn68blh11i9dgnpgfqrf7w53rcc9ana",
         "type": "tarball",
-        "url": "https://github.com/google/angle/archive/ccf2fb54215117f79b4e5dbe321b2b52c0675ce7.tar.gz",
+        "url": "https://github.com/google/angle/archive/1433dd4e8a59659f8e16a96f62c9ccedd3ce2e92.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "chromium-aarch64-darwin": {
@@ -24,10 +24,10 @@
         "homepage": "",
         "owner": "j-x-z",
         "repo": "cocoa-way",
-        "rev": "5dd723362c34c899fdf6073e9ba0916de3986cc5",
-        "sha256": "08jwgca84n4a2llaqpwvrjyc3js93pa5jfm2r0zxz1zw5gas8m14",
+        "rev": "e301cfba80cc09338ca25ae2e132b3cb2fc5669e",
+        "sha256": "1cg3ip8wq3bk8199wvdf85kx7ggbk7f2wfh0njrkdj6w2vrka3lb",
         "type": "tarball",
-        "url": "https://github.com/j-x-z/cocoa-way/archive/5dd723362c34c899fdf6073e9ba0916de3986cc5.tar.gz",
+        "url": "https://github.com/j-x-z/cocoa-way/archive/e301cfba80cc09338ca25ae2e132b3cb2fc5669e.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "k3s-aarch64-linux": {
@@ -62,16 +62,16 @@
         "homepage": null,
         "owner": "lima-vm",
         "repo": "socket_vmnet",
-        "rev": "908eb87dc93f647539ef9ed3a671eb491723fac8",
-        "sha256": "1674p96vf4c1n0a1n02ddqzwqpi48zk81fsp0vkvaq3vhcklxy2g",
+        "rev": "48949dbb85e0ce46e39744ec3b178936bb4b29ac",
+        "sha256": "1lk1hxpjy6r415bkvmba1hir0l45gq39n0rvf4nc9hb8aw87i8am",
         "type": "tarball",
-        "url": "https://github.com/lima-vm/socket_vmnet/archive/908eb87dc93f647539ef9ed3a671eb491723fac8.tar.gz",
+        "url": "https://github.com/lima-vm/socket_vmnet/archive/48949dbb85e0ce46e39744ec3b178936bb4b29ac.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "6edfc8b6b5e48bc20bf51ea1f851c58513ffc45c",
+        "rev": "be2b86c32aaf32a44ca625caf1b268915f0b5da9",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {
@@ -92,10 +92,10 @@
         "homepage": "",
         "owner": "utmapp",
         "repo": "virglrenderer",
-        "rev": "852acf98e435ba40de4cd8b6881c33630a2244fb",
-        "sha256": "072qz2bp8z0r433grxfsy5pkpjgrxsq46c98ff4xw5z8d7dl20qg",
+        "rev": "71a67414013f120c158729da7f56f29b55bf4f6c",
+        "sha256": "14vckryva29m2ir2kbmagw1xl196qjwdz64rxpisb6ws27fs9z4k",
         "type": "tarball",
-        "url": "https://github.com/utmapp/virglrenderer/archive/852acf98e435ba40de4cd8b6881c33630a2244fb.tar.gz",
+        "url": "https://github.com/utmapp/virglrenderer/archive/71a67414013f120c158729da7f56f29b55bf4f6c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "waypipe-darwin": {

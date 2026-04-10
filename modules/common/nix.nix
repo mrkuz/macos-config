@@ -38,9 +38,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      nil
       niv
-      nixfmt
       nvd
     ];
 
