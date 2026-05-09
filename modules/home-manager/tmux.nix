@@ -36,10 +36,17 @@ in
       extraConfig = ''
         set -g default-command "${cfg.shell}"
 
+        # True color settings
+        set -g default-terminal "tmux-256color"
+        set -ga terminal-overrides ",*:Tc"
+
         # See https://github.com/folke/tokyonight.nvim#fix-undercurls-in-tmux
         set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
         set -as terminal-overrides ',*:Setulc=\E[58::2::::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'  # underscore colours - needs tmux-3.0
 
+        # Miscellaneous
+        set -g set-clipboard on
+        set -sg escape-time 0
         set -g focus-events on
         setw -g automatic-rename off
 
@@ -58,7 +65,7 @@ in
         set -g visual-activity off
 
         # Show silenece notification for other windows
-        setw -g monitor-silence 30
+        setw -g monitor-silence 0
         set -g silence-action none
         set -g visual-silence off
 
@@ -75,6 +82,11 @@ in
         bind "!" break-pane
         bind "@" split-window -v
         bind "#" split-window -h
+
+        # Claude Code tweaks
+        set -g allow-passthrough on
+        set -s extended-keys on
+        set -as terminal-features 'xterm*:extkeys'
 
         # Other key bindings
         bind C-b last-window

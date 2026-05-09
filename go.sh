@@ -11,7 +11,7 @@ USERS_DIR="$(dirname $HOME)"
 SRC_DIR="src"
 KEEP_GENERATIONS="1"
 
-export HOMEBREW_AUTO_UPDATE_SECS=3600
+export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Colors
 
@@ -119,7 +119,7 @@ function upgrade() {
 
     info "Upgrading brew packages"
     brew upgrade --greedy
-    HOMEBREW_NO_AUTO_UPDATE=1 brew bundle dump -f
+    brew bundle dump -f
 
     info "Upgrading Mac App Store packages"
     mas upgrade

@@ -5,10 +5,10 @@
         "homepage": "http://angleproject.org",
         "owner": "google",
         "repo": "angle",
-        "rev": "1433dd4e8a59659f8e16a96f62c9ccedd3ce2e92",
-        "sha256": "0h2fw7yrwilgp4zsbdi96bn68blh11i9dgnpgfqrf7w53rcc9ana",
+        "rev": "6f0b04ba184b1a0a1411356e738c0ed752071c26",
+        "sha256": "1apyyjdlms4ylk34drsr0qzkhrh3kwfq9rxd4qmn9xkz2h2qi4ns",
         "type": "tarball",
-        "url": "https://github.com/google/angle/archive/1433dd4e8a59659f8e16a96f62c9ccedd3ce2e92.tar.gz",
+        "url": "https://github.com/google/angle/archive/6f0b04ba184b1a0a1411356e738c0ed752071c26.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "chromium-aarch64-darwin": {
@@ -24,10 +24,10 @@
         "homepage": "",
         "owner": "j-x-z",
         "repo": "cocoa-way",
-        "rev": "e301cfba80cc09338ca25ae2e132b3cb2fc5669e",
-        "sha256": "1cg3ip8wq3bk8199wvdf85kx7ggbk7f2wfh0njrkdj6w2vrka3lb",
+        "rev": "340f90e378bf6b2da1f2feb5593d677e5dae6ac8",
+        "sha256": "0wgx45ngxbpfb7pdn229ax0d65l57bi35da65k06apfz2qlwrz4v",
         "type": "tarball",
-        "url": "https://github.com/j-x-z/cocoa-way/archive/e301cfba80cc09338ca25ae2e132b3cb2fc5669e.tar.gz",
+        "url": "https://github.com/j-x-z/cocoa-way/archive/340f90e378bf6b2da1f2feb5593d677e5dae6ac8.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "k3s-aarch64-linux": {
@@ -43,10 +43,10 @@
         "homepage": "",
         "owner": "anholt",
         "repo": "libepoxy",
-        "rev": "1b6d7db184bb1a0d9af0e200e06a0331028eaaae",
-        "sha256": "055p60rvamkd7ppsaif7p2459rgiy9lpgr2qgyq7zakngmy8g3mj",
+        "rev": "d1f952c4565c389d82fd1657153e84e050f35b27",
+        "sha256": "160i8ay72wavl5k5fk1hpi4aal118v1r6r46qpp2vv5dm9i25asi",
         "type": "tarball",
-        "url": "https://github.com/anholt/libepoxy/archive/1b6d7db184bb1a0d9af0e200e06a0331028eaaae.tar.gz",
+        "url": "https://github.com/anholt/libepoxy/archive/d1f952c4565c389d82fd1657153e84e050f35b27.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "qemu": {
@@ -62,16 +62,16 @@
         "homepage": null,
         "owner": "lima-vm",
         "repo": "socket_vmnet",
-        "rev": "48949dbb85e0ce46e39744ec3b178936bb4b29ac",
-        "sha256": "1lk1hxpjy6r415bkvmba1hir0l45gq39n0rvf4nc9hb8aw87i8am",
+        "rev": "e40f08785796281de94b7d068579eaa0c3fe428a",
+        "sha256": "1ykxn8rnf0r6yxrgf4i3wq8hvq1xj8537xv2gsr9vzn7sgpih88j",
         "type": "tarball",
-        "url": "https://github.com/lima-vm/socket_vmnet/archive/48949dbb85e0ce46e39744ec3b178936bb4b29ac.tar.gz",
+        "url": "https://github.com/lima-vm/socket_vmnet/archive/e40f08785796281de94b7d068579eaa0c3fe428a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "be2b86c32aaf32a44ca625caf1b268915f0b5da9",
+        "rev": "ea7db39433c40e9799f2dfdbf63e0b4754a0dd3d",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {

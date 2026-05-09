@@ -11,7 +11,6 @@
     };
     nix-homebrew = {
       url = "github:zhaofengli-wip/nix-homebrew";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     home-manager = {
       url = "github:nix-community/home-manager";

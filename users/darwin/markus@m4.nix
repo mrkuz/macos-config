@@ -44,6 +44,8 @@ in
     ];
     sessionVariables = {
       CLICOLOR = "1";
+      # HOMEBREW_NO_ENV_HINTS = "1";
+      HOMEBREW_NO_AUTO_UPDATE = "1";
       HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";
       PODMAN_COMPOSE_WARNING_LOGS = "false";
     };
@@ -57,7 +59,7 @@ in
 
   programs.claude-code = {
     enable = true;
-    package = pkgs.claude-code-bun;
+    package = pkgs.claude-code;
   };
 
   home.file.".config/skhd/skhdrc".text = ''

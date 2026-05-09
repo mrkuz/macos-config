@@ -69,5 +69,11 @@
     };
   };
 
+  programs.man = {
+    enable = true;
+    package = pkgs.man-db;
+    generateCaches = true;
+  };
+
   programs.mise.enable = true;
 }
