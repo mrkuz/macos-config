@@ -96,6 +96,9 @@
       };
     };
     greedyCasks = true;
+    brews = [
+      "mas"
+    ];
     casks = [
       "betterdisplay"
       "datagrip"
