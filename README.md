@@ -18,7 +18,6 @@ Notes:
     2. If it is proprietary software or distributed as DMG -> [Homebrew](https://brew.sh)
     3. Else -> nix
     4. Exception: Some tools for development -> [mise](https://mise.jdx.dev)
-- [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle) keeps track of software installed via App Store or Homebrew
 - Not handled by Home Manger:
     - [Emacs](https://www.gnu.org/software/emacs/) configuration (see [here](https://github.com/mrkuz/emacs.d))
 
@@ -57,7 +56,7 @@ Updates flake inputs and brew formulae. Shows outdated brew and App Store packag
 
 ## ./go.sh upgrade
 
-Runs `darwin-rebuild` and upgrades outdated brew and App Store packages. Updates the Brewfile.
+Runs `darwin-rebuild`.
 
 ## ./go.sh clean
 

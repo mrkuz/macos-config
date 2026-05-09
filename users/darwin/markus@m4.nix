@@ -45,8 +45,7 @@ in
     sessionVariables = {
       CLICOLOR = "1";
       # HOMEBREW_NO_ENV_HINTS = "1";
-      HOMEBREW_NO_AUTO_UPDATE = "1";
-      HOMEBREW_BUNDLE_FILE = "/Users/markus/etc/config.git/var/${systemName}/Brewfile";
+      # HOMEBREW_NO_AUTO_UPDATE = "1";
       PODMAN_COMPOSE_WARNING_LOGS = "false";
     };
   };

@@ -79,4 +79,38 @@
   };
 
   home-manager.users."markus" = ./. + "/../../users/darwin/markus@m4.nix";
+
+  homebrew = {
+    enable = true;
+    global = {
+      autoUpdate = false;
+      brewfile = true;
+    };
+    onActivation = {
+      autoUpdate = true;
+      cleanup = "check";
+      upgrade = true;
+      extraEnv = {
+        HOMEBREW_NO_ANALYTICS = "1";
+        HOMEBREW_NO_ENV_HINTS = "1";
+      };
+    };
+    greedyCasks = true;
+    casks = [
+      "betterdisplay"
+      "datagrip"
+      "firefox"
+      "gimp"
+      "intellij-idea-ce"
+      "key-codes"
+      "porting-kit"
+      "vorta"
+    ];
+    masApps = {
+      # "Keynote" = 361285480;
+      # "Numbers" = 361304891;
+      # "Pages" = 361309726;
+      # "Xcode" = 497799835;
+    };
+  };
 }

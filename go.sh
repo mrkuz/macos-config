@@ -116,13 +116,6 @@ function rebuild() {
 
 function upgrade() {
     rebuild "$1"
-
-    info "Upgrading brew packages"
-    brew upgrade --greedy
-    brew bundle dump -f
-
-    info "Upgrading Mac App Store packages"
-    mas upgrade
 }
 
 function clean() {
