@@ -131,7 +131,6 @@ VM expressions are like host expressions, but represent a virtual machine.
 | docker         | nixos (console) | Runs [Docker Engine](https://docs.docker.com/engine/)                              |
 | firefox        | nixos (graphic) | Runs [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/) |
 | gnome          | nixos (graphic) | Latest [GNOME desktop environment](https://www.gnome.org) (without apps)           |
-| k3s            | nixos (console) | Runs [k3s](https://k3s.io)                                                         |
 | playground     | nixos (console) | NixOS playground to fiddle around                                                  |
 | playground-ui  | nixos (graphic) | Playground with graphical UI                                                       |
 
@@ -268,7 +267,6 @@ Collection of additional (or patched) software packages.
 | [angle](https://github.com/google/angle)                | darwin | OpenGL ES implementation which provides translation to Apple's [Metal](https://developer.apple.com/metal/)                                   |
 | [libepoxy](https://github.com/anholt/libepoxy)          | darwin | Library for OpenGL pointer management (with patches from Akihiko Odaki)                                                                      |
 | [virglrenderer](https://docs.mesa3d.org/drivers/virgl/) | darwin | Virtual GPU for QEMU providing 3D acceleration (with patches from Akihiko Odaki)                                                             |
-| [k3s-bin](https://k3s.io/)                              | nixos  | Single-binary Kubernetes distribution (release binary)                                                                                       |
 
 ## Overlays
 

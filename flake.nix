@@ -265,10 +265,6 @@
         name = "firefox";
         targetSystem = "aarch64-linux";
       };
-      nixosConfigurations.k3s = utils.mkVm {
-        name = "k3s";
-        targetSystem = "aarch64-linux";
-      };
 
       darwinConfigurations."bootstrap" = utils.mkDarwin { name = "bootstrap"; };
       darwinConfigurations."m4" = utils.mkDarwin { name = "m4"; };
@@ -281,7 +277,6 @@
           docker-vm = self.nixosConfigurations.docker.config.system.build.startVm;
           gnome-vm = self.nixosConfigurations.gnome.config.system.build.startVm;
           firefox-vm = self.nixosConfigurations.firefox.config.system.build.startVm;
-          k3s-vm = self.nixosConfigurations.k3s.config.system.build.startVm;
           # Docker images
           playground-docker =
             (utils.mkDocker {
@@ -301,9 +296,6 @@
           # Fonts
           sf-mono = inputs.apple-fonts.packages.${pkgs.system}.sf-mono;
           sf-mono-nerd = inputs.apple-fonts.packages.${pkgs.system}.sf-mono-nerd;
-        };
-        aarch64-linux = {
-          k3s-bin = (pkgsLinux.callPackage ./pkgs/nixos/networking/cluster/k3s-bin.nix { inherit sources; });
         };
       };
 

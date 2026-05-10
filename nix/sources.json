@@ -30,13 +30,6 @@
         "url": "https://github.com/j-x-z/cocoa-way/archive/340f90e378bf6b2da1f2feb5593d677e5dae6ac8.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "k3s-aarch64-linux": {
-        "sha256": "11n5fv9146kgx2mq30g7ykw282jbzbgv7cjc8xp7rg2k0pwnmkk2",
-        "type": "file",
-        "url": "https://github.com/k3s-io/k3s/releases/download/v1.28.7+k3s1/k3s-arm64",
-        "url_template": "https://github.com/k3s-io/k3s/releases/download/<version>/k3s-arm64",
-        "version": "v1.28.7+k3s1"
-    },
     "libepoxy": {
         "branch": "master",
         "description": "Epoxy is a library for handling OpenGL function pointer management for you",
