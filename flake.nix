@@ -46,10 +46,10 @@
       };
 
       versions = {
-        darwin.stateVersion = 6;
-        homeManager.stateVersion = "26.05";
-        nixos.stateVersion = "26.05";
-        nixos.stableVersion = "25.11";
+        darwin.stateVersion = 7;
+        homeManager.stateVersion = "26.11";
+        nixos.stateVersion = "26.11";
+        nixos.stableVersion = "26.05";
         rev = self.rev or self.dirtyRev or "dirty";
       };
 
@@ -294,8 +294,8 @@
             cocoa-way = (utils.callPkg ./pkgs/darwin/by-name/co/cocoa-way.nix);
           };
           # Fonts
-          sf-mono = inputs.apple-fonts.packages.${pkgs.system}.sf-mono;
-          sf-mono-nerd = inputs.apple-fonts.packages.${pkgs.system}.sf-mono-nerd;
+          sf-mono = inputs.apple-fonts.packages.aarch64-linux.sf-mono;
+          sf-mono-nerd = inputs.apple-fonts.packages.aarch64-linux.sf-mono-nerd;
         };
       };
 
