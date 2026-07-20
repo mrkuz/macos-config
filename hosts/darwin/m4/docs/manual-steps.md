@@ -12,10 +12,6 @@ This document collects manual installation/configuration steps.
 
 `softwareupdate --install-rosetta --agree-to-license`
 
-## Java
-
-`mise use -g java@temurin`
-
 # Emacs configuration
 
 ```shell

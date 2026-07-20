@@ -154,8 +154,17 @@
             "path_isdir": true,
             "profile": 1,
             "added_at": "2024-10-31 18:08:51.681138"
+        },
+        {
+            "dir": "/Users/markus/Library/Application Support/Code/User/settings.json",
+            "dir_size": 45,
+            "dir_files_count": 1,
+            "path_isdir": false,
+            "profile": 1,
+            "added_at": "2025-05-04 19:24:33.784247"
         }
     ],
+    "ExclusionModel": [],
     "SchemaVersion": {
         "id": 1,
         "version": 23,
@@ -165,21 +174,21 @@
         {
             "id": 1,
             "ssid": "UPC0049762",
-            "last_connected": "2025-03-18 19:40:04.183879",
+            "last_connected": "2026-06-27 00:32:43.799995",
             "allowed": true,
             "profile": 1
         },
         {
             "id": 2,
             "ssid": "Markus\u2019s iPhone",
-            "last_connected": "2025-03-18 19:40:04.183915",
+            "last_connected": "2026-06-27 00:32:43.800012",
             "allowed": true,
             "profile": 1
         },
         {
             "id": 3,
             "ssid": "R222-5F51",
-            "last_connected": "2025-03-18 19:40:04.183915",
+            "last_connected": "2026-06-27 00:32:43.800014",
             "allowed": true,
             "profile": 1
         }

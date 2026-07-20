@@ -100,6 +100,7 @@
       "mas"
     ];
     casks = [
+      "alt-tab"
       "betterdisplay"
       "datagrip"
       "firefox"
@@ -107,7 +108,11 @@
       "intellij-idea-ce"
       "key-codes"
       "porting-kit"
+      "rectangle-pro"
+      "telegram-desktop"
+      "visual-studio-code"
       "vorta"
+      "whatsapp"
     ];
     masApps = {
       # "Keynote" = 361285480;

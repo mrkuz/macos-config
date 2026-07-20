@@ -26,16 +26,15 @@
 
   home = {
     packages = with pkgs; [
+      ansible
       # Virtualization & containers
       docker
       kubectl
       lima
-      macos.qemu
+      # macos.qemu
     ];
     sessionVariables = {
       CLICOLOR = "1";
-      # HOMEBREW_NO_ENV_HINTS = "1";
-      # HOMEBREW_NO_AUTO_UPDATE = "1";
       PODMAN_COMPOSE_WARNING_LOGS = "false";
     };
   };
@@ -43,7 +42,7 @@
   programs = {
     # docker-cli.enable = true;
     uv.enable = true;
-    vscode.enable = true;
+    # vscode.enable = true;
   };
 
   programs.claude-code = {

@@ -9,7 +9,7 @@
 
 - Apple Intelligence: on
 - Language: American (Voice 4)
-- ChatGPT -> UseChatGPT: on
+- ChatGPT -> Use ChatGPT: off
 
 ## Network
 
@@ -28,7 +28,9 @@
 
 ## Desktop & Dock
 
+- Window tile bar double-click action: No action
 - Click wallpaper to show desktop: Only in Stage Manager
+- Drag windows to left or right edge of screen to tile: off
 - Tiled windows have margins: off
 
 ### Hot Corners
@@ -61,7 +63,7 @@
 
 ## iCloud
 
-- Access iCloud Data on the Web: off
+- Data Access on iCloud.com: off
 
 ## Keyboard
 
@@ -75,7 +77,7 @@
 - Tracking Speed: 6
 - Natural scrolling: On
 - Secondary click: Click Right Side
-- Smart zoom: On
+- Smart zoom: Off
 
 ## Trackpad
 
