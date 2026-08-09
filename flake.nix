@@ -294,8 +294,7 @@
             cocoa-way = (utils.callPkg ./pkgs/darwin/by-name/co/cocoa-way.nix);
           };
           # Fonts
-          sf-mono = inputs.apple-fonts.packages.aarch64-linux.sf-mono;
-          sf-mono-nerd = inputs.apple-fonts.packages.aarch64-linux.sf-mono-nerd;
+          inherit (pkgs) sf-mono sf-mono-nerd;
         };
       };
 
@@ -322,6 +321,7 @@
       };
 
       overlays = {
+        apple-fonts = import ./overlays/data/fonts/apple-fonts.nix inputs;
         emacs = import ./overlays/applications/editors/emacs.nix;
         lib = self: super: {
           lib = utils.extendLib super.lib;

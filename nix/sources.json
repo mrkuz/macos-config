@@ -5,10 +5,10 @@
         "homepage": "http://angleproject.org",
         "owner": "google",
         "repo": "angle",
-        "rev": "318948133839dcf445f6b39854538f776e3302b3",
-        "sha256": "0vyygknxg5ljmmfavk80n8mkhk65ll0bnqaf2xxwas7gfq24nx0i",
+        "rev": "be80ce591a481c12d60c50d6040d40c035b40a2b",
+        "sha256": "14dnsy5pbmsm3a2z5km5bmnp44sppac06c7a58d0qpbasagvd8pa",
         "type": "tarball",
-        "url": "https://github.com/google/angle/archive/318948133839dcf445f6b39854538f776e3302b3.tar.gz",
+        "url": "https://github.com/google/angle/archive/be80ce591a481c12d60c50d6040d40c035b40a2b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "chromium-aarch64-darwin": {
@@ -55,16 +55,16 @@
         "homepage": null,
         "owner": "lima-vm",
         "repo": "socket_vmnet",
-        "rev": "5e9d4956974665e2e9ed53afbbcac985f652e826",
-        "sha256": "1hr98wg768h6aniqh6d3c18hjzvyzkji7ywyfyi3n2apxqja0lp7",
+        "rev": "7af3d336920fe09f992054d9e79e1ca2687a5002",
+        "sha256": "11rihwq0i691rzh3d9k36giwjk9z7ar7bxji8n500lap3vj8nmz6",
         "type": "tarball",
-        "url": "https://github.com/lima-vm/socket_vmnet/archive/5e9d4956974665e2e9ed53afbbcac985f652e826.tar.gz",
+        "url": "https://github.com/lima-vm/socket_vmnet/archive/7af3d336920fe09f992054d9e79e1ca2687a5002.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "virglrenderer": {
         "branch": "main",
         "repo": "https://gitlab.freedesktop.org/virgl/virglrenderer.git",
-        "rev": "eccb534929736d66d7ce3d6236f6a6a2b0fc67eb",
+        "rev": "7c93bb6c89af4e16da4c0fde6d4ed8a91169d84c",
         "type": "git"
     },
     "virglrenderer-akihikodaki": {

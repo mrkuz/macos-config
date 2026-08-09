@@ -102,6 +102,7 @@
     casks = [
       "alt-tab"
       "betterdisplay"
+      "claude"
       "datagrip"
       "firefox"
       "gimp"

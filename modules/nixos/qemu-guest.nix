@@ -116,7 +116,7 @@ in
         extraGroups = [ "wheel" ];
       };
     })
-    (mkIf (cfg.sshd != null) {
+    (mkIf (cfg.sshd) {
       environment.etc = {
         "ssh/ssh_host_rsa_key" = {
           mode = "0600";
