@@ -55,7 +55,7 @@ in
             columns = 120;
             lines = 40;
           };
-          option_as_alt = "Left";
+          option_as_alt = "OnlyLeft";
         };
       };
     };

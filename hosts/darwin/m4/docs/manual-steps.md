@@ -12,6 +12,10 @@ This document collects manual installation/configuration steps.
 
 `softwareupdate --install-rosetta --agree-to-license`
 
+## Porting Kit
+
+Downloaded from: https://www.portingkit.com/download
+
 # Emacs configuration
 
 ```shell

@@ -32,13 +32,14 @@
 - Click wallpaper to show desktop: Only in Stage Manager
 - Drag windows to left or right edge of screen to tile: off
 - Tiled windows have margins: off
+- Automatically rearrange Spaces based on most recent use: off
 
 ### Hot Corners
 
-- Top left: Mission Control
-- Top right: Notification Center
+- Top left: -
+- Top right: -
 - Bottom left: -
-- Bottom right: Desktop
+- Bottom right: -
 
 ## Spotlight
 
